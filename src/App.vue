@@ -1,21 +1,13 @@
 <template>
-    <div class="app">
-      <ArrayColumnGraph :array="array_list" />
-    </div>
+  <div class="Visualizer">
+    <ArrayColumnGraph :array="array_list" />
+  </div>
 </template>
 
-<script lang="ts">
-  import ArrayColumnGraph from './components/ArrayColumnGraph.vue';
-
-  export default {
-    name: 'App',
-    components:{ArrayColumnGraph}
-  }
-</script>
-
-<script setup lang="ts">
+<script setup lang="ts" name="App">
 import { type array_list } from '@/types';
 import { reactive } from 'vue';
+import ArrayColumnGraph from './components/ArrayColumnGraph.vue';
 
 let array_list = reactive<array_list>([
   { index: 1, value: Math.ceil(Math.random() * 10) },

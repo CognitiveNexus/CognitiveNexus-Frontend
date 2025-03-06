@@ -1,19 +1,12 @@
 <template>
   <div class="array_render_monitor">
-    <span class="title">Array Monitor</span>
-    <canvas class="graph " ref="graph" :width="graph_width_px" :height="graph_height_px"
-      style="flex: auto;display: block;border: 1px solid black;"></canvas>
+    <canvas ref="graph" :width="graph_width_px" :height="graph_height_px"
+      style="flex: auto;display: block;"></canvas>
   </div>
-  <input type="number" name="highlighter" placeholder="请输入高亮序号" v-model="inputValue">
-  <button @click="highlight()">Click to highlight</button>
-  <br>
-  <input type="number" v-model="a">
-  <input type="number" v-model="b">
-  <button @click="swapColumn(a, b)">Click to swap</button>
 </template>
 
 <script setup lang="ts" name="ArrayColumnGraph">
-import { type array_list } from '@/types';
+import { type array_list,color } from '@/types';
 import { computed, onMounted, ref } from 'vue';
 
 //柱图对象
@@ -30,21 +23,22 @@ class Column{
     this.y = y;
     this.height = height;
     this.width = width;
-    //console.log(this);
   }
 
+  //清除
   clear() {
     this.ctx.clearRect(this.x-1, this.y-1, this.width+2, this.height);
   }
 
+  //渲染
   render() {
-    this.ctx.fillStyle = "#34314C";
+    this.ctx.fillStyle = color.deault_color;
     this.ctx.fillRect(this.x, this.y, this.width, this.height);
-    //console.log("render called");
   }
 
+  //高亮
   highlight() {
-    this.ctx.fillStyle = "#47B8E0";
+    this.ctx.fillStyle = color.highlight_color_1;
     this.ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 
@@ -82,32 +76,33 @@ const graph_scale = computed(() => {
   return (graph_height - 3 * graph_border) / max_value;
 })
 
-//获取canvas元素
+//创建一个graph，用于存储ref标记内容，即获取canvas元素
 const graph = ref<HTMLCanvasElement>();
 
 //初始化column数组
 let column_array:Column[] = [];
 
-//绘图
+//初始化柱状图
 const initColumnGraph = () => {
+  //获取Context2D
   if (!graph.value) return console.error("Cannot get Canvas element!");
   const canvas = graph.value;
   const ctx = canvas.getContext("2d");
   if (!ctx) return console.error("Cannot get CanvasRenderingContext2D");
-  var start_x = graph_border;
-  for (var i = 0; i < array_size; i++){
-    var column_value = props.array[i].value * graph_scale.value;
-    var start_y = graph_height - graph_border - column_value;
+
+  //创建对象
+  let start_x = graph_border;
+  for (let i = 0; i < array_size; i++){
+    let column_value = props.array[i].value * graph_scale.value;
+    let start_y = graph_height - graph_border - column_value;
     let column: Column = new Column(ctx, start_x, start_y, column_value, column_width.value);
     column_array.push(column);
     column.render();
     start_x = start_x + unit_width.value;
   }
-  console.log(column_array);
 }
 
 //交换
-let a = 0, b = 0;
 const swapColumn = (a: number, b: number) => {
   if (a < 0 || a >= column_array.length || b < 0 || b >= column_array.length) {
     return console.error("Array index out of bounds:swapColumn()");
@@ -126,8 +121,6 @@ const swapColumn = (a: number, b: number) => {
   //渲染
   column_array[a].render();
   column_array[b].render();
-  console.log("NEW");
-  console.log(column_array);
 }
 
 var inputValue = 0;
@@ -141,6 +134,7 @@ function highlight() {
   last_inputValue = inputValue;
 }
 
+//挂载完毕  生命周期钩子函数
 onMounted(() => {
   initColumnGraph();
 })
