@@ -10,11 +10,11 @@ const router = createRouter({
     //路由器工作规则
     routes: [
         {
-            path:'/array_column_graph',
+            path:'/array-column-graph',
             component: ArrayColumnGraph,
         },
         {
-            path: '/array_map_graph',
+            path: '/array-map-graph',
             component: ArrayMapGraph,
         }
     ]

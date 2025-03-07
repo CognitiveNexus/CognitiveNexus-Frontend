@@ -1,64 +1,78 @@
 <template>
-  <!-- 顶部 -->
-  <div class="Header">
-    <Header/>
-    <Player/>
-  </div>
+  <el-container class="main-container">
 
-  <div class="main_container">
-    <!-- 导航区 -->
-    <div class="navigate">
-      <RouterLink to="/array_column_graph" active-class="mouse_hover">Para1</RouterLink>
-      <RouterLink to="/array_map_graph" active-class="mouse_hover">Para2</RouterLink>
-    </div>
-    <!-- 展示区 -->
-     <div class="visualizer">
+    <el-header>
+      <h2>CognitiveNexus</h2>
+    </el-header>
+
+    <el-container>
+
+      <el-aside width="200px">
+        <el-scrollbar height="700px">
+          <h3 class="menu-title">课程选择</h3>
+          <el-menu class="el-menu-vertical" :router="true" :unique-opened="true">
+            <el-sub-menu index="1">
+              <template #title>
+                <span class="menu-text">
+                  <el-icon>
+                    <Compass />
+                  </el-icon>基础知识
+                </span>
+              </template>
+              <el-menu-item index="/array-column-graph">数组柱状图展示</el-menu-item>
+              <el-menu-item index="/array-map-graph">数组方框图展示</el-menu-item>
+            </el-sub-menu>
+            <el-sub-menu index="2">
+              <template #title>
+                <span class="menu-text"><el-icon>
+                    <Notebook />
+                  </el-icon>进阶知识</span>
+              </template>
+              <el-menu-item index="2-1">2-1</el-menu-item>
+              <el-menu-item index="2-2">2-2</el-menu-item>
+            </el-sub-menu>
+            <el-sub-menu index="3">
+              <template #title>
+                <span class="menu-text"><el-icon><TrophyBase /></el-icon>较难知识</span>
+              </template>
+              <el-menu-item index="3-1">3-1</el-menu-item>
+              <el-menu-item index="3-2">3-2</el-menu-item>
+            </el-sub-menu>
+          </el-menu>
+        </el-scrollbar>
+      </el-aside>
+
+      <el-main>
         <RouterView></RouterView>
-     </div>
-   </div>
+      </el-main>
 
+    </el-container>
+
+  </el-container>
 </template>
 
 <script setup lang="ts" name="App">
 import { RouterView, RouterLink } from 'vue-router';
-import Header from './components/Header.vue';
-import Player from './components/Player.vue';
 </script>
 
 <style scoped>
-.main_container{
-  display: flex;
-  flex-direction: row;
+.main-container{
+  font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC',
+      'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
 
-.main_container .navigate{
-  display: flex;
-  flex-direction: column;
-  background-color: #393939;
-  height: 100%;
-  width: 15%;
+.el-aside{
   user-select: none;
 }
 
-.main_container .navigate a{
-  display: flex;
-  height: 40px;
-  width: 100%;
-  background-color: #2E2E2E;
-  color: #BBBBBB;
-  font-size: 15px;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
+.el-header{
+  background-color: rgb(121.3, 187.1, 255);
+  text-align: left;
 }
 
-.main_container .navigate a.mouse_hover{
-  background-color: #252525;
+.menu-title{
+  font-size: large;
+  margin: 18px 10px;
 }
 
-.main_container .visualizer{
-  display: flex;
-  flex-direction: column;
-  width: 55%;
-}
 </style>
