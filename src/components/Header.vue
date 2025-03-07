@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        Cognitive Nexus
+        <div class="text">Cognitive Nexus</div>
     </div>
     <div class="divider">
 
@@ -13,7 +13,7 @@
 
 <style scoped>
 .header{
-    padding: 5px 15px;
+    padding: 5px 0px;
     width: 100%;
     height: 24px;
     background-color: #393939;
@@ -26,5 +26,10 @@
     background-color: #BBBBBB;
     width: 100%;
     height: 2px;
+}
+.header .text{
+    width: 200px;
+    position: relative;
+    left: 15px;
 }
 </style>

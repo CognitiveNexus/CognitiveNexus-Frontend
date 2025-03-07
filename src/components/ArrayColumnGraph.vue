@@ -57,7 +57,16 @@ const graph_height_px = computed(() => {
 
 //数组导入
 const props = withDefaults(defineProps<{ array: array_list }>(), {
-  array: () => [{ index: 1, value: 0 }]
+  array: () => [
+    { index: 1, value: 1 },
+    { index: 2, value: 2 },
+    { index: 3, value: 3 },
+    { index: 4, value: 4 },
+    { index: 5, value: 5 },
+    { index: 6, value: 6 },
+    { index: 7, value: 7 },
+    { index: 8, value: 8 },
+  ]
 })
 const array_size: number = props.array.length;
 var max_value = props.array[0].value;

@@ -1,6 +1,7 @@
 # Cognitive Nexus Fore-end
 
-This repository is for CognitiveNexus based on Vue3
+本仓库是思维脉络 CognitiveNexus 的前端部分
+组件有部分使用自Element Plus
 
 ## Array Column Graph
 
