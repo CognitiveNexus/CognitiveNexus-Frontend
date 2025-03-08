@@ -2,7 +2,7 @@
   <el-container class="main-container">
 
     <el-header>
-      <h2>CognitiveNexus</h2>
+      <h2>思维脉络 CognitiveNexus</h2>
     </el-header>
 
     <el-container>
@@ -24,7 +24,8 @@
             </el-sub-menu>
             <el-sub-menu index="2">
               <template #title>
-                <span class="menu-text"><el-icon>
+                <span class="menu-text">
+                  <el-icon>
                     <Notebook />
                   </el-icon>进阶知识</span>
               </template>
@@ -33,7 +34,11 @@
             </el-sub-menu>
             <el-sub-menu index="3">
               <template #title>
-                <span class="menu-text"><el-icon><TrophyBase /></el-icon>较难知识</span>
+                <span class="menu-text">
+                  <el-icon>
+                    <TrophyBase />
+                  </el-icon>较难知识
+                </span>
               </template>
               <el-menu-item index="3-1">3-1</el-menu-item>
               <el-menu-item index="3-2">3-2</el-menu-item>
@@ -68,6 +73,8 @@ import { RouterView, RouterLink } from 'vue-router';
 .el-header{
   background-color: rgb(121.3, 187.1, 255);
   text-align: left;
+  color: white;
+  user-select: none;
 }
 
 .menu-title{

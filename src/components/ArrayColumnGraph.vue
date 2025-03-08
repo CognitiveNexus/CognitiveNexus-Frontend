@@ -3,19 +3,76 @@
     <canvas ref="graph" :width="graph_width_px" :height="graph_height_px"
       style="flex: auto;display: block;"></canvas>
   </div>
+
+  <button @click="change_color_to(0, Color.getHighlight())">change_color</button>
 </template>
 
 <script setup lang="ts" name="ArrayColumnGraph">
 import { type array_list,color } from '@/types';
 import { computed, onMounted, ref } from 'vue';
 
+//颜色对象
+class Color {
+  r: number
+  g: number
+  b: number
+
+  constructor(r: number, g: number, b: number) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+  }
+
+  setDefault() {
+    this.r = color.default_color_r;
+    this.g = color.default_color_g;
+    this.b = color.default_color_b;
+  }
+
+  setHighlight() {
+    this.r = color.highlight_color_r;
+    this.g = color.highlight_color_g;
+    this.b = color.highlight_color_b;
+  }
+
+  setDim() {
+    this.r = color.dim_color_r;
+    this.g = color.dim_color_g;
+    this.b = color.dim_color_b;
+  }
+
+  static getDefault() {
+    const res = new Color(0, 0, 0);
+    res.setDefault();
+    return res;
+  }
+
+  static getHighlight() {
+    const res = new Color(0, 0, 0);
+    res.setHighlight();
+    return res;
+  }
+
+  static getDim() {
+    const res = new Color(0, 0, 0);
+    res.setDim();
+    return res;
+  }
+
+  static isSame(a: Color, b: Color): boolean{
+    return a.r == b.r && a.g == b.g && a.b == b.b;
+  }
+}
+
 //柱图对象
 class Column{
+
   ctx: CanvasRenderingContext2D;
   x: number
   y: number
   height: number
   width: number
+  color: Color
 
   constructor(ctx: CanvasRenderingContext2D, x: number, y: number, height: number, width:number) {
     this.ctx = ctx;
@@ -23,6 +80,7 @@ class Column{
     this.y = y;
     this.height = height;
     this.width = width;
+    this.color = Color.getDefault();
   }
 
   //清除
@@ -32,13 +90,8 @@ class Column{
 
   //渲染
   render() {
-    this.ctx.fillStyle = color.deault_color;
-    this.ctx.fillRect(this.x, this.y, this.width, this.height);
-  }
-
-  //高亮
-  highlight() {
-    this.ctx.fillStyle = color.highlight_color_1;
+    this.clear();
+    this.ctx.fillStyle = `rgb(${this.color.r},${this.color.g},${this.color.b})`;
     this.ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 
@@ -76,10 +129,10 @@ for (var i = 0; i < array_size; i++){
 
 //数据计算
 const unit_width = computed<number>(() => {
-  return (graph_width - 2 * graph_border) / array_size ;
+  return Math.round((graph_width - 2 * graph_border) / array_size) ;
 })
 const column_width = computed(() => {
-  return unit_width.value * 0.8;
+  return Math.round(unit_width.value * 0.8);
 })
 const graph_scale = computed(() => {
   return (graph_height - 3 * graph_border) / max_value;
@@ -102,7 +155,7 @@ const initColumnGraph = () => {
   //创建对象
   let start_x = graph_border;
   for (let i = 0; i < array_size; i++){
-    let column_value = props.array[i].value * graph_scale.value;
+    let column_value = Math.round(props.array[i].value * graph_scale.value);
     let start_y = graph_height - graph_border - column_value;
     let column: Column = new Column(ctx, start_x, start_y, column_value, column_width.value);
     column_array.push(column);
@@ -111,14 +164,13 @@ const initColumnGraph = () => {
   }
 }
 
-//交换
+/* ==========================动画部分======================= */
+
+//交换动画
 const swapColumn = (a: number, b: number) => {
   if (a < 0 || a >= column_array.length || b < 0 || b >= column_array.length) {
     return console.error("Array index out of bounds:swapColumn()");
   }
-  //擦除原来的
-  column_array[a].clear();
-  column_array[b].clear();
   //交换height
   const height = column_array[a].height;
   column_array[a].height = column_array[b].height;
@@ -132,15 +184,30 @@ const swapColumn = (a: number, b: number) => {
   column_array[b].render();
 }
 
-var inputValue = 0;
-var last_inputValue = -1;
+//通用变色动画
+let select_column: Column;
+let start_color: Color;
+let target_color: Color;
 
-function highlight() {
-  if (last_inputValue != -1) {
-    column_array[last_inputValue].render();
+function change_color_to(a: number,color: Color) {
+  select_column = column_array[a];
+  start_color = select_column.color;
+  target_color = color;
+  requestAnimationFrame(change_color_animation);
+}
+
+function change_color_animation() {
+  color_update();
+  select_column.render();
+  if (!Color.isSame(target_color, select_column.color)) {
+    requestAnimationFrame(change_color_animation);
   }
-  column_array[inputValue].highlight();
-  last_inputValue = inputValue;
+}
+
+function color_update() {
+  select_column.color.r += (target_color.r - start_color.r) / 50;
+  select_column.color.g += (target_color.g - start_color.g) / 50;
+  select_column.color.b += (target_color.b - start_color.b) / 50;
 }
 
 //挂载完毕  生命周期钩子函数
@@ -151,16 +218,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.title{
-  padding: 4px 6px;
-  position: relative;
-  left: 0px;
-  top: 0px;
-  float: left;
-  font-size: 13px;
-  font-weight: bold;
-  color: #BBBBBB;
-  background-color: #505050 ;
-  display: block;
+canvas{
+  transform: translateZ(0);
 }
 </style>
