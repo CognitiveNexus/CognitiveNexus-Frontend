@@ -8,7 +8,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Array_column_graph: typeof import('./src/components/array_column_graph.vue')['default']
     ArrayColumnGraph: typeof import('./src/components/ArrayColumnGraph.vue')['default']
     ArrayMapGraph: typeof import('./src/components/ArrayMapGraph.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
@@ -23,7 +22,5 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Temp: typeof import('./src/components/Temp.vue')['default']
-    Try: typeof import('./src/components/try.vue')['default']
   }
 }
