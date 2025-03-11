@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import ArrayColumnGraph from '@/components/ArrayColumnGraph.vue';
 import ArrayMapGraph from '@/components/ArrayMapGraph.vue';
+import ArrayColumnGraph from '@/components/ArrayColumnGraph.vue';
+import Temp from '@/components/Temp.vue';
 
 //创建路由器
 const router = createRouter({
@@ -16,6 +17,10 @@ const router = createRouter({
         {
             path: '/array-map-graph',
             component: ArrayMapGraph,
+        },
+        {
+            path: '/temp',
+            component: Temp,
         }
     ]
 });

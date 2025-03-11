@@ -8,7 +8,7 @@
     <el-container>
 
       <el-aside width="200px">
-        <el-scrollbar height="700px">
+        <el-scrollbar height="100%">
           <h3 class="menu-title">课程选择</h3>
           <el-menu class="el-menu-vertical" :router="true" :unique-opened="true">
             <el-sub-menu index="1">
@@ -21,6 +21,7 @@
               </template>
               <el-menu-item index="/array-column-graph">数组柱状图展示</el-menu-item>
               <el-menu-item index="/array-map-graph">数组方框图展示</el-menu-item>
+              <el-menu-item index="/temp">实验</el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="2">
               <template #title>
@@ -71,7 +72,7 @@ import { RouterView, RouterLink } from 'vue-router';
 }
 
 .el-header{
-  background-color: rgb(121.3, 187.1, 255);
+  background-color: rgb(51.2, 126.4, 204);
   text-align: left;
   color: white;
   user-select: none;
