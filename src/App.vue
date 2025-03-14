@@ -1,86 +1,39 @@
 <template>
   <el-container class="main-container">
-
     <el-header>
-      <h2>思维脉络 CognitiveNexus</h2>
+      <RouterLink to="/home" class="router-link-custom"><h3>思维脉络 CognitiveNexus</h3></RouterLink>
     </el-header>
-
     <el-container>
-
-      <el-aside width="200px">
-        <el-scrollbar height="100%">
-          <h3 class="menu-title">课程选择</h3>
-          <el-menu class="el-menu-vertical" :router="true" :unique-opened="true">
-            <el-sub-menu index="1">
-              <template #title>
-                <span class="menu-text">
-                  <el-icon>
-                    <Compass />
-                  </el-icon>基础知识
-                </span>
-              </template>
-              <el-menu-item index="/array-column-graph">数组柱状图展示</el-menu-item>
-              <el-menu-item index="/array-map-graph">数组方框图展示</el-menu-item>
-              <el-menu-item index="/temp">实验</el-menu-item>
-            </el-sub-menu>
-            <el-sub-menu index="2">
-              <template #title>
-                <span class="menu-text">
-                  <el-icon>
-                    <Notebook />
-                  </el-icon>进阶知识</span>
-              </template>
-              <el-menu-item index="2-1">2-1</el-menu-item>
-              <el-menu-item index="2-2">2-2</el-menu-item>
-            </el-sub-menu>
-            <el-sub-menu index="3">
-              <template #title>
-                <span class="menu-text">
-                  <el-icon>
-                    <TrophyBase />
-                  </el-icon>较难知识
-                </span>
-              </template>
-              <el-menu-item index="3-1">3-1</el-menu-item>
-              <el-menu-item index="3-2">3-2</el-menu-item>
-            </el-sub-menu>
-          </el-menu>
-        </el-scrollbar>
-      </el-aside>
-
-      <el-main>
-        <RouterView></RouterView>
-      </el-main>
-
+      <SideMenu/>
+      <RouterView></RouterView>
     </el-container>
-
+    <el-footer height="50px">Footer</el-footer>
   </el-container>
 </template>
 
 <script setup lang="ts" name="App">
 import { RouterView, RouterLink } from 'vue-router';
+import SideMenu from './components/SideMenu.vue';
 </script>
 
 <style scoped>
 .main-container{
   font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC',
       'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  height: 100vh;
 }
-
 .el-aside{
   user-select: none;
+  overflow: auto;
 }
-
 .el-header{
-  background-color: rgb(51.2, 126.4, 204);
+  border-bottom: 2px solid #DCDFE6;
+  padding: 0px 30px;
   text-align: left;
-  color: white;
   user-select: none;
+  color: rgb(51.2, 126.4, 204);
 }
-
-.menu-title{
-  font-size: large;
-  margin: 18px 10px;
+.el-menu-vertical:not(.el-menu--collapse){
+  height: 100%;
 }
-
 </style>

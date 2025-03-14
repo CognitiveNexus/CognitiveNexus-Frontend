@@ -10,9 +10,12 @@ declare module 'vue' {
   export interface GlobalComponents {
     ArrayColumnGraph: typeof import('./src/components/ArrayColumnGraph.vue')['default']
     ArrayMapGraph: typeof import('./src/components/ArrayMapGraph.vue')['default']
+    ColumnChart: typeof import('./src/components/ColumnChart.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDivider: typeof import('element-plus/es')['ElDivider']
+    ElFooter: typeof import('element-plus/es')['ElFooter']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMain: typeof import('element-plus/es')['ElMain']
@@ -22,5 +25,6 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SideMenu: typeof import('./src/components/SideMenu.vue')['default']
   }
 }

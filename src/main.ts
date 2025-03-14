@@ -8,6 +8,8 @@ import ECharts from 'vue-echarts'
 //精确import
 import 'echarts'
 
+import '@/assets/css/reset-router-link.css'
+
 const app = createApp(App);
 app.use(router);
 app.component('v-chart', ECharts);

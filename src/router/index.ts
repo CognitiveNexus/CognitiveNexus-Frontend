@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import ArrayMapGraph from '@/components/ArrayMapGraph.vue';
-import ArrayColumnGraph from '@/components/ArrayColumnGraph.vue';
-import Temp from '@/components/Temp.vue';
+import ColumnChart from '@/components/ColumnChart.vue';
+import Home from '@/pages/Home.vue';
+import Display from '@/pages/Display.vue';
 
 //创建路由器
 const router = createRouter({
@@ -10,18 +10,26 @@ const router = createRouter({
     history: createWebHistory(),
     //路由器工作规则
     routes: [
-        {
-            path:'/array-column-graph',
-            component: ArrayColumnGraph,
-        },
-        {
-            path: '/array-map-graph',
-            component: ArrayMapGraph,
-        },
-        {
-            path: '/temp',
-            component: Temp,
-        }
+      {
+        name: "display",
+        path: "/display",
+        component: Display,
+        children: [
+          {
+            path: "part1",
+            component: ColumnChart,
+          }
+        ]
+      },
+      {
+        name: "home",
+        path: "/home",
+        component: Home,
+      },
+      {
+        path: "/",
+        redirect: "/home",
+      }
     ]
 });
 

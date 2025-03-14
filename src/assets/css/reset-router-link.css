@@ -1,0 +1,25 @@
+.router-link-custom {
+  /* 清除基础样式 */
+  text-decoration: none !important;
+  color: inherit !important;
+  cursor: pointer;
+
+  /* 清除所有交互状态样式 */
+  &:hover,
+  &:active,
+  &:visited,
+  &:focus {
+    text-decoration: none !important;
+    color: inherit !important;
+    outline: none !important;
+    background-color: transparent !important;
+  }
+
+  /* 清除 Vue Router 自动添加的激活状态类 */
+  &.router-link-active,
+  &.router-link-exact-active {
+    text-decoration: none !important;
+    color: inherit !important;
+    background-color: transparent !important;
+  }
+}
