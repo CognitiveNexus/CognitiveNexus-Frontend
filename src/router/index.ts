@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ColumnChart from '@/components/ColumnChart.vue';
 import Home from '@/pages/Home.vue';
 import Display from '@/pages/Display.vue';
+import Reader from '@/components/Reader.vue';
 
 //创建路由器
 const router = createRouter({
@@ -17,7 +18,10 @@ const router = createRouter({
         children: [
           {
             path: "part1",
-            component: ColumnChart,
+            components: {
+              visualizer: ColumnChart,
+              reader: Reader,
+            }
           }
         ]
       },

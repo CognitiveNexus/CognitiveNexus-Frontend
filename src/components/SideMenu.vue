@@ -68,4 +68,8 @@ const menuItemMaster = [
   font-size: large;
   margin: 18px 10px;
 }
+.el-aside {
+  user-select: none;
+  overflow: auto;
+}
 </style>

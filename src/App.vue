@@ -1,8 +1,6 @@
 <template>
   <el-container class="main-container">
-    <el-header>
-      <RouterLink to="/home" class="router-link-custom"><h3>思维脉络 CognitiveNexus</h3></RouterLink>
-    </el-header>
+    <Header></Header>
     <el-container>
       <SideMenu/>
       <RouterView></RouterView>
@@ -12,8 +10,9 @@
 </template>
 
 <script setup lang="ts" name="App">
-import { RouterView, RouterLink } from 'vue-router';
+import { RouterView } from 'vue-router';
 import SideMenu from './components/SideMenu.vue';
+import Header from './components/Header.vue';
 </script>
 
 <style scoped>
@@ -21,17 +20,6 @@ import SideMenu from './components/SideMenu.vue';
   font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC',
       'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   height: 100vh;
-}
-.el-aside{
-  user-select: none;
-  overflow: auto;
-}
-.el-header{
-  border-bottom: 2px solid #DCDFE6;
-  padding: 0px 30px;
-  text-align: left;
-  user-select: none;
-  color: rgb(51.2, 126.4, 204);
 }
 .el-menu-vertical:not(.el-menu--collapse){
   height: 100%;

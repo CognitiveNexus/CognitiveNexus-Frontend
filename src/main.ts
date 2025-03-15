@@ -9,6 +9,7 @@ import ECharts from 'vue-echarts'
 import 'echarts'
 
 import '@/assets/css/reset-router-link.css'
+import '@/assets/css/fonts.css'
 
 const app = createApp(App);
 app.use(router);
