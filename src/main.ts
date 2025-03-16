@@ -7,12 +7,15 @@ import ECharts from 'vue-echarts'
 //https://vue-echarts.dev/
 //精确import
 import 'echarts'
+import { createPinia } from 'pinia'
 
 import '@/assets/css/reset-router-link.css'
 import '@/assets/css/fonts.css'
 
 const app = createApp(App);
+const pinia = createPinia();
 app.use(router);
+app.use(pinia);
 app.component('v-chart', ECharts);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component);

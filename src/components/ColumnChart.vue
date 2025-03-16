@@ -2,7 +2,7 @@
   <div class="canvas-render">
     <v-chart :option="option_column" :autoresize="true" style="height: 400px" ref="chartRef" />
     <div class="button-group">
-      <el-button type="primary" class="left-button" @click="prevPage()">
+      <el-button type="primary" class="left-button" @click="store.prevPage()">
         <el-icon :size="20">
           <CaretLeft />
         </el-icon>
@@ -10,8 +10,8 @@
       <div class="progress-visualizer">
         <el-text>{{ current_page }} / {{ total_page }}</el-text>
       </div>
-      <el-button type="primary" class="right-button" @click="nextPage()">
-        <el-icon :size="20">
+      <el-button type="primary" class="right-button" @click="store.nextPage()">
+        <el-icon :size="20"> 
           <CaretRight />
         </el-icon>
       </el-button>
@@ -21,23 +21,11 @@
 
 <script setup lang="ts" name="ColumnChart">
 import { computed, ref } from 'vue';
+import { useColumnChartStore } from '@/store/ColumnChart';
+import { storeToRefs } from 'pinia';
 
-const steps = [
-  { type: "swap", index1: 0, index2: 1 },
-  { type: "swap", index1: 1, index2: 2 },
-  { type: "swap", index1: 2, index2: 3 },
-  { type: "swap", index1: 3, index2: 4 },
-  { type: "swap", index1: 5, index2: 6 },
-  { type: "swap", index1: 6, index2: 7 },
-  { type: "swap", index1: 0, index2: 1 },
-  { type: "swap", index1: 4, index2: 5 },
-  { type: "swap", index1: 3, index2: 4 },
-  { type: "swap", index1: 2, index2: 3 },
-  { type: "swap", index1: 1, index2: 2 },
-]
-
-const current_page = ref(1);
-const total_page = ref(steps.length + 1);
+const store = useColumnChartStore();
+const { current_page, total_page } = storeToRefs(store);
 
 const colorScheme = ref([
   '#409EFF',
@@ -52,17 +40,6 @@ const colorScheme = ref([
 
 //手动获取一下v-charts对象，方便一些强制更改option的操作
 const chartRef = ref();
-
-const data = ref([
-  { index: '7', value: 7 },
-  { index: '4', value: 4 },
-  { index: '1', value: 1 },
-  { index: '4', value: 4 },
-  { index: '5', value: 5 },
-  { index: '9', value: 9 },
-  { index: '2', value: 2 },
-  { index: '8', value: 8 },
-]);
 
 const option_column = computed(() => {
   return {
@@ -80,8 +57,8 @@ const option_column = computed(() => {
       },
     },
     xAxis: {
-      data: data.value.map((d) => {
-        return d.index
+      data: store.data.map((d) => {
+        return d.value;
       }),
     },
     yAxis: {},
@@ -89,7 +66,7 @@ const option_column = computed(() => {
       {
         name: 'value',
         type: 'bar',
-        data: data.value.map((d) => {
+        data: store.data.map((d) => {
           return d.value
         }),
         itemStyle: {
@@ -100,53 +77,6 @@ const option_column = computed(() => {
     ],
   }
 });
-
-//数据合法性检测
-function isAvailbleIndex(index: number): boolean {
-  return index >= 0 && index <= data.value.length;
-}
-function isAvailblePage(page: number): boolean {
-  return page >= 1 && page <= total_page.value;
-}
-
-function swap(a: number, b: number) {
-  if (isAvailbleIndex(a) && isAvailbleIndex(b)) {
-    [data.value[a], data.value[b]] = [data.value[b], data.value[a]];
-  }
-  console.log(a, b, "@swap");
-}
-
-// 切换高亮
-const highlightIndex = ref(-1);
-function toggleHighlight(index: number) {
-  index--;
-  if (isAvailbleIndex(index)) {
-    colorScheme.value[index] == '#529B2E'
-      ? colorScheme.value[index] = '#5470C6'
-      : colorScheme.value[index] = '#529B2E'
-    chartRef.value.setOption(option_column.value, {
-      replaceMerge: ['series']
-    })
-  }
-}
-
-//按钮响应
-function nextPage() {
-  if (isAvailblePage(current_page.value + 1)) {
-    const command_index = current_page.value - 1;
-    const command = steps[command_index];
-    swap(command.index1, command.index2);
-    current_page.value++;
-  }
-}
-function prevPage() {
-  if (isAvailblePage(current_page.value - 1)) {
-    const command_index = current_page.value - 1;
-    const command = steps[command_index - 1];
-    swap(command.index1, command.index2);
-    current_page.value--;
-  }
-}
 
 </script>
 
