@@ -11,6 +11,7 @@
 
 <script setup lang="ts" name="Header">
 
+
 </script>
 
 <style scoped>
@@ -21,6 +22,13 @@
   color: #409EFF;
   display: flex;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
+}
+.el-button{
+  margin-top: 5px;
+  margin-left: 20px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 }
 .title-name {
   font-family: 'ChuangKeTieJin', sans-serif;

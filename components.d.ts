@@ -11,6 +11,7 @@ declare module 'vue' {
     ArrayColumnGraph: typeof import('./src/components/ArrayColumnGraph.vue')['default']
     ArrayMapGraph: typeof import('./src/components/ArrayMapGraph.vue')['default']
     ColumnChart: typeof import('./src/components/ColumnChart.vue')['default']
+    Console: typeof import('./src/components/Console.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']

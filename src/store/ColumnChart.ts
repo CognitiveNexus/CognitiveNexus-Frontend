@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { useConsole } from './Console';
 
 export const useColumnChartStore = defineStore("ColumnChart", {
   //数据存储
-  state() {
-    return {
+  state: () => ({
       //默认数据组
       data: ref([
         { value: 7 },
@@ -32,8 +32,7 @@ export const useColumnChartStore = defineStore("ColumnChart", {
       ],
       //动画页数控制
       current_page: ref(1),
-    }
-  },
+  }),
   //计算属性
   getters: {
     total_page: (state) => {
@@ -74,6 +73,10 @@ export const useColumnChartStore = defineStore("ColumnChart", {
         const command = this.command[command_index];
         this.swap(command.index1, command.index2);
         this.current_page++;
+
+        //操作记录
+        const consoleArray = useConsole();
+        consoleArray.pushString(command.type+" : "+command.index1+" with "+command.index2);
       }
     },
     prevPage() {
@@ -82,6 +85,10 @@ export const useColumnChartStore = defineStore("ColumnChart", {
         const command = this.command[command_index - 1];
         this.swap(command.index1, command.index2);
         this.current_page--;
+
+        //操作记录
+        const consoleArray = useConsole();
+        consoleArray.popString();
       }
     }
   }

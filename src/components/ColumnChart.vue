@@ -1,6 +1,6 @@
 <template>
   <div class="canvas-render">
-    <v-chart :option="option_column" :autoresize="true" style="height: 400px" ref="chartRef" />
+    <v-chart :option="option_column" :autoresize="true" style="height: 40vh" ref="chartRef" />
     <div class="button-group">
       <el-button type="primary" class="left-button" @click="store.prevPage()">
         <el-icon :size="20">
@@ -85,6 +85,7 @@ const option_column = computed(() => {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
   padding: 10px 0px 0px 0px;
   border-radius: 5px;
+  margin-bottom: 40px;
 }
 
 .button-group {

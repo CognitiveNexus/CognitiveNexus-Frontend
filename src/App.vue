@@ -24,4 +24,7 @@ import Header from './components/Header.vue';
 .el-menu-vertical:not(.el-menu--collapse){
   height: 100%;
 }
+.el-footer{
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
+}
 </style>
