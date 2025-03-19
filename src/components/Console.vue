@@ -2,7 +2,7 @@
   <div class="console-render">
     <div class="title">操作记录</div>
     <el-scrollbar height="300px">
-      <el-text v-for="item in consoleArray">{{ item }}<br/></el-text>
+      <div class="info" v-for="item in consoleArray">{{ item }}<br/></div>
     </el-scrollbar>
   </div>
 </template>
@@ -33,7 +33,12 @@ const { consoleArray } = storeToRefs(store)
   padding: 5px 0px 0px 0px;
   user-select: none;
 }
-.el-text{
+.info{
+  background-color: rgb(216.8, 235.6, 255);
+  line-height: 2.0;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 10px;
   font-size: 15px;
   line-height: 1.5;
 }

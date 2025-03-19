@@ -33,6 +33,11 @@
 .title-name {
   font-family: 'ChuangKeTieJin', sans-serif;
   font-size: 30px;
+  /** 文字渐变实现 */
+  background-image: linear-gradient(90deg, #60afff,
+    #b180ff);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .user-tool{
   display: flex;

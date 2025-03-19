@@ -1,17 +1,35 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export const useReader = defineStore("Reader", {
   //数据存储
   state: () => ({
     context: [
-      { type: "title", value: "Bubble Sort" },
-      { type: "highlight", value:"冒泡排序（Bubble Sort）"},
-      { type: "content", value: `是最简单和最通用的排序方法，其基本思想是：在待排序的一组数中，将相邻的两个数进行比较，若前面的数比后面的数大就交换两数，否则不交换；如此下去，直至最终完成排序。由此可得，在排序过程中，大的数据往下沉，小的数据往上浮，就像气泡一样，于是将这种排序算法形象地称为冒泡排序。` },
-      { type: "content", value: `是最简单和最通用的排序方法，其基本思想是：在待排序的一组数中，将相邻的两个数进行比较，若前面的数比后面的数大就交换两数，否则不交换；如此下去，直至最终完成排序。由此可得，在排序过程中，大的数据往下沉，小的数据往上浮，就像气泡一样，于是将这种排序算法形象地称为冒泡排序。` },
-      { type: "content", value: `是最简单和最通用的排序方法，其基本思想是：在待排序的一组数中，将相邻的两个数进行比较，若前面的数比后面的数大就交换两数，否则不交换；如此下去，直至最终完成排序。由此可得，在排序过程中，大的数据往下沉，小的数据往上浮，就像气泡一样，于是将这种排序算法形象地称为冒泡排序。` },
-      { type: "content", value: `是最简单和最通用的排序方法，其基本思想是：在待排序的一组数中，将相邻的两个数进行比较，若前面的数比后面的数大就交换两数，否则不交换；如此下去，直至最终完成排序。由此可得，在排序过程中，大的数据往下沉，小的数据往上浮，就像气泡一样，于是将这种排序算法形象地称为冒泡排序。` },
-      { type: "content", value: `是最简单和最通用的排序方法，其基本思想是：在待排序的一组数中，将相邻的两个数进行比较，若前面的数比后面的数大就交换两数，否则不交换；如此下去，直至最终完成排序。由此可得，在排序过程中，大的数据往下沉，小的数据往上浮，就像气泡一样，于是将这种排序算法形象地称为冒泡排序。` },
-      { type: "content", value: `是最简单和最通用的排序方法，其基本思想是：在待排序的一组数中，将相邻的两个数进行比较，若前面的数比后面的数大就交换两数，否则不交换；如此下去，直至最终完成排序。由此可得，在排序过程中，大的数据往下沉，小的数据往上浮，就像气泡一样，于是将这种排序算法形象地称为冒泡排序。` },
-    ]
-  })
+      { page: 1,type: "title", value: "Bubble Sort" },
+      { page: 1, type: "highlight", value:"冒泡排序（Bubble Sort）"},
+      { page: 1, type: "content", value: `这是第一页` },
+      { page: 2, type: "content", value: `这是第二页` },
+      { page: 3, type: "content", value: `这是第三页` },
+    ],
+    current_page: ref(1),
+    total_page: 3
+  }),
+  getters: {
+  },
+  actions: {
+    isAvailblePage(page: number): boolean {
+      return page >= 1 && page <= this.total_page;
+    },
+    //按钮响应
+    nextPage() {
+      if (this.isAvailblePage(this.current_page + 1)) {
+        this.current_page++;
+      }
+    },
+    prevPage() {
+      if (this.isAvailblePage(this.current_page - 1)) {
+        this.current_page--;
+      }
+    }
+  }
 })
