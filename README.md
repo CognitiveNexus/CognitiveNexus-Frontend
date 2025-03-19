@@ -1,11 +1,19 @@
 # Cognitive Nexus Fore-end
 
-本仓库是思维脉络 CognitiveNexus 的前端部分
-组件有部分使用自Element Plus
+本仓库是 [思维脉络 CognitiveNexus](https://github.com/CognitiveNexus)  的前端部分
 
-## Array Column Graph
+### ColumnChart
+使用Echarts实现的可操作柱状图
 
-数组柱状图可视化组件，向组件传入一个数组后即可通过canvas标签生成对应的柱状图
+### Header
+顶部工具栏
 
-##
+### Reader
+侧边文字显示区域（阅读区）
+
+### Console
+记录用户对可视化图的操作
+
+### SideMenu
+侧边课程选择导航栏
 
