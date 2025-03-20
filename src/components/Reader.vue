@@ -5,13 +5,16 @@
     </button>
     <div class="main-column">
       <el-scrollbar class="reader">
-        <el-text 
-          v-for="items in context" 
-          v-show="items.page == current_page"
-          :class=items.type
-        >
-          {{ items.value }}<br />
-        </el-text>
+        <div v-for="item in content_map[current_page]">
+          <!-- 图片 -->
+          <img v-if="item.type === 'image'" :src="item.src" :alt="item.alt" width="200px">
+          <!-- 文本 -->
+          <el-text v-else-if="item.type === 'text'" :class="item.class">{{ item.content }}</el-text>
+          <!-- 链接 -->
+          <a v-else-if="item.type === 'link'" :href="item.url">{{ item.text }}</a>
+          <!-- 换行 -->
+          <div v-else-if="item.type === 'break'"><br/></div>
+        </div>
       </el-scrollbar>
       <div class="page-counter">
         <el-text>{{ current_page }}/{{ total_page }}</el-text>
@@ -28,7 +31,7 @@ import { useReader } from '@/store/Reader';
 import { storeToRefs } from 'pinia';
 
 const store = useReader();
-const { context,current_page,total_page } = storeToRefs(store);
+const { content_map, current_page, total_page } = storeToRefs(store);
 
 </script>
 
@@ -76,6 +79,7 @@ button:active{
 }
 .main-column .reader{
   align-content: center;
+  padding: 0px 20px;
 }
 .main-column .page-counter{
   display: flex;
@@ -93,28 +97,42 @@ button:active{
 
 /* 文字样式部分 */
 .title{
+  width: auto;
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 1000;
   margin-bottom: 10px;
   line-height: 3.0;
   padding: 18px 0px;
-  color: #3C3C43;
   border-bottom: 1px solid black;
+  background-image: linear-gradient(90deg, #46a2ff,
+          #9554ff);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .content{
   font-size: 18px;
   font-weight: 500;
   line-height: 2.2;
+  letter-spacing: 1px;
   color: #3C3C43;
 }
 .highlight{
-  background-color: rgb(197.7, 225.9, 255);
-  border-radius: 10px;
-  padding: 15px 20px;
-  font-size: 25px;
+  font-size: 18px;
   font-weight: 600;
-  line-height: 2.5;
-  display: inline;
+  line-height: 2.2;
+  letter-spacing: 1px;
   color: #3C3C43;
+  background-color: #ECECEC;
+}
+.tips{
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 2.2;
+  letter-spacing: 1px;
+  color: #3C3C43;
+  background-color: rgb(216.8, 235.6, 255);
+}
+.code{
+  background-color: #F6F8FA;
 }
 </style>
