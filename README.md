@@ -38,7 +38,7 @@
 ## 🛠️ 快速开始
 ```bash
 # 克隆仓库
-git clone https://github.com/CognitiveNexus/Fore-end.git
+git clone https://github.com/CognitiveNexus/CognitiveNexus_foreend.git
 
 # 安装依赖
 npm install
