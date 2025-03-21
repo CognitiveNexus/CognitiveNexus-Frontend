@@ -4,6 +4,7 @@ import ColumnChart from '@/components/ColumnChart.vue';
 import Home from '@/pages/Home.vue';
 import Display from '@/pages/Display.vue';
 import Reader from '@/components/Reader.vue';
+import CodeEditor from '@/components/CodeEditor.vue';
 
 //创建路由器
 const router = createRouter({
@@ -21,6 +22,13 @@ const router = createRouter({
             components: {
               visualizer: ColumnChart,
               reader: Reader,
+            }
+          },
+          {
+            path: "part2",
+            components: {
+              visualizer: ColumnChart,
+              reader: CodeEditor,
             }
           }
         ]

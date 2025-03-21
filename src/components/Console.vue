@@ -21,6 +21,11 @@ const { consoleArray } = storeToRefs(store)
   padding: 0;
   border-radius: 5px;
   height: 40%;
+  transition: all 0.3s ease;
+}
+.console-render:hover{
+  box-shadow: 0 0 20px rgba(33, 150, 243, 0.8);
+  transform: scale(1.01);
 }
 .title{
   color: white;

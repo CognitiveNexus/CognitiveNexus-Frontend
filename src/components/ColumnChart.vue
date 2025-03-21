@@ -86,6 +86,12 @@ const option_column = computed(() => {
   padding: 10px 0px 0px 0px;
   border-radius: 5px;
   margin-bottom: 40px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+.canvas-render:hover{
+  box-shadow: 0 0 15px rgba(33, 150, 243, 0.8);
+  transform: scale(1.01);
 }
 
 .button-group {
@@ -98,11 +104,13 @@ const option_column = computed(() => {
 .left-button {
   position: absolute;
   left: 0;
+  width: 50px;
 }
 
 .right-button {
   position: absolute;
   right: 0;
+  width: 50px;
 }
 
 .progress-visualizer {
@@ -111,9 +119,14 @@ const option_column = computed(() => {
   display: flex;
   justify-content: center;
   align-content: center;
+
+  border-radius: 5px;
+  padding: 0 10px;
+  flex: 1 1 auto;
 }
 
 .el-text {
   user-select: none;
+  font-weight: bold;
 }
 </style>

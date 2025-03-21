@@ -1,10 +1,10 @@
 <template>
-  <div class="reader-container">
+  <div class="main-container">
     <button class="left" @click="store.prevPage()">
       <el-icon :size="40" color="gray"><ArrowLeft/></el-icon>
     </button>
     <div class="main-column">
-      <el-scrollbar class="reader">
+      <el-scrollbar class="reader-container">
         <div v-for="item in content_map[current_page]">
           <!-- 图片 -->
           <img v-if="item.type === 'image'" :src="item.src" :alt="item.alt" width="200px">
@@ -64,7 +64,7 @@ button:active{
   right: 0;
   margin-left: 10px;
 }
-.reader-container{
+.main-container{
   position: relative;
   padding-top: 10px;
   display: flex;
@@ -77,8 +77,7 @@ button:active{
   display: flex;
   flex-direction: column;
 }
-.main-column .reader{
-  align-content: center;
+.main-column .reader-container{
   padding: 0px 20px;
 }
 .main-column .page-counter{

@@ -7,5 +7,17 @@
     {
       "path": "./tsconfig.app.json"
     }
-  ]
+  ],
+    "compilerOptions": {
+      "types": [
+        "@types/node",
+        "shims-vue.d.ts"
+      ],
+      "baseUrl": ".",
+      "paths": {
+        "@/*": [
+          "src/*"
+        ]
+      },
+    },
 }
