@@ -43,24 +43,25 @@
 <script setup lang="ts" name="SideMenu">
 import { ref } from 'vue';
 //基础知识部分menu项目
+//注意！！！！el-menu的index采用的是绝对路径，不会继承父路由地址！！！
 const menuItemBasic = [
-  { path: "/display/part1", name: "第一部分" },
-  { path: "/display/part2", name: "第二部分" },
-  { path: "/display/part3", name: "第三部分" }
+  { path: "/course/bubble-sort", name: "冒泡排序" },
+  { path: "/course/select-sort", name: "选择排序" },
+  { path: "/course/part3", name: "第三部分" }
 ]
 
 //进阶知识部分menu项目
 const menuItemAdvanced = [
-  { path: "/display/part4", name: "第四部分" },
-  { path: "/display/part5", name: "第五部分" },
-  { path: "/display/part6", name: "第六部分" }
+  { path: "part4", name: "第四部分" },
+  { path: "part5", name: "第五部分" },
+  { path: "part6", name: "第六部分" }
 ]
 
 //较难知识部分menu项目
 const menuItemMaster = [
-  { path: "/display/part7", name: "第七部分" },
-  { path: "/display/part8", name: "第八部分" },
-  { path: "/display/part9", name: "第九部分" }
+  { path: "part7", name: "第七部分" },
+  { path: "part8", name: "第八部分" },
+  { path: "part9", name: "第九部分" }
 ]
 
 const isCollapse = ref(false);

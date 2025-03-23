@@ -1,11 +1,11 @@
 <template>
   <el-container class="main">
     <SideMenu />
-    <RouterView name="course"></RouterView>
+    <RouterView></RouterView>
   </el-container>
 </template>
 
-<script setup>
+<script setup lang="ts" name="Course">
 
 </script>
 

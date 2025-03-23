@@ -1,13 +1,12 @@
 <template>
   <el-container class="main">
-    <SideMenu />
     <el-main class="chart-render">
-      <RouterView name="visualizer"></RouterView>
-      <RouterView name="console"></RouterView>
+      <ColumnChart/>
+      <Console/>
     </el-main>
     <el-divider direction="vertical" class="vertical-divider" />
     <el-aside class="reader-render">
-      <RouterView name="reader"></RouterView>
+      <TextReader/>
     </el-aside>
   </el-container>
 </template>
@@ -16,14 +15,16 @@
 </script>
 
 <style scoped>
-.main{
+.main {
   display: flex;
   overflow: hidden;
   height: calc(100vh - 110px);
 }
+
 .vertical-divider {
   height: 100%;
 }
+
 .chart-render {
   padding: 17px 70px;
   flex: 0 0 40%;
@@ -32,7 +33,8 @@
   overflow: hidden;
   margin-bottom: 30px;
 }
-.reader-render{
+
+.reader-render {
   flex: 1;
   min-width: 30%;
   height: 100%;

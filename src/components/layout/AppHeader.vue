@@ -7,8 +7,7 @@
     <el-menu-item index="0">
       <span class="title">思维脉络</span>
     </el-menu-item>
-    <el-menu-item index="/home">主页</el-menu-item>
-    <el-menu-item index="/display">课程</el-menu-item>
+    <el-menu-item index="/course">课程</el-menu-item>
     <el-menu-item index="/practice">练习场</el-menu-item>
   </el-menu>
 </template>

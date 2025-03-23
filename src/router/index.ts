@@ -1,11 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import ColumnChart from '@/components/visualize/ColumnChart.vue';
 import Home from '@/pages/Home.vue';
-import Display from '@/pages/Display.vue';
-import TextReader from '@/components/ui/TextReader.vue';
-import CodeEditor from '@/components/CodeEditor.vue';
-import Console from '@/components/ui/Console.vue';
+import Course from '@/pages/Course.vue';
+import Default from '@/pages/courses/Default.vue';
+import BubbleSort from '@/pages/courses/BubbleSort.vue';
 
 //创建路由器
 const router = createRouter({
@@ -15,23 +13,17 @@ const router = createRouter({
     routes: [
       {
         //网页演示（课程）部分
-        name: "display",
-        path: "/display",
-        component: Display,
+        name: "course",
+        path: "/course",
+        component: Course,
         children: [
           {
-            path: "part1",
-            components: {
-              visualizer: ColumnChart,
-              console: Console,
-              reader: TextReader,
-            }
+            path: "bubble-sort",
+            component: BubbleSort, 
           },
           {
-            path: "part2",
-            components: {
-              reader: CodeEditor,
-            }
+            path: "select-sort",
+            component: Default,
           }
         ]
       },
