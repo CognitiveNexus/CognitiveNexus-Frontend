@@ -1,4 +1,4 @@
-//可辨识联合类型
+//Reader 富文本类型约束
 export type ContentItem =
   |{
     type: 'image';

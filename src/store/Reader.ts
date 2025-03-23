@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { getImage } from '@/utils'
 import type { ContentItem } from '@/types';
 
 export const useReader = defineStore("Reader", {
@@ -27,19 +28,22 @@ export const useReader = defineStore("Reader", {
         },
         {
           type: "image",
-          src: new URL(`../assets/9.png`, import.meta.url).href,
+          src: getImage("../assets/9.png"),
         }
       ],
       2: [
         
       ]
-   } as Record<number, ContentItem[]>,
+    } as Record<number, ContentItem[]>,
     current_page: ref(1),
-    total_page: 3
   }),
   getters: {
+    total_page: (state) => {
+      return Object.keys(state.content_map).length;
+    }
   },
   actions: {
+    //页码合法检测
     isAvailblePage(page: number): boolean {
       return page >= 1 && page <= this.total_page;
     },

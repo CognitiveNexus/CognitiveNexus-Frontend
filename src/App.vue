@@ -1,8 +1,7 @@
 <template>
   <el-container class="main-container">
-    <Header></Header>
+    <AppHeader/>
     <el-container>
-      <SideMenu/>
       <RouterView></RouterView>
     </el-container>
     <el-footer height="50px">Footer</el-footer>
@@ -11,8 +10,6 @@
 
 <script setup lang="ts" name="App">
 import { RouterView } from 'vue-router';
-import SideMenu from './components/SideMenu.vue';
-import Header from './components/Header.vue';
 </script>
 
 <style scoped>

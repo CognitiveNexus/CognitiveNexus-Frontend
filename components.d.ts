@@ -8,11 +8,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ArrayColumnGraph: typeof import('./src/components/ArrayColumnGraph.vue')['default']
-    ArrayMapGraph: typeof import('./src/components/ArrayMapGraph.vue')['default']
+    AppHeader: typeof import('./src/components/layout/AppHeader.vue')['default']
     CodeEditor: typeof import('./src/components/CodeEditor.vue')['default']
-    ColumnChart: typeof import('./src/components/ColumnChart.vue')['default']
-    Console: typeof import('./src/components/Console.vue')['default']
+    ColumnChart: typeof import('./src/components/visualize/ColumnChart.vue')['default']
+    Console: typeof import('./src/components/ui/Console.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -31,12 +30,10 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
-    ElTex: typeof import('element-plus/es')['ElTex']
     ElText: typeof import('element-plus/es')['ElText']
-    Header: typeof import('./src/components/Header.vue')['default']
-    Reader: typeof import('./src/components/Reader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SideMenu: typeof import('./src/components/SideMenu.vue')['default']
+    SideMenu: typeof import('./src/components/layout/SideMenu.vue')['default']
+    TextReader: typeof import('./src/components/ui/TextReader.vue')['default']
   }
 }

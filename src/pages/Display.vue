@@ -1,8 +1,9 @@
 <template>
   <el-container class="main">
+    <SideMenu />
     <el-main class="chart-render">
-        <RouterView name="visualizer"></RouterView>
-        <Console></Console>
+      <RouterView name="visualizer"></RouterView>
+      <RouterView name="console"></RouterView>
     </el-main>
     <el-divider direction="vertical" class="vertical-divider" />
     <el-aside class="reader-render">
@@ -12,7 +13,6 @@
 </template>
 
 <script setup lang="ts" name="Display">
-
 </script>
 
 <style scoped>
