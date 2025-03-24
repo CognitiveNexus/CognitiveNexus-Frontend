@@ -1,42 +1,89 @@
-interface CodeRunnerLogs {
-    compile: string | false;
-    run: string | false;
-}
+export type CNCRResult = (CNCRSuccess | CNCRError) & {
+    logs: CNCRLogs;
+};
 
-interface CodeRunnerSuccess {
+interface CNCRSuccess {
     status: 'success';
-    data: CodeRunnerData;
+    data: CNCRData;
 }
 
-interface CodeRunnerError {
+interface CNCRError {
     status: 'error';
     message: string;
 }
 
-export type CodeRunnerResult = (CodeRunnerSuccess | CodeRunnerError) & {
-    logs: CodeRunnerLogs;
-};
+interface CNCRLogs {
+    compile: string | false;
+    run: string | false;
+}
 
-export interface CodeRunnerData {
-    struct: Record<string, CodeRunnerStruct>;
-    steps: CodeRunnerStep[];
+export interface CNCRData {
+    steps: CNCRStep[];
+    typeDefinitions: {
+        [typeId: CNCRVarTypeId]: CNCRTypeDefinition;
+    };
     endState: 'finished' | 'timeout' | 'overstep' | 'aborted';
 }
 
-export type CodeRunnerStruct = Record<string, number>;
-
-export interface CodeRunnerStep {
+export interface CNCRStep {
     step: number;
     line: number;
     stdout: string;
-    variables: Record<string, CodeRunnerVarAddress>;
-    memory: Record<CodeRunnerVarAddress, CodeRunnerVar>;
+    variables: CNCRVar[];
+    memory: {
+        [address: `${CNCRVarAddress}:${CNCRVarTypeId}`]: {
+            value: string;
+            rawBytes: string;
+        };
+    };
 }
 
-export type CodeRunnerVarValue = number | string | CodeRunnerVarAddress; // Maybe More
-export type CodeRunnerVarAddress = `0x${string}`;
+export type CNCRVarAddress = `0x${string}`;
+export type CNCRVarTypeId = string;
+export interface CNCRVar {
+    name: string;
+    typeId: CNCRVarTypeId;
+    address: CNCRVarAddress;
+}
 
-export interface CodeRunnerVar {
-    type: string;
-    value: CodeRunnerVarValue;
+export type CNCRTypeDefinition = CNCRTypeAtomic | CNCRTypePointer | CNCRTypeArray | CNCRTypeStruct | CNCRTypeUnion | CNCRTypeUnsupported;
+export interface CNCRTypeAtomic {
+    base: 'atomic';
+    size: number;
+}
+export interface CNCRTypePointer {
+    base: 'pointer';
+    targetTypeId: CNCRTypeDefinition;
+    size: number;
+}
+export interface CNCRTypeArray {
+    base: 'array';
+    elementTypeId: CNCRTypeDefinition;
+    length: number;
+    size: number;
+}
+
+export interface CNCRTypeStruct {
+    base: 'struct';
+    fields: {
+        [fieldName: string]: {
+            typeId: CNCRVarTypeId;
+            offset: number;
+        };
+    };
+    size: number;
+}
+export interface CNCRTypeUnion {
+    base: 'union';
+    variants: {
+        [variantName: string]: {
+            typeId: CNCRVarTypeId;
+        };
+    };
+    size: number;
+}
+
+export interface CNCRTypeUnsupported {
+    base: 'unsupported';
+    size: number;
 }
