@@ -53,12 +53,12 @@ export interface CNCRTypeAtomic {
 }
 export interface CNCRTypePointer {
     base: 'pointer';
-    targetTypeId: CNCRTypeDefinition;
+    targetTypeId: CNCRVarTypeId;
     size: number;
 }
 export interface CNCRTypeArray {
     base: 'array';
-    elementTypeId: CNCRTypeDefinition;
+    elementTypeId: CNCRVarTypeId;
     length: number;
     size: number;
 }
