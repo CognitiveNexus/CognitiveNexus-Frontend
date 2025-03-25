@@ -36,14 +36,18 @@ onMounted(() => {
             palette: {
                 field: 'typeId',
             },
+            style: {
+                iconFontSize: 16,
+                labelFontSize: 8,
+                badgePalette: ['#424242'],
+                size: [144, 32],
+            },
         },
         edge: {
             style: {
                 startArrow: false,
                 endArrow: true,
-                stroke: 'black',
-                lineWidth: 2,
-                zIndex: 5,
+                stroke: '#4C4C4C',
             },
         },
     });
@@ -51,12 +55,16 @@ onMounted(() => {
     watch(() => currentStepData, renderStepData);
 });
 
-const createNode = (graphData: GraphData, address: CNCRVarAddress, typeId: CNCRVarTypeId, varName: string = '') => {
+const createNode = (graphData: GraphData, address: CNCRVarAddress, typeId: CNCRVarTypeId, varName?: string) => {
     const typeDefinition = typeDefinitions[typeId];
     const memoryIndex: CNCRMemoryIndex = `${address}:${typeId}`;
-    const varValue = currentStepData.memory[memoryIndex].value;
+    const varValue = currentStepData.memory[memoryIndex]?.value ?? '???';
     if (createdNode[memoryIndex]) {
-        if (varName && createdNode[memoryIndex].style?.labelText) createdNode[memoryIndex].style.labelText = `${varName} @${memoryIndex}`;
+        const style = createdNode[memoryIndex].style ?? {};
+        if (varName && style.badge) {
+            style.badge = true;
+            style.badges = [{ text: varName, placement: 'top-left' }];
+        }
         return;
     }
     if (typeDefinition.base == 'atomic' || typeDefinition.base == 'pointer' || typeDefinition.base == 'unsupported') {
@@ -66,13 +74,17 @@ const createNode = (graphData: GraphData, address: CNCRVarAddress, typeId: CNCRV
             style: {
                 iconText: varValue,
                 label: true,
-                labelText: `${varName} @${memoryIndex}`.trim(),
-                size: [256, 48],
+                labelText: memoryIndex,
             },
             data: {
                 typeId,
             },
         };
+        if (varName) {
+            const style = node.style ?? {};
+            style.badge = true;
+            style.badges = [{ text: varName, placement: 'top-left' }];
+        }
         graphData.nodes?.push(node);
         createdNode[memoryIndex] = node;
         if (typeDefinition.base == 'pointer') {
