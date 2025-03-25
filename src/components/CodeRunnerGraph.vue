@@ -5,12 +5,16 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
 import { Graph, type GraphData, type NodeData } from '@antv/g6';
-import type { CNCRMemoryIndex, CNCRStep } from '@/types/CodeRunnerTypes';
+import type { CNCRMemoryIndex, CNCRStep, CNCRTypeDefinitions, CNCRVarAddress, CNCRVarTypeId } from '@/types/CodeRunnerTypes';
 
-const props = defineProps<{ currentStepData: CNCRStep }>();
+const { currentStepData, typeDefinitions } = defineProps<{
+    currentStepData: CNCRStep;
+    typeDefinitions: CNCRTypeDefinitions;
+}>();
 
 let graph: Graph;
-let graphData: GraphData = { nodes: [], edges: [] };
+let graphData: GraphData = { nodes: [], edges: [], combos: [] };
+let createdNode: { [memoryIndex: CNCRMemoryIndex]: NodeData } = {};
 const graphContainer = ref<HTMLElement>();
 
 onMounted(() => {
@@ -33,42 +37,62 @@ onMounted(() => {
                 field: 'typeId',
             },
         },
+        edge: {
+            style: {
+                startArrow: false,
+                endArrow: true,
+                stroke: 'black',
+                lineWidth: 2,
+                zIndex: 5,
+            },
+        },
     });
     graph.render();
-    watch(() => props.currentStepData, renderStepData);
+    watch(() => currentStepData, renderStepData);
 });
 
-const createNode = (memoryIndex: CNCRMemoryIndex, varName: string = ''): NodeData => {
-    return {
-        id: memoryIndex,
-        type: 'rect',
-        style: {
-            iconText: props.currentStepData.memory[memoryIndex].value,
-            label: true,
-            labelText: `${varName} @${memoryIndex}`.trim(),
-            size: [256, 48],
-        },
-        data: {
-            typeId: memoryIndex.split(':')[1],
-        },
-    };
+const createNode = (graphData: GraphData, address: CNCRVarAddress, typeId: CNCRVarTypeId, varName: string = '') => {
+    const typeDefinition = typeDefinitions[typeId];
+    const memoryIndex: CNCRMemoryIndex = `${address}:${typeId}`;
+    const varValue = currentStepData.memory[memoryIndex].value;
+    if (createdNode[memoryIndex]) {
+        if (varName && createdNode[memoryIndex].style?.labelText) createdNode[memoryIndex].style.labelText = `${varName} @${memoryIndex}`;
+        return;
+    }
+    if (typeDefinition.base == 'atomic' || typeDefinition.base == 'pointer' || typeDefinition.base == 'unsupported') {
+        const node: NodeData = {
+            id: memoryIndex,
+            type: 'rect',
+            style: {
+                iconText: varValue,
+                label: true,
+                labelText: `${varName} @${memoryIndex}`.trim(),
+                size: [256, 48],
+            },
+            data: {
+                typeId,
+            },
+        };
+        graphData.nodes?.push(node);
+        createdNode[memoryIndex] = node;
+        if (typeDefinition.base == 'pointer') {
+            createNode(graphData, varValue as CNCRVarAddress, typeDefinition.targetTypeId);
+            graphData.edges?.push({
+                type: 'line',
+                source: memoryIndex,
+                target: `${varValue}:${typeDefinition.targetTypeId}`,
+            });
+        }
+    } else if (typeDefinition.base == 'array') {
+    } else if (typeDefinition.base == 'struct' || typeDefinition.base == 'union') {
+    }
 };
 
 const renderStepData = () => {
-    graphData = { nodes: [], edges: [] };
-    const variables: CNCRMemoryIndex[] = [];
-    for (const variable of props.currentStepData?.variables ?? []) {
-        const varMemory: CNCRMemoryIndex = `${variable.address}:${variable.typeId}` as CNCRMemoryIndex;
-        graphData.nodes?.push(createNode(varMemory, variable.name));
-        variables.push(varMemory);
-    }
-    for (const memory in props.currentStepData.memory) {
-        const varMemory: CNCRMemoryIndex = memory as CNCRMemoryIndex;
-        if (variables.includes(varMemory)) {
-            continue;
-        }
-        graphData.nodes?.push(createNode(varMemory));
-        variables.push(varMemory);
+    graphData = { nodes: [], edges: [], combos: [] };
+    createdNode = {};
+    for (const variable of currentStepData?.variables ?? []) {
+        createNode(graphData, variable.address, variable.typeId, variable.name);
     }
     graph.setData(graphData);
     graph.render();

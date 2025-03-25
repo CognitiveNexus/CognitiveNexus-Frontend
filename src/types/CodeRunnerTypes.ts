@@ -19,9 +19,7 @@ interface CNCRLogs {
 
 export interface CNCRData {
     steps: CNCRStep[];
-    typeDefinitions: {
-        [typeId: CNCRVarTypeId]: CNCRTypeDefinition;
-    };
+    typeDefinitions: CNCRTypeDefinitions;
     endState: 'finished' | 'timeout' | 'overstep' | 'aborted';
 }
 
@@ -41,6 +39,10 @@ export interface CNCRStep {
 export type CNCRVarAddress = `0x${string}`;
 export type CNCRVarTypeId = string;
 export type CNCRMemoryIndex = `${CNCRVarAddress}:${CNCRVarTypeId}`;
+
+export interface CNCRTypeDefinitions {
+    [typeId: CNCRVarTypeId]: CNCRTypeDefinition;
+}
 export interface CNCRVar {
     name: string;
     typeId: CNCRVarTypeId;

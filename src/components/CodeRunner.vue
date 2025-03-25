@@ -14,21 +14,15 @@
                 layout="total, prev, pager, next" />
 
             <br />
-            <template v-for="variable in currentVariables">
-                <el-text class="mx-1">
-                    变量 {{ variable.name }} <@{{ variable.address }}>: {{ currentStepData.memory[`${variable.address}:${variable.typeId}`]?.value }}
-                </el-text>
-                <br />
-            </template>
             <el-text class="mx-1">stdout: {{ currentStdout }}</el-text>
-            <CodeRunnerGraph :currentStepData="currentStepData" />
+            <CodeRunnerGraph :currentStepData="currentStepData" :typeDefinitions="typeDefinitions" />
         </el-col>
     </el-row>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { ElInput, ElButton, ElMessage, ElNotification, ElRow, ElCol } from 'element-plus';
+import { ElInput, ElButton, ElMessage, ElNotification, ElRow, ElCol, ElPagination, ElText } from 'element-plus';
 import type { CNCRResult, CNCRData } from '@/types/CodeRunnerTypes';
 import MonacoEditor from '@/components/MonacoEditor.vue';
 import CodeRunnerGraph from '@/components/CodeRunnerGraph.vue';
@@ -47,8 +41,8 @@ const codeRunnerData = ref<CNCRData>(blankCodeRunnerData);
 const currentStep = ref<number>(0);
 
 const currentStepData = computed(() => codeRunnerData.value.steps[currentStep.value - 1]);
-const currentVariables = computed(() => currentStepData.value?.variables || []);
 const currentStdout = computed(() => currentStepData.value?.stdout || '');
+const typeDefinitions = computed(() => codeRunnerData.value.typeDefinitions);
 
 const stopCodeRun = () => {
     codeRunnerData.value = blankCodeRunnerData;
