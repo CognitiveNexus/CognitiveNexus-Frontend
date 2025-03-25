@@ -4,6 +4,7 @@ import Home from '@/pages/Home.vue';
 import Course from '@/pages/Course.vue';
 import Default from '@/pages/courses/Default.vue';
 import BubbleSort from '@/pages/courses/BubbleSort.vue';
+import Practice from '@/pages/Practice.vue';
 
 //创建路由器
 const router = createRouter({
@@ -32,6 +33,11 @@ const router = createRouter({
         name: "home",
         path: "/home",
         component: Home,
+      },
+      {
+        name: "practice",
+        path: "/practice",
+        component: Practice,
       },
       {
         path: "/",

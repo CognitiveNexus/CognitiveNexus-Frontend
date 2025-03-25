@@ -4,7 +4,7 @@
     <el-container>
       <RouterView></RouterView>
     </el-container>
-    <el-footer height="50px">Footer</el-footer>
+    <el-footer></el-footer>
   </el-container>
 </template>
 

@@ -1,10 +1,10 @@
 <template>
   <el-menu
-    :default-active="'1'"
+    :default-active="'/home'"
     mode="horizontal"
     :router="true" 
   >
-    <el-menu-item index="0">
+    <el-menu-item index="/home">
       <span class="title">思维脉络</span>
     </el-menu-item>
     <el-menu-item index="/course">课程</el-menu-item>
