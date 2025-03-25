@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch, onBeforeUnmount } from 'vue';
+import { ElNotification } from 'element-plus';
 import * as monaco from 'monaco-editor';
 import loader from '@monaco-editor/loader';
 
@@ -45,6 +46,15 @@ onMounted(() => {
             editorInstance.layout();
         });
         resizeObserver.observe(editorContainer.value);
+
+        // 监听用户输入事件
+        editorInstance.onDidAttemptReadOnlyEdit((_) => {
+            ElNotification({
+                title: '无法编辑',
+                message: '程序正在运行中，请停止运行后再编辑。',
+                type: 'info',
+            });
+        });
     });
 });
 
