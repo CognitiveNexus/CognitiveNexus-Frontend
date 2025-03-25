@@ -9,6 +9,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@antv/g6": "^5.0.44",
         "@monaco-editor/loader": "^1.5.0",
         "element-plus": "^2.9.6",
         "monaco-editor": "^0.52.2",

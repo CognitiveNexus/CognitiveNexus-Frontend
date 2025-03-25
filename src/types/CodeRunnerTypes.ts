@@ -31,7 +31,7 @@ export interface CNCRStep {
     stdout: string;
     variables: CNCRVar[];
     memory: {
-        [address: `${CNCRVarAddress}:${CNCRVarTypeId}`]: {
+        [address: CNCRMemoryIndex]: {
             value: string;
             rawBytes: string;
         };
@@ -40,6 +40,7 @@ export interface CNCRStep {
 
 export type CNCRVarAddress = `0x${string}`;
 export type CNCRVarTypeId = string;
+export type CNCRMemoryIndex = `${CNCRVarAddress}:${CNCRVarTypeId}`;
 export interface CNCRVar {
     name: string;
     typeId: CNCRVarTypeId;
