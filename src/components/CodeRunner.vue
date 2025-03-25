@@ -40,9 +40,9 @@ const blankCodeRunnerData: CNCRData = { typeDefinitions: {}, steps: [], endState
 const codeRunnerData = ref<CNCRData>(blankCodeRunnerData);
 const currentStep = ref<number>(0);
 
-const currentStepData = computed(() => codeRunnerData.value.steps[currentStep.value - 1]);
+const currentStepData = computed(() => codeRunnerData.value.steps[currentStep.value - 1] ?? {});
 const currentStdout = computed(() => currentStepData.value?.stdout || '');
-const typeDefinitions = computed(() => codeRunnerData.value.typeDefinitions);
+const typeDefinitions = computed(() => codeRunnerData.value.typeDefinitions ?? {});
 
 const stopCodeRun = () => {
     codeRunnerData.value = blankCodeRunnerData;
