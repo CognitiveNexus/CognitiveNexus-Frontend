@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CodeRunner from './components/CodeRunner.vue';
+import CodeRunner from '@/components/CodeRunner.vue';
 </script>
 
 <template>
