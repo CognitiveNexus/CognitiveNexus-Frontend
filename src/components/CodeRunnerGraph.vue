@@ -16,8 +16,6 @@ const graphContainer = ref<HTMLElement>();
 onMounted(() => {
     graph = new Graph({
         container: graphContainer.value,
-        width: 500,
-        height: 500,
         autoResize: true,
         data: {},
         layout: {

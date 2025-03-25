@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, onBeforeUnmount } from 'vue';
 import * as monaco from 'monaco-editor';
 import loader from '@monaco-editor/loader';
 
@@ -17,6 +17,7 @@ const emit = defineEmits(['update:modelValue']);
 
 const editorContainer = ref<HTMLElement>();
 let editorInstance: monaco.editor.IStandaloneCodeEditor;
+let resizeObserver: ResizeObserver;
 
 onMounted(() => {
     loader.init().then((monaco) => {
@@ -37,7 +38,18 @@ onMounted(() => {
         if (props.highlightLine) {
             highlightLine(props.highlightLine);
         }
+
+        resizeObserver = new ResizeObserver(() => {
+            editorInstance.layout();
+        });
+        resizeObserver.observe(editorContainer.value);
     });
+});
+
+onBeforeUnmount(() => {
+    if (resizeObserver && editorContainer.value) {
+        resizeObserver.unobserve(editorContainer.value);
+    }
 });
 
 watch(
