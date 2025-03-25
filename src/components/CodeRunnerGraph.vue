@@ -133,6 +133,9 @@ const createNode = (graphData: GraphData, address: CNCRVarAddress, typeId: CNCRV
 };
 
 const renderStepData = () => {
+    if (!Object.keys(currentStepData).length) {
+        graph.clear();
+    }
     graphData = { nodes: [], edges: [], combos: [] };
     createdNode = {};
     for (const variable of currentStepData?.variables ?? []) {
