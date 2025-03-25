@@ -29,6 +29,8 @@ onMounted(() => {
             language: 'c',
             theme: 'vs-dark',
             readOnly: props.disabled,
+            cursorStyle: props.disabled ? 'block-outline' : 'line',
+            cursorBlinking: props.disabled ? 'solid' : 'smooth',
         }) as unknown as monaco.editor.IStandaloneCodeEditor;
 
         editorInstance.onDidChangeModelContent(() => {
@@ -65,7 +67,11 @@ watch(
     () => props.disabled,
     (newValue) => {
         if (editorInstance) {
-            editorInstance.updateOptions({ readOnly: newValue });
+            editorInstance.updateOptions({
+                readOnly: newValue,
+                cursorStyle: newValue ? 'block-outline' : 'line',
+                cursorBlinking: newValue ? 'solid' : 'smooth',
+            });
         }
     }
 );
