@@ -134,8 +134,8 @@ const buildVarTree = (rootNodes: VarNode[], nodeMap: NodeMap, variable: CNCRVar,
                 );
             }
         } else if (type.base == 'pointer') {
-            const targetAddress: CNCRVarAddress = currentStepData.memory[memoryIndex].value as CNCRVarAddress;
-            if (targetAddress != 'NULL' && targetAddress != 'N/A') {
+            const targetAddress: CNCRVarAddress = currentStepData.memory[memoryIndex]?.value as CNCRVarAddress;
+            if (targetAddress && targetAddress != 'NULL' && targetAddress != 'N/A') {
                 buildVarTree(rootNodes, nodeMap, { name: '', typeId: type.targetTypeId, address: targetAddress });
             }
         }
