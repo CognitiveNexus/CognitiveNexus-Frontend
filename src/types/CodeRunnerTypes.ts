@@ -36,7 +36,7 @@ export interface CNCRStep {
     };
 }
 
-export type CNCRVarAddress = `0x${string}`;
+export type CNCRVarAddress = `0x${string}` | 'NULL' | 'N/A';
 export type CNCRVarTypeId = string;
 export type CNCRMemoryIndex = `${CNCRVarAddress}:${CNCRVarTypeId}`;
 
@@ -81,6 +81,7 @@ export interface CNCRTypeUnion {
     variants: {
         [variantName: string]: {
             typeId: CNCRVarTypeId;
+            offset: number;
         };
     };
     size: number;
