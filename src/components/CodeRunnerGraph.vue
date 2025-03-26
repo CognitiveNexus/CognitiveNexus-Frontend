@@ -77,7 +77,7 @@ onMounted(() => {
             },
         },
     });
-    graphRenderTask.add(graph.render);
+    graphRenderTask.add(async () => graph.render());
     watch(() => currentStepData, renderStepData);
 });
 
@@ -193,7 +193,7 @@ const buildNode = (graphData: GraphData, varNode: VarNode, baseX: number, baseY:
 
 const renderStepData = () => {
     if (!Object.keys(currentStepData).length) {
-        graphRenderTask.add(graph.clear).catch(() => {});
+        graphRenderTask.add(async () => graph.clear()).catch(() => {});
         return;
     }
     const graphData: GraphData = { nodes: [], edges: [], combos: [] };
