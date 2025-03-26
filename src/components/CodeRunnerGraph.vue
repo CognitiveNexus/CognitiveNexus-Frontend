@@ -130,13 +130,13 @@ const buildVarTree = (variable: CNCRVar, parent?: VarNode) => {
                 const childTypeId = children[childName].typeId;
                 const childOffset = children[childName]?.offset ?? 0;
                 const childAddress: CNCRVarAddress = ('0x' + (parseInt(variable.address) + childOffset).toString(16)) as CNCRVarAddress;
-                buildVarTree({ name: variable.name ? `${variable.name}.${childName}` : '', typeId: childTypeId, address: childAddress }, varNode);
+                buildVarTree({ name: `${variable.name ?? ''}.${childName}`, typeId: childTypeId, address: childAddress }, varNode);
             }
         } else if (type.base == 'array') {
             const childType = typeDefinitions[type.elementTypeId];
             for (let i = 0; i < type.length; i++) {
                 const childAddress: CNCRVarAddress = ('0x' + (parseInt(variable.address) + i * childType.size).toString(16)) as CNCRVarAddress;
-                buildVarTree({ name: variable.name ? `${variable.name}[${i}]` : '', typeId: type.elementTypeId, address: childAddress }, varNode);
+                buildVarTree({ name: `${variable.name ?? ''}[${i}]`, typeId: type.elementTypeId, address: childAddress }, varNode);
             }
         } else if (type.base == 'pointer') {
             const targetAddress: CNCRVarAddress = currentStepData.memory[memoryIndex]?.value as CNCRVarAddress;
