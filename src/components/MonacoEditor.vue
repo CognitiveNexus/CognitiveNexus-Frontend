@@ -114,6 +114,7 @@ function highlightLine(lineNumber: number | undefined) {
                     },
                 ]
             );
+            editorInstance.revealLineInCenter(lineNumber);
         }
     }
 }
