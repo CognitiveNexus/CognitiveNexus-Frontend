@@ -27,7 +27,7 @@ import type { CNCRResult, CNCRData } from '@/types/CodeRunnerTypes';
 import MonacoEditor from '@/components/MonacoEditor.vue';
 import CodeRunnerGraph from '@/components/CodeRunnerGraph.vue';
 
-const host = 'https://cognitivenexus.bobliu.tech:8888';
+const host = import.meta.env.CNCR_API_HOST;
 
 const code = ref<string>(
     '#include <stdio.h>\n\nint main() {\n    int a = 1, *b = &a;\n    printf("a = %d\\n", a);\n    *b = 114514;\n    printf("a = %d\\n", a);\n    return 0;\n}'

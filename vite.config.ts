@@ -19,4 +19,5 @@ export default defineConfig({
             '@': '/src',
         },
     },
+    envPrefix: ['VITE_', 'CNCR_'],
 });
