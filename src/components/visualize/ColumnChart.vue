@@ -21,7 +21,7 @@
 
 <script setup lang="ts" name="ColumnChart">
 import { computed, ref } from 'vue';
-import { useColumnChartStore } from '@/store/ColumnChart';
+import { useColumnChartStore } from '@/stores/ColumnChart';
 import { storeToRefs } from 'pinia';
 
 const store = useColumnChartStore();

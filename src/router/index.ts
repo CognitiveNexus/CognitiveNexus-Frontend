@@ -21,10 +21,16 @@ const router = createRouter({
           {
             path: "bubble-sort",
             component: BubbleSort, 
+            meta: {
+              store: 'BubbleSort'
+            }
           },
           {
             path: "select-sort",
             component: Default,
+            meta: {
+              store: 'SelectSort'
+            }
           }
         ]
       },

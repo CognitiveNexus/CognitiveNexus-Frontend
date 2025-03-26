@@ -1,16 +1,23 @@
 <template>
-  <el-carousel 
-    :interval="100000" 
-    type="card" 
-    height="400px">
-    <el-carousel-item v-for="item in 6" :key="item">
-      <h3 text="2xl" justify="center">{{ item }}</h3>
+  <el-carousel :autoplay="false" type="card" height="400px">
+    <el-carousel-item v-for="item in items" :key="item.index">
+      <img :src="item.path" alt="" style="width: 100%; height: 100%; object-fit: cover;">
     </el-carousel-item>
   </el-carousel>
 </template>
 
 <script setup lang="ts" name="Carousel">
+import { getImage } from '@/utils';
+import bubbleSort from '@/assets/carousel/bubble-sort.png'
 
+const items = [
+  { index: 1, path: bubbleSort },
+  { index: 2, path: getImage("@/assets/carousel/bubble-sort.png") },
+  { index: 3, path: getImage("@/assets/carousel/bubble-sort.png") },
+  { index: 4, path: getImage("@/assets/carousel/bubble-sort.png") },
+  { index: 5, path: getImage("@/assets/carousel/bubble-sort.png") },
+  { index: 6, path: getImage("@/assets/carousel/bubble-sort.png") },
+]
 </script>
 
 <style scoped>

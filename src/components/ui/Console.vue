@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts" name="Console">
-import { useConsole } from '@/store/Console';
+import { useConsole } from '@/stores/Console';
 import { storeToRefs } from 'pinia';
 
 const store = useConsole();

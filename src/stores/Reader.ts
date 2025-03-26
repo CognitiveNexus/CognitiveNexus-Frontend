@@ -6,7 +6,7 @@ import type { ContentItem } from '@/types';
 export const useReader = defineStore("Reader", {
   //数据存储
   state: () => ({
-    content_map: {
+    content: {
       1: [
         {
           type: "text",
@@ -39,7 +39,7 @@ export const useReader = defineStore("Reader", {
   }),
   getters: {
     total_page: (state) => {
-      return Object.keys(state.content_map).length;
+      return Object.keys(state.content).length;
     }
   },
   actions: {

@@ -4,5 +4,5 @@
  * @returns new URL(url, import.meta.url).href
  */
 export function getImage(url: string): string {
-  return new URL(url, import.meta.url).href;
+  return new URL(url.replace('@', 'src'), import.meta.url).href
 };

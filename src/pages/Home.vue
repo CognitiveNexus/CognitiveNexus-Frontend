@@ -11,7 +11,7 @@
     </div>
     <div class="specify"> 我们的特色</div>
     <div class="proj-info">
-      <el-card>1</el-card>
+      <el-card></el-card>
       <el-card>2</el-card>
       <el-card>3</el-card>
     </div>
@@ -32,10 +32,23 @@ function handleStart() {
 
 <style scoped>
 .bg{
-  background: linear-gradient(274.43deg, #7da0ff 1%, #b787fc 100%);
+  background: linear-gradient(
+    125deg, #7da0ff80, #b887fc83, #ff7d9379, #c9a863, #60c59f, #5e78c0
+  );
+  background-size: 400%;
   background-blend-mode: normal;
   width: 100%;
   height: 100%;
+  animation: bgmove 20s infinite;
+  animation-direction: alternate;
+}
+@keyframes bgmove{
+  0%{
+    background-position: 0% 50%;
+  }
+  100%{
+    background-position: 100% 50%;
+  }
 }
 .title{
   color: white;

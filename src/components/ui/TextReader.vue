@@ -5,7 +5,7 @@
     </button>
     <div class="main-column">
       <el-scrollbar class="reader-container">
-        <div v-for="item in content_map[current_page]">
+        <div v-for="item in content[current_page]">
           <!-- 图片 -->
           <img v-if="item.type === 'image'" :src="item.src" :alt="item.alt" width="200px">
           <!-- 文本 -->
@@ -27,11 +27,18 @@
 </template>
 
 <script setup lang="ts" name="Reader">
-import { useReader } from '@/store/Reader';
+import { useRoute } from 'vue-router';
+import { computed } from 'vue'
+import { useReader } from '@/stores/Reader';
 import { storeToRefs } from 'pinia';
 
+//导入所有 store
+const stores = import.meta.glob("@/store/courses/*Store.ts");
+//获得路由对象
+const route = useRoute();
+
 const store = useReader();
-const { content_map, current_page, total_page } = storeToRefs(store);
+const { content, current_page, total_page } = storeToRefs(store);
 
 </script>
 
