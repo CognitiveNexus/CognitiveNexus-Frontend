@@ -6,6 +6,7 @@
 import { ref, watch, onMounted } from 'vue';
 import { Graph, type ComboData, type EdgeData, type GraphData, type IElementEvent, type NodeData, type NodeLikeData } from '@antv/g6';
 import type { CNCRMemoryIndex, CNCRStep, CNCRTypeDefinitions, CNCRVar, CNCRVarAddress } from '@/types/CodeRunnerTypes';
+import PromiseTask from '@/utils/PromiseTask';
 
 const { currentStepData, typeDefinitions } = defineProps<{
     currentStepData: CNCRStep;
@@ -14,6 +15,8 @@ const { currentStepData, typeDefinitions } = defineProps<{
 
 let graph: Graph;
 const graphContainer = ref<HTMLElement>();
+
+const graphRenderTask = new PromiseTask();
 
 onMounted(() => {
     graph = new Graph({
@@ -74,7 +77,7 @@ onMounted(() => {
             },
         },
     });
-    graph.render();
+    graphRenderTask.add(graph.render);
     watch(() => currentStepData, renderStepData);
 });
 
@@ -190,7 +193,7 @@ const buildNode = (graphData: GraphData, varNode: VarNode, baseX: number, baseY:
 
 const renderStepData = () => {
     if (!Object.keys(currentStepData).length) {
-        graph.clear();
+        graphRenderTask.add(graph.clear).catch(() => {});
         return;
     }
     const graphData: GraphData = { nodes: [], edges: [], combos: [] };
@@ -206,7 +209,11 @@ const renderStepData = () => {
         globalY += nodeHeight + elementPadding;
     }
 
-    graph.setData(graphData);
-    graph.render();
+    graphRenderTask
+        .add(async () => {
+            graph.setData(graphData);
+            await graph.render();
+        })
+        .catch(() => {});
 };
 </script>
