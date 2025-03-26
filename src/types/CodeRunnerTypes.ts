@@ -78,8 +78,8 @@ export interface CNCRTypeStruct {
 }
 export interface CNCRTypeUnion {
     base: 'union';
-    variants: {
-        [variantName: string]: {
+    fields: {
+        [fieldName: string]: {
             typeId: CNCRVarTypeId;
             offset: number;
         };

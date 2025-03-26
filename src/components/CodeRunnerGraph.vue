@@ -61,9 +61,9 @@ onMounted(() => {
             },
             style: {
                 iconFontSize: 16,
-                labelFontSize: 8,
                 badgePalette: ['#424242'],
                 label: true,
+                labelFontSize: 8,
                 labelBackground: true,
                 labelBackgroundFill: '#FFFFFF',
             },
@@ -76,6 +76,15 @@ onMounted(() => {
                 stroke: '#4C4C4C',
             },
         },
+        combo: {
+            style: {
+                label: true,
+                labelOffsetY: 4,
+                labelFontSize: 8,
+                labelBackground: true,
+                labelBackgroundFill: '#FFFFFF',
+            },
+        },
     });
     graphRenderTask.add(async () => graph.render());
     watch(() => currentStepData, renderStepData);
@@ -85,12 +94,18 @@ type VarTree = {
     [memoryIndex: string]: VarNode;
 };
 type VarNode = { memoryIndex: CNCRMemoryIndex; varInfo: CNCRVar; children: VarTree; parent?: VarNode };
-type NodeMap = { [memoryIndex: string]: VarNode };
+type NodeMap = { [memoryIndex: CNCRMemoryIndex]: VarNode };
 const elementPadding = 50;
 
-const buildVarTree = (rootNodes: VarNode[], nodeMap: NodeMap, variable: CNCRVar, parent?: VarNode) => {
+let graphData: GraphData = { nodes: [], edges: [], combos: [] };
+let rootNodes: VarNode[] = [];
+let nodeMap: NodeMap = {};
+let varNameMap: { [memoryIndex: CNCRMemoryIndex]: string } = {};
+
+const buildVarTree = (variable: CNCRVar, parent?: VarNode) => {
     const memoryIndex: CNCRMemoryIndex = `${variable.address}:${variable.typeId}`;
     const type = typeDefinitions[variable.typeId];
+    if (varNameMap[memoryIndex]) variable.name = varNameMap[memoryIndex];
     let varNode: VarNode;
     if ((varNode = nodeMap[memoryIndex])) {
         if (parent && !varNode.parent) {
@@ -108,41 +123,31 @@ const buildVarTree = (rootNodes: VarNode[], nodeMap: NodeMap, variable: CNCRVar,
         } else {
             rootNodes.push(varNode);
         }
-        // TODO: 优化 name 解析
+
         if (type.base == 'struct' || type.base == 'union') {
-            const children = type.base == 'struct' ? type.fields : type.variants;
+            const children = type.fields;
             for (const childName in children) {
                 const childTypeId = children[childName].typeId;
                 const childOffset = children[childName]?.offset ?? 0;
                 const childAddress: CNCRVarAddress = ('0x' + (parseInt(variable.address) + childOffset).toString(16)) as CNCRVarAddress;
-                buildVarTree(
-                    rootNodes,
-                    nodeMap,
-                    { name: variable.name ? `(${variable.name}).${childName}` : '', typeId: childTypeId, address: childAddress },
-                    varNode
-                );
+                buildVarTree({ name: variable.name ? `${variable.name}.${childName}` : '', typeId: childTypeId, address: childAddress }, varNode);
             }
         } else if (type.base == 'array') {
             const childType = typeDefinitions[type.elementTypeId];
             for (let i = 0; i < type.length; i++) {
                 const childAddress: CNCRVarAddress = ('0x' + (parseInt(variable.address) + i * childType.size).toString(16)) as CNCRVarAddress;
-                buildVarTree(
-                    rootNodes,
-                    nodeMap,
-                    { name: variable.name ? `(${variable.name})[${i}]` : '', typeId: type.elementTypeId, address: childAddress },
-                    varNode
-                );
+                buildVarTree({ name: variable.name ? `${variable.name}[${i}]` : '', typeId: type.elementTypeId, address: childAddress }, varNode);
             }
         } else if (type.base == 'pointer') {
             const targetAddress: CNCRVarAddress = currentStepData.memory[memoryIndex]?.value as CNCRVarAddress;
             if (targetAddress && targetAddress != 'NULL' && targetAddress != 'N/A') {
-                buildVarTree(rootNodes, nodeMap, { name: '', typeId: type.targetTypeId, address: targetAddress });
+                buildVarTree({ name: '', typeId: type.targetTypeId, address: targetAddress });
             }
         }
     }
 };
 
-const buildNode = (graphData: GraphData, varNode: VarNode, baseX: number, baseY: number, combo?: string): { nodeWidth: number; nodeHeight: number } => {
+const buildNode = (varNode: VarNode, baseX: number, baseY: number, combo?: string): { nodeWidth: number; nodeHeight: number } => {
     let nodeWidth = 0,
         nodeHeight = 0;
     if (varNode.varInfo.address == 'NULL' || varNode.varInfo.address == 'N/A') {
@@ -155,11 +160,12 @@ const buildNode = (graphData: GraphData, varNode: VarNode, baseX: number, baseY:
     const isBasicNode = type.base == 'atomic' || type.base == 'pointer' || type.base == 'unsupported';
     const isPointer = type.base == 'pointer';
     let varValue, rawBytes;
-    if (isBasicNode) ({ value: varValue, rawBytes } = currentStepData.memory[memoryIndex]);
+    if (combo) nodeData.combo = combo;
 
     if (isBasicNode) {
         nodeWidth = 144;
         nodeHeight = 32;
+        ({ value: varValue, rawBytes } = currentStepData.memory[memoryIndex]);
         nodeData.data = { address, typeId, varValue, rawBytes };
         nodeData.style = {
             iconText: varValue,
@@ -169,14 +175,16 @@ const buildNode = (graphData: GraphData, varNode: VarNode, baseX: number, baseY:
             x: baseX,
             y: baseY,
         };
-        if (combo) nodeData.combo = combo;
         if (type.base == 'pointer') nodeData.style.fill = '#936956';
     } else {
+        nodeData.style = {
+            labelText: memoryIndex,
+        };
         for (const childMemoryIndex in varNode.children) {
             const childNode = varNode.children[childMemoryIndex];
-            const { nodeWidth: dWidth, nodeHeight: dHeight } = buildNode(graphData, childNode, baseX + nodeWidth + elementPadding, baseY, memoryIndex);
+            const { nodeWidth: dWidth, nodeHeight: dHeight } = buildNode(childNode, baseX + nodeWidth + elementPadding, baseY, memoryIndex);
             nodeWidth += dWidth + elementPadding;
-            nodeHeight += dHeight;
+            if (dHeight > nodeHeight) nodeHeight = dHeight;
         }
     }
 
@@ -202,16 +210,21 @@ const renderStepData = () => {
             });
         return;
     }
-    const graphData: GraphData = { nodes: [], edges: [], combos: [] };
-    const nodeMap: NodeMap = {};
-    const rootNodes: VarNode[] = [];
+    graphData = { nodes: [], edges: [], combos: [] };
+    rootNodes = [];
+    nodeMap = {};
+    varNameMap = {};
+
     for (const variable of currentStepData.variables) {
-        buildVarTree(rootNodes, nodeMap, variable);
+        varNameMap[`${variable.address}:${variable.typeId}`] = variable.name;
+    }
+    for (const variable of currentStepData.variables) {
+        buildVarTree(variable);
     }
 
     let globalY = 0;
     for (const rootNode of rootNodes) {
-        const { nodeHeight } = buildNode(graphData, rootNode, 0, globalY);
+        const { nodeHeight } = buildNode(rootNode, 0, globalY);
         globalY += nodeHeight + elementPadding;
     }
 
