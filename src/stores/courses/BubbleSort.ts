@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 import { getImage } from '@/utils'
 import type { ContentItem } from '@/types';
 
-export const useReader = defineStore("Reader", {
+export const useBubbleSortStore = defineStore("BubbleSort", {
   //数据存储
   state: () => ({
     content: {
@@ -27,36 +26,19 @@ export const useReader = defineStore("Reader", {
           class: "content"
         },
         {
+          type: "text",
+          content: `让我试试高亮`,
+          class: "highlight"
+        },
+        {
           type: "image",
           src: getImage("../assets/9.png"),
+          height: "50"
         }
       ],
       2: [
         
       ]
     } as Record<number, ContentItem[]>,
-    current_page: ref(1),
-  }),
-  getters: {
-    total_page: (state) => {
-      return Object.keys(state.content).length;
-    }
-  },
-  actions: {
-    //页码合法检测
-    isAvailblePage(page: number): boolean {
-      return page >= 1 && page <= this.total_page;
-    },
-    //按钮响应
-    nextPage() {
-      if (this.isAvailblePage(this.current_page + 1)) {
-        this.current_page++;
-      }
-    },
-    prevPage() {
-      if (this.isAvailblePage(this.current_page - 1)) {
-        this.current_page--;
-      }
-    }
-  }
+  })
 })

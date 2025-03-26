@@ -5,6 +5,7 @@ import Course from '@/pages/Course.vue';
 import Default from '@/pages/courses/Default.vue';
 import BubbleSort from '@/pages/courses/BubbleSort.vue';
 import Practice from '@/pages/Practice.vue';
+import SelectSort from '@/pages/courses/SelectSort.vue';
 
 //创建路由器
 const router = createRouter({
@@ -27,7 +28,7 @@ const router = createRouter({
           },
           {
             path: "select-sort",
-            component: Default,
+            component: SelectSort,
             meta: {
               store: 'SelectSort'
             }

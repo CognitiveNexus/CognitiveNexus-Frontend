@@ -1,19 +1,24 @@
 <template>
   <div class="main-container">
     <button class="left" @click="store.prevPage()">
-      <el-icon :size="40" color="gray"><ArrowLeft/></el-icon>
+      <el-icon :size="40" color="gray">
+        <ArrowLeft />
+      </el-icon>
     </button>
     <div class="main-column">
       <el-scrollbar class="reader-container">
-        <div v-for="item in content[current_page]">
+        <div v-for="item in current_store.content[current_page]">
           <!-- 图片 -->
-          <img v-if="item.type === 'image'" :src="item.src" :alt="item.alt" width="200px">
+          <img v-if="item.type === 'image'" :src="item.src" :alt="item.alt" :style="{
+            width: item.width ? `${item.width}px` : 'auto',
+            height: item.height ? `${item.height}px` : 'auto'
+          }">
           <!-- 文本 -->
           <el-text v-else-if="item.type === 'text'" :class="item.class">{{ item.content }}</el-text>
           <!-- 链接 -->
           <a v-else-if="item.type === 'link'" :href="item.url">{{ item.text }}</a>
           <!-- 换行 -->
-          <div v-else-if="item.type === 'break'"><br/></div>
+          <div v-else-if="item.type === 'break'"><br /></div>
         </div>
       </el-scrollbar>
       <div class="page-counter">
@@ -21,24 +26,40 @@
       </div>
     </div>
     <button class="right" @click="store.nextPage()">
-      <el-icon :size="40" color="gray"><ArrowRight/></el-icon>
+      <el-icon :size="40" color="gray">
+        <ArrowRight />
+      </el-icon>
     </button>
   </div>
 </template>
 
 <script setup lang="ts" name="Reader">
-import { useRoute } from 'vue-router';
-import { computed } from 'vue'
-import { useReader } from '@/stores/Reader';
+import { useRouter } from 'vue-router';
+import { useCourseStoreManager } from '@/stores/courses/index';
 import { storeToRefs } from 'pinia';
+import { watch } from 'vue';
 
-//导入所有 store
-const stores = import.meta.glob("@/store/courses/*Store.ts");
-//获得路由对象
-const route = useRoute();
+const router = useRouter();
+const store = useCourseStoreManager();
+const { current_store, current_page, total_page } = storeToRefs(store);
 
-const store = useReader();
-const { content, current_page, total_page } = storeToRefs(store);
+watch(
+  () => router.currentRoute.value.meta.store ,
+  (newMeta) => { 
+    console.log(newMeta);
+    switch (newMeta) {
+      case "BubbleSort":
+        store.selectCourse("bubble");
+        break;
+      case "SelectSort":
+        store.selectCourse("select");
+        break;
+      default:
+        break;
+    }
+  },
+  { immediate: true }
+)
 
 </script>
 
@@ -124,11 +145,12 @@ button:active{
 }
 .highlight{
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 2.2;
   letter-spacing: 1px;
-  color: #3C3C43;
   background-color: #ECECEC;
+  color: black;
+  padding: 3px;
 }
 .tips{
   font-size: 18px;

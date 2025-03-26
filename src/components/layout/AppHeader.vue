@@ -18,6 +18,7 @@
 
 <style scoped>
 .el-menu{
+  padding: 0px 50px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
 }
 .title {
