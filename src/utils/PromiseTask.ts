@@ -9,7 +9,7 @@ export default class PromiseTask {
     add<T>(task: () => Promise<T>): Promise<T> {
         return new Promise((resolve, reject) => {
             if (this.pendingTask) {
-                this.pendingTask.reject(new Error('Task canceled'));
+                this.pendingTask.reject(new TaskCancelledError());
             }
 
             const wrappedTask = {
@@ -32,5 +32,11 @@ export default class PromiseTask {
         try {
             await currentTask.task();
         } catch (error) {}
+    }
+}
+
+export class TaskCancelledError extends Error {
+    constructor() {
+        super('Task cancelled');
     }
 }

@@ -6,7 +6,7 @@
 import { ref, watch, onMounted } from 'vue';
 import { Graph, type ComboData, type EdgeData, type GraphData, type IElementEvent, type NodeData, type NodeLikeData } from '@antv/g6';
 import type { CNCRMemoryIndex, CNCRStep, CNCRTypeDefinitions, CNCRVar, CNCRVarAddress } from '@/types/CodeRunnerTypes';
-import PromiseTask from '@/utils/PromiseTask';
+import PromiseTask, { TaskCancelledError } from '@/utils/PromiseTask';
 
 const { currentStepData, typeDefinitions } = defineProps<{
     currentStepData: CNCRStep;
@@ -193,7 +193,13 @@ const buildNode = (graphData: GraphData, varNode: VarNode, baseX: number, baseY:
 
 const renderStepData = () => {
     if (!Object.keys(currentStepData).length) {
-        graphRenderTask.add(async () => graph.clear()).catch(() => {});
+        graphRenderTask
+            .add(async () => graph.clear())
+            .catch((error: Error) => {
+                if (!(error instanceof TaskCancelledError)) {
+                    throw error;
+                }
+            });
         return;
     }
     const graphData: GraphData = { nodes: [], edges: [], combos: [] };
@@ -214,6 +220,10 @@ const renderStepData = () => {
             graph.setData(graphData);
             await graph.render();
         })
-        .catch(() => {});
+        .catch((error: Error) => {
+            if (!(error instanceof TaskCancelledError)) {
+                throw error;
+            }
+        });
 };
 </script>
