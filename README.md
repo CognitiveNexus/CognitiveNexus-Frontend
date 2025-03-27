@@ -1,4 +1,4 @@
-# ⚡ Cognitive Nexus Fore-end ⚡
+# ⚡ Cognitive Nexus Frontend ⚡
 
 > 思维知识图谱系统的前端实现
 
