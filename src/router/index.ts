@@ -40,8 +40,8 @@ const router = createRouter({
             component: Home,
         },
         {
-            name: 'practice',
-            path: '/practice',
+            name: 'playground',
+            path: '/playground',
             component: Playground,
         },
         {
