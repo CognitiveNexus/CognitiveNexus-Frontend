@@ -25,5 +25,18 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url)),
         },
     },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vue: ['vue'],
+                    elementPlus: ['element-plus'],
+                    antvG6: ['@antv/g6'],
+                    monacoEditor: ['monaco-editor'],
+                    echarts: ['echarts'],
+                },
+            },
+        },
+    },
     envPrefix: ['VITE_', 'CNCR_'],
 });
