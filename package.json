@@ -13,6 +13,7 @@
     "dependencies": {
         "@antv/g6": "^5.0.44",
         "@element-plus/icons-vue": "^2.3.1",
+        "@hpcc-js/wc-layout": "^0.5.0",
         "@monaco-editor/loader": "^1.5.0",
         "echarts": "^5.6.0",
         "element-plus": "^2.9.6",

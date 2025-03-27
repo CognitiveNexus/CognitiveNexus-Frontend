@@ -1,26 +1,47 @@
 <template>
-    <el-row>
-        <!-- TODO: better layout -->
-        <CodeEditor v-model="code" :disabled="loading || running" :highlight-line="currentStepData?.line" />
-        <el-input v-model="stdin" :rows="2" :disabled="loading" type="textarea" placeholder="stdin"></el-input>
-        <el-button :disabled="loading" @click="running ? stopCodeRun() : runCode()">{{ running ? 'Stop' : 'Run' }}</el-button>
-        <el-pagination
-            v-model:current-page="currentStep"
-            :disabled="loading"
-            :page-size="1"
-            :total="codeRunnerData.steps.length"
-            layout="total, prev, pager, next" />
-
-        <br />
-        <el-text class="mx-1">stdout: {{ currentStdout }}</el-text>
-        <CodeRunnerGraph :currentStepData="currentStepData" :typeDefinitions="typeDefinitions" />
-    </el-row>
+    <div class="container">
+        <div class="top-bar">
+            <el-button
+                circle
+                plain
+                :disabled="loading"
+                :icon="running ? VideoPause : VideoPlay"
+                :type="running ? 'danger' : 'success'"
+                @click="running ? stopCodeRun() : runCode()" />
+            <el-pagination
+                v-model:current-page="currentStep"
+                :disabled="loading"
+                :page-size="1"
+                :total="codeRunnerData.steps.length"
+                layout="total, prev, pager, next" />
+        </div>
+        <hpcc-dockpanel style="width: 100%; height: 100%">
+            <div id="code-runner-source-code" data-label="源代码" data-mode="split-left">
+                <CodeEditor v-model="code" :disabled="loading || running" :highlight-line="currentStepData?.line" />
+                <el-input v-model="stdin" :rows="2" :disabled="loading" type="textarea" placeholder="stdin"></el-input>
+            </div>
+            <div id="code-runner-memory" data-label="内存可视化" data-mode="split-right" data-ref="code-runner-source-code">
+                <CodeRunnerGraph :currentStepData="currentStepData" :typeDefinitions="typeDefinitions" />
+            </div>
+            <div id="code-runner-stdout" data-label="程序输出" data-mode="split-bottom" data-ref="code-runner-source-code">
+                <el-text class="keepLineBreak"> {{ currentStdout }}</el-text>
+            </div>
+            <div id="code-runner-compile-log" data-label="编译日志" data-mode="tab-after" data-ref="code-runner-stdout">
+                <el-text class="keepLineBreak">{{ compileLog }}</el-text>
+            </div>
+            <div id="code-runner-run-log" data-label="运行日志" data-mode="tab-after" data-ref="code-runner-compile-log">
+                <el-text class="keepLineBreak">{{ runLog }}</el-text>
+            </div>
+        </hpcc-dockpanel>
+    </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { ElInput, ElButton, ElMessage, ElNotification, ElRow, ElCol, ElPagination, ElText } from 'element-plus';
+import { ElInput, ElButton, ElMessage, ElNotification, ElPagination, ElText } from 'element-plus';
+import { VideoPlay, VideoPause } from '@element-plus/icons-vue';
 import type { CNCRResult, CNCRData } from '@/types/CodeRunnerTypes';
+import '@hpcc-js/wc-layout';
 import CodeEditor from '@/components/CodeEditor.vue';
 import CodeRunnerGraph from '@/components/CodeRunnerGraph.vue';
 
@@ -36,9 +57,11 @@ const running = ref<boolean>(false);
 const blankCodeRunnerData: CNCRData = { typeDefinitions: {}, steps: [], endState: 'finished' };
 const codeRunnerData = ref<CNCRData>(blankCodeRunnerData);
 const currentStep = ref<number>(0);
+const compileLog = ref<string>('(空)');
+const runLog = ref<string>('(空)');
 
 const currentStepData = computed(() => codeRunnerData.value.steps[currentStep.value - 1] ?? {});
-const currentStdout = computed(() => currentStepData.value?.stdout || '');
+const currentStdout = computed(() => currentStepData.value?.stdout || '(空)');
 const typeDefinitions = computed(() => codeRunnerData.value.typeDefinitions ?? {});
 
 const stopCodeRun = () => {
@@ -101,13 +124,15 @@ const runCode = async () => {
                         }[result.data.endState] +
                         '<br />' +
                         result.data.steps.at(-1)?.stdout,
-                    dangerouslyUseHTMLString: true,
+                    dangerouslyUseHTMLString: true, // TODO: remove
                     type: result.data.endState === 'finished' ? 'success' : 'warning',
                 });
                 running.value = true;
                 codeRunnerData.value = result.data;
                 currentStep.value = 1;
             }
+            compileLog.value = result.logs.compile || '(空)';
+            runLog.value = result.logs.run || '(空)';
         })
         .finally(() => {
             loading.value = false;
@@ -115,4 +140,24 @@ const runCode = async () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+hpcc-dockpanel {
+    flex: 1;
+}
+.keepLineBreak {
+    white-space: pre-line;
+}
+</style>

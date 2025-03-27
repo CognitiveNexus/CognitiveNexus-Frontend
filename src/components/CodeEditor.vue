@@ -89,7 +89,7 @@ const themes = [
     { label: 'VSCode Light', value: 'vs' },
 ];
 
-const fontSize = ref<string>();
+const fontSize = ref<string>('14');
 const fontSizes = [
     { label: '小', value: '12' },
     { label: '中', value: '14' },
@@ -265,6 +265,7 @@ onBeforeUnmount(() => {
     overflow: hidden;
 }
 .editor-container {
+    min-height: 240px;
     width: 100%;
     height: 100%;
 }
