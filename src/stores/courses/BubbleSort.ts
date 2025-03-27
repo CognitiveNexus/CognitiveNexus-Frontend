@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { getImage } from '@/utils'
-import type { ContentItem } from '@/types';
+import type { ContentItem } from '@/types/TextReaderTypes';
 
 export const useBubbleSortStore = defineStore("BubbleSort", {
   //数据存储

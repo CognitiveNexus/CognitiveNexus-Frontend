@@ -9,13 +9,18 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppHeader: typeof import('./src/components/layout/AppHeader.vue')['default']
+    BreadcrumbHeader: typeof import('./src/components/layout/BreadcrumbHeader.vue')['default']
     Carousel: typeof import('./src/components/ui/Carousel.vue')['default']
     CodeEditor: typeof import('./src/components/CodeEditor.vue')['default']
     CodeRunner: typeof import('./src/components/CodeRunner.vue')['default']
     CodeRunnerGraph: typeof import('./src/components/CodeRunnerGraph.vue')['default']
     ColumnChart: typeof import('./src/components/visualize/ColumnChart.vue')['default']
     Console: typeof import('./src/components/ui/Console.vue')['default']
+    CourseCard: typeof import('./src/components/CourseCard.vue')['default']
+    CourseNavigator: typeof import('./src/components/layout/CourseNavigator.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
+    ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']

@@ -46,7 +46,6 @@ const { current_store, current_page, total_page } = storeToRefs(store);
 watch(
   () => router.currentRoute.value.meta.store ,
   (newMeta) => { 
-    console.log(newMeta);
     switch (newMeta) {
       case "BubbleSort":
         store.selectCourse("bubble");

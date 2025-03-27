@@ -1,5 +1,5 @@
 <template>
-  <el-carousel :autoplay="false" type="card" height="400px">
+  <el-carousel :autoplay="false" trigger="click" type="card" height="400px">
     <el-carousel-item v-for="item in items" :key="item.index">
       <img :src="item.path" alt="" style="width: 100%; height: 100%; object-fit: cover;">
     </el-carousel-item>
@@ -7,16 +7,15 @@
 </template>
 
 <script setup lang="ts" name="Carousel">
-import { getImage } from '@/utils';
 import bubbleSort from '@/assets/carousel/bubble-sort.png'
 
 const items = [
   { index: 1, path: bubbleSort },
-  { index: 2, path: getImage("@/assets/carousel/bubble-sort.png") },
-  { index: 3, path: getImage("@/assets/carousel/bubble-sort.png") },
-  { index: 4, path: getImage("@/assets/carousel/bubble-sort.png") },
-  { index: 5, path: getImage("@/assets/carousel/bubble-sort.png") },
-  { index: 6, path: getImage("@/assets/carousel/bubble-sort.png") },
+  { index: 2, path: bubbleSort },
+  { index: 3, path: bubbleSort },
+  { index: 4, path: bubbleSort },
+  { index: 5, path: bubbleSort },
+  { index: 6, path: bubbleSort },
 ]
 </script>
 
