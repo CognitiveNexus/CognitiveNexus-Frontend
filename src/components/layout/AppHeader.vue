@@ -1,33 +1,26 @@
 <template>
-  <el-menu
-    :default-active="'/home'"
-    mode="horizontal"
-    :router="true" 
-  >
-    <el-menu-item index="/home">
-      <span class="title">思维脉络</span>
-    </el-menu-item>
-    <el-menu-item index="/course">课程</el-menu-item>
-    <el-menu-item index="/practice">练习场</el-menu-item>
-  </el-menu>
+    <el-menu :default-active="'/home'" mode="horizontal" :router="true">
+        <el-menu-item index="/home">
+            <span class="title">思维脉络</span>
+        </el-menu-item>
+        <el-menu-item index="/course">课程</el-menu-item>
+        <el-menu-item index="/playground">练习场</el-menu-item>
+    </el-menu>
 </template>
 
-<script setup lang="ts" name="AppHeader">
-
-</script>
+<script setup lang="ts" name="AppHeader"></script>
 
 <style scoped>
-.el-menu{
-  padding: 0px 50px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
+.el-menu {
+    padding: 0px 50px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
 }
 .title {
-  font-family: 'ChuangKeTieJin', sans-serif;
-  font-size: 30px;
-  /** 文字渐变实现 */
-  background-image: linear-gradient(90deg, #60afff,
-      #b180ff);
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+    font-family: 'ChuangKeTieJin', sans-serif;
+    font-size: 30px;
+    /** 文字渐变实现 */
+    background-image: linear-gradient(90deg, #60afff, #b180ff);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 </style>

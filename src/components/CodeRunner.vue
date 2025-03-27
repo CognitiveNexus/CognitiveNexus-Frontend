@@ -1,22 +1,19 @@
 <template>
     <el-row>
-        <el-col :span="12">
-            <MonacoEditor v-model="code" :disabled="loading || running" :highlight-line="currentStepData?.line" />
-            <el-input v-model="stdin" :rows="2" :disabled="loading" type="textarea" placeholder="stdin"></el-input>
-            <el-button :disabled="loading" @click="running ? stopCodeRun() : runCode()">{{ running ? 'Stop' : 'Run' }}</el-button>
-        </el-col>
-        <el-col :span="12">
-            <el-pagination
-                v-model:current-page="currentStep"
-                :disabled="loading"
-                :page-size="1"
-                :total="codeRunnerData.steps.length"
-                layout="total, prev, pager, next" />
+        <!-- TODO: better layout -->
+        <CodeEditor v-model="code" :disabled="loading || running" :highlight-line="currentStepData?.line" />
+        <el-input v-model="stdin" :rows="2" :disabled="loading" type="textarea" placeholder="stdin"></el-input>
+        <el-button :disabled="loading" @click="running ? stopCodeRun() : runCode()">{{ running ? 'Stop' : 'Run' }}</el-button>
+        <el-pagination
+            v-model:current-page="currentStep"
+            :disabled="loading"
+            :page-size="1"
+            :total="codeRunnerData.steps.length"
+            layout="total, prev, pager, next" />
 
-            <br />
-            <el-text class="mx-1">stdout: {{ currentStdout }}</el-text>
-            <CodeRunnerGraph :currentStepData="currentStepData" :typeDefinitions="typeDefinitions" />
-        </el-col>
+        <br />
+        <el-text class="mx-1">stdout: {{ currentStdout }}</el-text>
+        <CodeRunnerGraph :currentStepData="currentStepData" :typeDefinitions="typeDefinitions" />
     </el-row>
 </template>
 
@@ -24,7 +21,7 @@
 import { ref, computed } from 'vue';
 import { ElInput, ElButton, ElMessage, ElNotification, ElRow, ElCol, ElPagination, ElText } from 'element-plus';
 import type { CNCRResult, CNCRData } from '@/types/CodeRunnerTypes';
-import MonacoEditor from '@/components/MonacoEditor.vue';
+import CodeEditor from '@/components/CodeEditor.vue';
 import CodeRunnerGraph from '@/components/CodeRunnerGraph.vue';
 
 const host = import.meta.env.CNCR_API_HOST;
