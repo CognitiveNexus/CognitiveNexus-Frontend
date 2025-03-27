@@ -14,6 +14,7 @@ import type { CourseName, CourseMeta } from "@/types/CoursesNameType";
  * 即可
  *
  * courseMeta：课程的额外信息，比如名字（title），路径（path）等
+ * 考虑向meta中加入图片路径，直接将多种元素与课程本身绑定
  *
  * 如何在外部使用？
  * const store = useCourseStoreManager();
@@ -30,8 +31,14 @@ export const useCourseStoreManager = defineStore("CourseStore", {
       select: useSelectSortStore(),
     },
     courseMeta: {
-      bubble: { title: "冒泡排序算法", path: "/course/bubble" },
-      select: { title: "选择排序算法", path: "/course/select" },
+      bubble: {
+        title: "冒泡排序算法",
+        path: "/course/bubble",
+      },
+      select: {
+        title: "选择排序算法",
+        path: "/course/select",
+      },
     } as Record<CourseName, CourseMeta>,
     current_course: ref<CourseName>("bubble"),
     current_page: ref(1),

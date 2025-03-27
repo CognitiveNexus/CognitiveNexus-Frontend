@@ -1,6 +1,5 @@
-import { defineStore } from 'pinia'
-import { getImage } from '@/utils'
-import type { ContentItem } from '@/types/TextReaderTypes';
+import { defineStore } from "pinia";
+import type { ContentItem } from "@/types/TextReaderTypes";
 
 export const useSelectSortStore = defineStore("SelectSort", {
   //数据存储
@@ -10,12 +9,10 @@ export const useSelectSortStore = defineStore("SelectSort", {
         {
           type: "text",
           content: "选择排序",
-          class: "title"
-        }
+          class: "title",
+        },
       ],
-      2: [
-        
-      ]
+      2: [],
     } as Record<number, ContentItem[]>,
-  })
-})
+  }),
+});
