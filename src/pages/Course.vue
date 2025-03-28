@@ -2,7 +2,7 @@
   <el-container class="main">
     <el-main>
       <el-text>Title</el-text>
-      <CourseCard />
+      <CourseSelecter />
     </el-main>
   </el-container>
 </template>

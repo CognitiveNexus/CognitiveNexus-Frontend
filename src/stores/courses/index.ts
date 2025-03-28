@@ -34,10 +34,12 @@ export const useCourseStoreManager = defineStore("CourseStore", {
       bubble: {
         title: "冒泡排序算法",
         path: "/course/bubble",
+        diff: "normal",
       },
       select: {
         title: "选择排序算法",
         path: "/course/select",
+        diff: "normal",
       },
     } as Record<CourseName, CourseMeta>,
     current_course: ref<CourseName>("bubble"),
@@ -55,6 +57,7 @@ export const useCourseStoreManager = defineStore("CourseStore", {
         name: name as CourseName,
         title: meta.title,
         path: meta.path,
+        diff: meta.diff,
       }));
     },
   },

@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppHeader: typeof import('./src/components/layout/AppHeader.vue')['default']
+    CardGroup: typeof import('./src/components/CardGroup.vue')['default']
     Carousel: typeof import('./src/components/ui/Carousel.vue')['default']
     CodeEditor: typeof import('./src/components/CodeEditor.vue')['default']
     CodeRunner: typeof import('./src/components/CodeRunner.vue')['default']
@@ -16,6 +17,7 @@ declare module 'vue' {
     ColumnChart: typeof import('./src/components/visualize/ColumnChart.vue')['default']
     Console: typeof import('./src/components/ui/Console.vue')['default']
     CourseCard: typeof import('./src/components/CourseCard.vue')['default']
+    CourseSelecter: typeof import('./src/components/CourseSelecter.vue')['default']
     DockPanel: typeof import('./src/components/layout/DockPanel.vue')['default']
     DockWidget: typeof import('./src/components/layout/DockWidget.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
@@ -23,6 +25,8 @@ declare module 'vue' {
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
+    ElCollapse: typeof import('element-plus/es')['ElCollapse']
+    ElCollapseItem: typeof import('element-plus/es')['ElCollapseItem']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDivider: typeof import('element-plus/es')['ElDivider']
     ElFooter: typeof import('element-plus/es')['ElFooter']
@@ -36,6 +40,7 @@ declare module 'vue' {
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElSpace: typeof import('element-plus/es')['ElSpace']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
     RouterLink: typeof import('vue-router')['RouterLink']
