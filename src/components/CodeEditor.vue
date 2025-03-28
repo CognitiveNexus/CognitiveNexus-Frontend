@@ -120,7 +120,7 @@ onMounted(() => {
         theme: props.theme,
         automaticLayout: true,
         minimap: { enabled: false },
-        fontSize: 18,
+        fontSize: 14,
         lineNumbers: 'on',
         readOnly: props.disabled,
         cursorStyle: props.disabled ? 'block-outline' : 'line',

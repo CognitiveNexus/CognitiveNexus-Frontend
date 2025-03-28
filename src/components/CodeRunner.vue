@@ -15,24 +15,24 @@
                 :total="codeRunnerData.steps.length"
                 layout="total, prev, pager, next" />
         </div>
-        <hpcc-dockpanel style="width: 100%; height: 100%">
-            <div id="code-runner-source-code" data-label="源代码" data-mode="split-left">
+        <DockPanel style="width: 100%; height: 100%">
+            <DockWidget id="code-runner-source-code" title="源代码" mode="split-left">
                 <CodeEditor v-model="code" :disabled="loading || running" :highlight-line="currentStepData?.line" />
                 <el-input v-model="stdin" :rows="2" :disabled="loading" type="textarea" placeholder="stdin"></el-input>
-            </div>
-            <div id="code-runner-memory" data-label="内存可视化" data-mode="split-right" data-ref="code-runner-source-code">
+            </DockWidget>
+            <DockWidget id="code-runner-memory" title="内存可视化" mode="split-right" ref-id="code-runner-source-code">
                 <CodeRunnerGraph :currentStepData="currentStepData" :typeDefinitions="typeDefinitions" />
-            </div>
-            <div id="code-runner-stdout" data-label="程序输出" data-mode="split-bottom" data-ref="code-runner-source-code">
+            </DockWidget>
+            <DockWidget id="code-runner-stdout" title="程序输出" mode="split-bottom" ref-id="code-runner-source-code">
                 <el-text class="keepLineBreak"> {{ currentStdout }}</el-text>
-            </div>
-            <div id="code-runner-compile-log" data-label="编译日志" data-mode="tab-after" data-ref="code-runner-stdout">
+            </DockWidget>
+            <DockWidget id="code-runner-compile-log" title="编译日志" mode="tab-after" ref-id="code-runner-stdout">
                 <el-text class="keepLineBreak">{{ compileLog }}</el-text>
-            </div>
-            <div id="code-runner-run-log" data-label="运行日志" data-mode="tab-after" data-ref="code-runner-compile-log">
+            </DockWidget>
+            <DockWidget id="code-runner-run-log" title="运行日志" mode="tab-after" ref-id="code-runner-compile-log">
                 <el-text class="keepLineBreak">{{ runLog }}</el-text>
-            </div>
-        </hpcc-dockpanel>
+            </DockWidget>
+        </DockPanel>
     </div>
 </template>
 
@@ -41,7 +41,8 @@ import { ref, computed } from 'vue';
 import { ElInput, ElButton, ElMessage, ElNotification, ElPagination, ElText } from 'element-plus';
 import { VideoPlay, VideoPause } from '@element-plus/icons-vue';
 import type { CNCRResult, CNCRData } from '@/types/CodeRunnerTypes';
-import '@hpcc-js/wc-layout';
+import DockPanel from '@/components/layout/DockPanel.vue';
+import DockWidget from '@/components/layout/DockWidget.vue';
 import CodeEditor from '@/components/CodeEditor.vue';
 import CodeRunnerGraph from '@/components/CodeRunnerGraph.vue';
 
@@ -151,11 +152,7 @@ const runCode = async () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-hpcc-dockpanel {
-    flex: 1;
+    padding: 8px;
 }
 .keepLineBreak {
     white-space: pre-line;

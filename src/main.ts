@@ -14,6 +14,9 @@ import { createPinia } from 'pinia';
 import '@/assets/css/reset-router-link.css';
 import '@/assets/css/fonts.css';
 
+import '@lumino/widgets/style/index.css';
+import '@lumino/default-theme/style/index.css';
+
 const app = createApp(App);
 const pinia = createPinia();
 app.use(router).use(pinia).component('v-chart', ECharts);

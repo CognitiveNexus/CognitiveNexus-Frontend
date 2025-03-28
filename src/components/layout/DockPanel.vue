@@ -1,0 +1,55 @@
+<template>
+    <div ref="container" class="dock-container">
+        <slot></slot>
+    </div>
+</template>
+
+<script setup lang="ts">
+import { DockPanel, Widget } from '@lumino/widgets';
+import { onMounted, onBeforeUnmount, provide, ref } from 'vue';
+
+const props = defineProps<{
+    spacing?: number;
+}>();
+
+const container = ref<HTMLElement>();
+const dockPanel = new DockPanel({ spacing: props.spacing });
+
+provide('dockPanel', dockPanel);
+
+onMounted(() => {
+    if (container.value) {
+        Widget.attach(dockPanel, container.value);
+        updateLayout();
+    }
+});
+
+onBeforeUnmount(() => {
+    Widget.detach(dockPanel);
+});
+
+const updateLayout = () => {
+    requestAnimationFrame(() => {
+        dockPanel.fit();
+        dockPanel.update();
+    });
+};
+
+defineExpose({ dockPanel });
+</script>
+
+<style>
+.dock-container {
+    width: 100%;
+    height: 100%;
+    min-width: 200px;
+    min-height: 200px;
+    padding: 4px;
+    overflow: hidden;
+    display: flex;
+}
+
+.lm-DockPanel {
+    flex: 1;
+}
+</style>

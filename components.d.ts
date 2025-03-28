@@ -16,6 +16,8 @@ declare module 'vue' {
     ColumnChart: typeof import('./src/components/visualize/ColumnChart.vue')['default']
     Console: typeof import('./src/components/ui/Console.vue')['default']
     CourseCard: typeof import('./src/components/CourseCard.vue')['default']
+    DockPanel: typeof import('./src/components/layout/DockPanel.vue')['default']
+    DockWidget: typeof import('./src/components/layout/DockWidget.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
