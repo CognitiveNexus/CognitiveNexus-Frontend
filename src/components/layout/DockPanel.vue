@@ -14,6 +14,7 @@ const props = defineProps<{
 
 const container = ref<HTMLElement>();
 const dockPanel = new DockPanel({ spacing: props.spacing });
+let resizeObserver: ResizeObserver;
 
 provide('dockPanel', dockPanel);
 
@@ -21,11 +22,19 @@ onMounted(() => {
     if (container.value) {
         Widget.attach(dockPanel, container.value);
         updateLayout();
+
+        resizeObserver = new ResizeObserver(() => {
+            updateLayout();
+        });
+        resizeObserver.observe(container.value);
     }
 });
 
 onBeforeUnmount(() => {
     Widget.detach(dockPanel);
+    if (resizeObserver && container.value) {
+        resizeObserver.unobserve(container.value);
+    }
 });
 
 const updateLayout = () => {
@@ -38,7 +47,7 @@ const updateLayout = () => {
 defineExpose({ dockPanel });
 </script>
 
-<style>
+<style scoped>
 .dock-container {
     width: 100%;
     height: 100%;
@@ -49,7 +58,7 @@ defineExpose({ dockPanel });
     display: flex;
 }
 
-.lm-DockPanel {
+::v-deep(.lm-DockPanel) {
     flex: 1;
 }
 </style>

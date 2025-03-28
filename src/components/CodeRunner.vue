@@ -18,7 +18,9 @@
         <DockPanel style="width: 100%; height: 100%">
             <DockWidget id="code-runner-source-code" title="源代码" mode="split-left">
                 <CodeEditor v-model="code" :disabled="loading || running" :highlight-line="currentStepData?.line" />
-                <el-input v-model="stdin" :rows="2" :disabled="loading" type="textarea" placeholder="stdin"></el-input>
+            </DockWidget>
+            <DockWidget id="code-runner-stdin" title="程序输入" mode="tab-after" ref-id="code-runner-source-code">
+                <el-input v-model="stdin" :disabled="loading" type="textarea" placeholder="输入程序读取的标准输入流的内容" />
             </DockWidget>
             <DockWidget id="code-runner-memory" title="内存可视化" mode="split-right" ref-id="code-runner-source-code">
                 <CodeRunnerGraph :currentStepData="currentStepData" :typeDefinitions="typeDefinitions" />

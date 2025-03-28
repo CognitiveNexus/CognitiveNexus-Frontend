@@ -51,7 +51,6 @@
             </div>
         </el-header>
         <div ref="container" class="editor-container"></div>
-        <el-footer> </el-footer>
     </el-container>
 </template>
 
@@ -262,12 +261,15 @@ onBeforeUnmount(() => {
     position: static;
 }
 .el-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     overflow: hidden;
 }
 .editor-container {
+    flex-grow: 1;
     min-height: 240px;
     width: 100%;
-    height: 100%;
 }
 </style>
 

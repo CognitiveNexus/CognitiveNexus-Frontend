@@ -13,6 +13,7 @@ const props = defineProps<{
     title: string;
     mode?: DockLayout.InsertMode;
     refId?: string;
+    closable?: boolean;
 }>();
 
 const content = ref<HTMLElement>();
@@ -25,7 +26,7 @@ onMounted(() => {
     widget = new Widget({ node: content.value });
     widget.id = props.id;
     widget.title.label = props.title;
-    widget.title.closable = true;
+    widget.title.closable = props.closable ?? false;
 
     if (props.refId) {
         let refWidget: Widget | null = null;
@@ -53,11 +54,15 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .dock-content {
     width: 100%;
     height: 100%;
+    flex-grow: 1;
     overflow: auto;
     padding: 8px;
+    border: 1px solid #c0c0c0;
+    border-top: none;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 </style>
