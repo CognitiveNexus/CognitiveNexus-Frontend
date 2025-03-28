@@ -9,16 +9,36 @@
       <el-scrollbar class="reader-container">
         <div v-for="item in current_store.content[current_page]">
           <!-- 图片 -->
-          <img v-if="item.type === 'image'" :src="item.src" :alt="item.alt" :style="{
-            width: item.width ? `${item.width}px` : 'auto',
-            height: item.height ? `${item.height}px` : 'auto'
-          }">
+          <img
+            v-if="item.type === 'image'"
+            :src="item.src"
+            :alt="item.alt"
+            :style="{
+              width: item.width ? `${item.width}px` : 'auto',
+              height: item.height ? `${item.height}px` : 'auto',
+            }"
+          />
           <!-- 文本 -->
-          <el-text v-else-if="item.type === 'text'" :class="item.class">{{ item.content }}</el-text>
+          <el-text v-else-if="item.type === 'text'" :class="item.class">{{
+            item.content
+          }}</el-text>
           <!-- 链接 -->
-          <a v-else-if="item.type === 'link'" :href="item.url">{{ item.text }}</a>
+          <a v-else-if="item.type === 'link'" :href="item.url">{{
+            item.text
+          }}</a>
           <!-- 换行 -->
           <div v-else-if="item.type === 'break'"><br /></div>
+          <!-- Tag标签群， 一般用于表明前置知识点 -->
+          <div v-else-if="item.type === 'tag'" class="tag">
+            <el-text>前置知识点：</el-text>
+            <el-tag
+              v-for="tag in item.content"
+              :type="tag.tagtype"
+              :effect="tag.effect"
+              :size="tag.size"
+              >{{ tag.text }}</el-tag
+            >
+          </div>
         </div>
       </el-scrollbar>
       <div class="page-counter">
@@ -34,18 +54,18 @@
 </template>
 
 <script setup lang="ts" name="Reader">
-import { useRouter } from 'vue-router';
-import { useCourseStoreManager } from '@/stores/courses/index';
-import { storeToRefs } from 'pinia';
-import { watch } from 'vue';
+import { useRouter } from "vue-router";
+import { useCourseStoreManager } from "@/stores/courses/index";
+import { storeToRefs } from "pinia";
+import { effect, watch } from "vue";
 
 const router = useRouter();
 const store = useCourseStoreManager();
 const { current_store, current_page, total_page } = storeToRefs(store);
 
 watch(
-  () => router.currentRoute.value.meta.store ,
-  (newMeta) => { 
+  () => router.currentRoute.value.meta.store,
+  (newMeta) => {
     switch (newMeta) {
       case "BubbleSort":
         store.selectCourse("bubble");
@@ -58,12 +78,11 @@ watch(
     }
   },
   { immediate: true }
-)
-
+);
 </script>
 
 <style scoped>
-button{
+button {
   margin: 0;
   padding: 0;
   border: none;
@@ -75,23 +94,23 @@ button{
   max-width: 100px;
   height: 99%;
 }
-button:hover{
+button:hover {
   background-color: rgb(245, 245, 245);
 }
-button:active{
+button:active {
   background-color: rgb(230, 230, 230);
 }
-.left{
+.left {
   position: relative;
   left: 0;
   margin-right: 10px;
 }
-.right{
+.right {
   position: relative;
   right: 0;
   margin-left: 10px;
 }
-.main-container{
+.main-container {
   position: relative;
   padding-top: 10px;
   display: flex;
@@ -99,22 +118,22 @@ button:active{
   width: 100%;
   overflow: hidden;
 }
-.main-column{
+.main-column {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
-.main-column .reader-container{
+.main-column .reader-container {
   padding: 0px 20px;
 }
-.main-column .page-counter{
+.main-column .page-counter {
   display: flex;
   justify-content: center;
   text-align: center;
   margin-top: 10px;
   height: 30px;
 }
-.main-column .page-counter .el-text{
+.main-column .page-counter .el-text {
   background-color: rgb(240, 240, 240);
   margin-bottom: 15px;
   padding: 10px;
@@ -122,44 +141,50 @@ button:active{
 }
 
 /* 文字样式部分 */
-.title{
+.title {
   width: auto;
   font-size: 40px;
   font-weight: 1000;
   margin-bottom: 10px;
-  line-height: 3.0;
+  line-height: 3;
   padding: 18px 0px;
   border-bottom: 1px solid black;
-  background-image: linear-gradient(90deg, #46a2ff,
-          #9554ff);
+  background-image: linear-gradient(90deg, #46a2ff, #9554ff);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.content{
+.content {
   font-size: 18px;
   font-weight: 500;
   line-height: 2.2;
   letter-spacing: 1px;
-  color: #3C3C43;
+  color: #3c3c43;
 }
-.highlight{
+.highlight {
   font-size: 18px;
   font-weight: 500;
   line-height: 2.2;
   letter-spacing: 1px;
-  background-color: #ECECEC;
+  background-color: #ececec;
   color: black;
   padding: 3px;
 }
-.tips{
+.tips {
   font-size: 18px;
   font-weight: 500;
   line-height: 2.2;
   letter-spacing: 1px;
-  color: #3C3C43;
+  color: #3c3c43;
   background-color: rgb(216.8, 235.6, 255);
 }
-.code{
-  background-color: #F6F8FA;
+.code {
+  background-color: #f6f8fa;
+}
+.tag {
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.el-tag {
+  margin-right: 10px;
 }
 </style>

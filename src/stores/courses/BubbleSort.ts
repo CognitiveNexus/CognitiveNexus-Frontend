@@ -13,15 +13,32 @@ export const useBubbleSortStore = defineStore("BubbleSort", {
         },
         {
           type: "text",
-          content: `冒泡排序（Bubble Sort）是一种简单的排序算法，它通过重复地遍历待排序的列表，比较相邻的元素并交换它们的位置来实现排序。该算法的名称来源于较小的元素会像"气泡"一样逐渐"浮"到列表的顶端。`,
+          content: `欢迎来到冒泡排序的章节！！！`,
           class: "content",
         },
         {
           type: "break",
         },
         {
+          type: "tag",
+          content: [
+            {
+              text: "for循环",
+              tagtype: "primary",
+              effect: "dark",
+              size: "small",
+            },
+            {
+              text: "if判断",
+              tagtype: "primary",
+              effect: "dark",
+              size: "small",
+            },
+          ],
+        },
+        {
           type: "text",
-          content: `在本章节中，我们会一步一步，模块化地学习如何实现这个最基础的排序算法，点击右边的箭头，前往下一页吧！`,
+          content: `在本章节中，我们会跟随小骑士进行一场奇幻的冒险，挑选最好的武器和装备，向远处的目的地进发`,
           class: "content",
         },
         {

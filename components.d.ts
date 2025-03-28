@@ -34,11 +34,11 @@ declare module 'vue' {
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideMenu: typeof import('./src/components/layout/SideMenu.vue')['default']
-    SubHeader: typeof import('./src/components/layout/SubHeader.vue')['default']
     TextReader: typeof import('./src/components/ui/TextReader.vue')['default']
   }
 }

@@ -9,7 +9,7 @@ import type { CourseName, CourseMeta } from "@/types/CoursesNameType";
  * 通过控制current_course来利用current_store返回正确的课程的store
  * 并且集成了页码切换，方便外部控制
  *
- * 若要添加课程，先增加上方CoursesName类型中的课程名，后在stores中加入如下格式：
+ * 若要添加课程，先增加上方CourseName类型中的课程名，后在stores中加入如下格式：
  * [Courses中的课程名]： use....Store();
  * 即可
  *
