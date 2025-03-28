@@ -54,31 +54,16 @@
 </template>
 
 <script setup lang="ts" name="Reader">
-import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { useCourseStoreManager } from "@/stores/courses/index";
 import { storeToRefs } from "pinia";
-import { effect, watch } from "vue";
+import type { CourseName } from "@/types/CoursesNameType";
 
-const router = useRouter();
+const route = useRoute();
 const store = useCourseStoreManager();
 const { current_store, current_page, total_page } = storeToRefs(store);
 
-watch(
-  () => router.currentRoute.value.meta.store,
-  (newMeta) => {
-    switch (newMeta) {
-      case "BubbleSort":
-        store.selectCourse("bubble");
-        break;
-      case "SelectSort":
-        store.selectCourse("select");
-        break;
-      default:
-        break;
-    }
-  },
-  { immediate: true }
-);
+store.selectCourse(route.params.courseName as CourseName);
 </script>
 
 <style scoped>

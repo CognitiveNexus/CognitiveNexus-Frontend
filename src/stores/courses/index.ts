@@ -1,5 +1,7 @@
 import { useBubbleSortStore } from "./BubbleSort";
 import { useSelectSortStore } from "./SelectSort";
+import { useIfStore } from "./If";
+import { useForStore } from "./For";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { CourseName, CourseMeta } from "@/types/CoursesNameType";
@@ -29,6 +31,8 @@ export const useCourseStoreManager = defineStore("CourseStore", {
     course: {
       bubble: useBubbleSortStore(),
       select: useSelectSortStore(),
+      if: useIfStore(),
+      for: useForStore(),
     },
     courseMeta: {
       bubble: {
@@ -40,6 +44,16 @@ export const useCourseStoreManager = defineStore("CourseStore", {
         title: "选择排序算法",
         path: "/course/select",
         diff: "normal",
+      },
+      if: {
+        title: "if判断语句",
+        path: "/course/if",
+        diff: "basic",
+      },
+      for: {
+        title: "for循环",
+        path: "/course/for",
+        diff: "basic",
       },
     } as Record<CourseName, CourseMeta>,
     current_course: ref<CourseName>("bubble"),

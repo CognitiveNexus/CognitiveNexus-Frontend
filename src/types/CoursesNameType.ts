@@ -1,4 +1,4 @@
-export type CourseName = "bubble" | "select";
+export type CourseName = "bubble" | "select" | "if" | "for";
 
 export type CourseMeta = {
   title: string;

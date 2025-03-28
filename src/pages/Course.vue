@@ -1,20 +1,38 @@
 <template>
-  <el-container class="main">
-    <el-main>
-      <el-text>Title</el-text>
-      <CourseSelecter />
+  <el-container>
+    <el-aside class="animation-render"> </el-aside>
+    <el-divider direction="vertical" class="vertical-divider" />
+    <el-main class="text-render">
+      <TextReader class="text-reader" :courseName="props.courseName" />
     </el-main>
   </el-container>
 </template>
 
-<script setup lang="ts" name="Course"></script>
+<script setup lang="ts" name="Course">
+import TextReader from "@/components/ui/TextReader.vue";
+import type { CourseName } from "@/types/CoursesNameType";
+
+const props = defineProps<{ courseName: CourseName }>();
+</script>
 
 <style scoped>
-.el-text {
+.text-render {
+  padding: 0px;
+  width: 70%;
+  height: 99%;
+  overflow: hidden;
+}
+.animation-render {
+  width: 30%;
+  height: 100%;
+}
+.text-reader {
+  flex: 1;
+  min-width: 30%;
+  height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 50px;
-  margin: 20px;
+}
+.vertical-divider {
+  height: 100%;
 }
 </style>

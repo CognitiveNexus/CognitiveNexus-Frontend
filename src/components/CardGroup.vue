@@ -19,7 +19,7 @@
             type="success"
             :icon="Promotion"
             round
-            @click="handleClick(item.path)"
+            @click="handleClick(item.name)"
             style="float: right"
             >Go
           </el-button>
@@ -34,6 +34,7 @@ import { Promotion } from "@element-plus/icons-vue";
 import { useCourseStoreManager } from "@/stores/courses";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
+import type { CourseName } from "@/types/CoursesNameType";
 
 const props = defineProps({
   diff: String,
@@ -50,8 +51,8 @@ const store = useCourseStoreManager();
 const { course_list } = storeToRefs(store);
 const router = useRouter();
 
-function handleClick(path: string) {
-  router.push(path);
+function handleClick(name: CourseName) {
+  router.push(`/course/${name}`);
 }
 </script>
 

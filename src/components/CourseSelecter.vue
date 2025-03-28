@@ -2,6 +2,9 @@
   <el-container>
     <el-main>
       <el-collapse>
+        <el-collapse-item title="基础">
+          <CardGroup diff="basic" />
+        </el-collapse-item>
         <el-collapse-item title="普通">
           <CardGroup diff="normal" />
         </el-collapse-item>
