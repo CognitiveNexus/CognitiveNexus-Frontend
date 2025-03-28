@@ -70,7 +70,7 @@ const props = defineProps({
     },
     theme: {
         type: String,
-        default: 'vs-dark',
+        default: 'chrome-devtools',
     },
     disabled: {
         type: Boolean,
@@ -82,10 +82,13 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:modelValue']);
 
-const theme = ref<string>('VSCode Dark');
+const theme = ref<string>('Chrome DevTools');
 const themes = [
+    { label: 'GitHub Dark', value: 'github-dark' },
+    { label: 'GitHub Light', value: 'github-light' },
     { label: 'VSCode Dark', value: 'vs-dark' },
     { label: 'VSCode Light', value: 'vs' },
+    { label: 'Chrome DevTools', value: 'chrome-devtools' },
 ];
 
 const fontSize = ref<string>('14');
@@ -109,7 +112,11 @@ let editor: monaco.editor.IStandaloneCodeEditor;
 let resizeObserver: ResizeObserver;
 
 // 初始化编辑器
-onMounted(() => {
+onMounted(async () => {
+    monaco.editor.defineTheme('github-dark', (await import('monaco-themes/themes/GitHub Dark.json')) as monaco.editor.IStandaloneThemeData);
+    monaco.editor.defineTheme('github-light', (await import('monaco-themes/themes/GitHub Light.json')) as monaco.editor.IStandaloneThemeData);
+    monaco.editor.defineTheme('chrome-devtools', (await import('monaco-themes/themes/Chrome DevTools.json')) as monaco.editor.IStandaloneThemeData);
+
     if (container.value === undefined) {
         throw new Error('Code editor container div not found.');
     }

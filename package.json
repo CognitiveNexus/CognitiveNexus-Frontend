@@ -19,6 +19,7 @@
         "echarts": "^5.6.0",
         "element-plus": "^2.9.6",
         "monaco-editor": "^0.52.2",
+        "monaco-themes": "^0.4.4",
         "pinia": "^3.0.1",
         "vue": "^3.5.13",
         "vue-echarts": "^7.0.3",

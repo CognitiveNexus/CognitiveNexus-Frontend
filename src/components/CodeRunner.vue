@@ -155,6 +155,7 @@ const runCode = async () => {
     justify-content: space-between;
     align-items: center;
     padding: 8px;
+    padding-bottom: 0px;
 }
 .keepLineBreak {
     white-space: pre-line;
