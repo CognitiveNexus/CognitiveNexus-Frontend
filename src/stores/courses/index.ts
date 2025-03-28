@@ -37,22 +37,18 @@ export const useCourseStoreManager = defineStore("CourseStore", {
     courseMeta: {
       bubble: {
         title: "冒泡排序算法",
-        path: "/course/bubble",
         diff: "normal",
       },
       select: {
         title: "选择排序算法",
-        path: "/course/select",
         diff: "normal",
       },
       if: {
         title: "if判断语句",
-        path: "/course/if",
         diff: "basic",
       },
       for: {
         title: "for循环",
-        path: "/course/for",
         diff: "basic",
       },
     } as Record<CourseName, CourseMeta>,
@@ -70,7 +66,6 @@ export const useCourseStoreManager = defineStore("CourseStore", {
       return Object.entries(state.courseMeta).map(([name, meta]) => ({
         name: name as CourseName,
         title: meta.title,
-        path: meta.path,
         diff: meta.diff,
       }));
     },

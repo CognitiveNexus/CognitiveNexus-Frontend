@@ -12,14 +12,6 @@ export const useBubbleSortStore = defineStore("BubbleSort", {
           class: "title",
         },
         {
-          type: "text",
-          content: `欢迎来到冒泡排序的章节！！！`,
-          class: "content",
-        },
-        {
-          type: "break",
-        },
-        {
           type: "tag",
           content: [
             {
