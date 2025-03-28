@@ -13,6 +13,7 @@ import { createPinia } from 'pinia';
 
 import '@/assets/css/reset-router-link.css';
 import '@/assets/css/fonts.css';
+import '@/assets/css/notification-keep-line-break.css';
 
 import '@lumino/widgets/style/index.css';
 import '@lumino/default-theme/style/index.css';

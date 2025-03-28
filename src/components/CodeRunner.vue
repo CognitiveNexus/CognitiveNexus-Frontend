@@ -125,9 +125,8 @@ const runCode = async () => {
                             overstep: '步数超限',
                             aborted: '异常终止',
                         }[result.data.endState] +
-                        '<br />' +
+                        '\n' +
                         result.data.steps.at(-1)?.stdout,
-                    dangerouslyUseHTMLString: true, // TODO: remove
                     type: result.data.endState === 'finished' ? 'success' : 'warning',
                 });
                 running.value = true;
