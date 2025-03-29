@@ -18,12 +18,9 @@ import "@/assets/css/notification-keep-line-break.css";
 import "@lumino/widgets/style/index.css";
 import "@lumino/default-theme/style/index.css";
 
-import { MotionPlugin } from "@vueuse/motion";
-
 const app = createApp(App);
 const pinia = createPinia();
 app.use(router).use(pinia).component("v-chart", ECharts);
-app.use(MotionPlugin);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }

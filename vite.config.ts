@@ -8,6 +8,8 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
+import MotionResolver from "motion-v/resolver";
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -24,7 +26,7 @@ export default defineConfig({
     }),
     Components({
       dts: true,
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(), MotionResolver()],
     }),
   ],
   resolve: {

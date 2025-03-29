@@ -1,6 +1,8 @@
 <template>
   <el-container>
-    <el-aside class="animation-render"> </el-aside>
+    <el-aside class="animation-render">
+      <BubbleAnimation />
+    </el-aside>
     <el-divider direction="vertical" class="vertical-divider" />
     <el-main class="text-render">
       <TextReader class="text-reader" :courseName="props.courseName" />
@@ -9,7 +11,7 @@
 </template>
 
 <script setup lang="ts" name="Course">
-import TextReader from "@/components/ui/TextReader.vue";
+import BubbleAnimation from "@/components/animation/bubble.vue";
 import type { CourseName } from "@/types/CoursesNameType";
 
 const props = defineProps<{ courseName: CourseName }>();

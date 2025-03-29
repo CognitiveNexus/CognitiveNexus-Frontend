@@ -9,6 +9,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppHeader: typeof import('./src/components/layout/AppHeader.vue')['default']
+    BalanceBlock: typeof import('./src/components/animation/BalanceBlock.vue')['default']
+    Bubble: typeof import('./src/components/animation/bubble.vue')['default']
     CardGroup: typeof import('./src/components/CardGroup.vue')['default']
     Carousel: typeof import('./src/components/ui/Carousel.vue')['default']
     CodeEditor: typeof import('./src/components/CodeEditor.vue')['default']
@@ -41,6 +43,7 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
+    EnterAnimation: typeof import('./src/components/animation/EnterAnimation.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SideMenu: typeof import('./src/components/layout/SideMenu.vue')['default']

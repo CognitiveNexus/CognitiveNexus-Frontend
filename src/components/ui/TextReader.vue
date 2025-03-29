@@ -6,7 +6,7 @@
       </el-icon>
     </button>
     <div class="main-column">
-      <el-scrollbar class="reader-container">
+      <el-scrollbar class="reader-container" height="700px">
         <div v-for="item in current_store.content[current_page]">
           <!-- 图片 -->
           <img
