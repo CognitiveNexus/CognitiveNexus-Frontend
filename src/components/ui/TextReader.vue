@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <button class="left" @click="store.prevPage()">
+    <button class="left" @click="prevPage()" :disabled="current_page === 1">
       <el-icon :size="40" color="gray">
         <ArrowLeft />
       </el-icon>
@@ -45,7 +45,11 @@
         <el-text>{{ current_page }}/{{ total_page }}</el-text>
       </div>
     </div>
-    <button class="right" @click="store.nextPage()">
+    <button
+      class="right"
+      @click="nextPage()"
+      :disabled="current_page === store.total_page"
+    >
       <el-icon :size="40" color="gray">
         <ArrowRight />
       </el-icon>
@@ -54,16 +58,49 @@
 </template>
 
 <script setup lang="ts" name="Reader">
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useCourseStoreManager } from "@/stores/courses/index";
 import { storeToRefs } from "pinia";
 import type { CourseName } from "@/types/CoursesNameType";
 
 const route = useRoute();
-const store = useCourseStoreManager();
-const { current_store, current_page, total_page } = storeToRefs(store);
+const router = useRouter();
 
-store.selectCourse(route.params.courseName as CourseName);
+const current_page = ref(parseInt(route.params.pageIndex as string, 10));
+const store = useCourseStoreManager();
+const { current_store, total_page } = storeToRefs(store);
+const coursesName = ref(route.params.courseName as CourseName);
+
+store.selectCourse(coursesName.value);
+
+function nextPage() {
+  if (!store.isAvailblePage(current_page.value + 1)) return;
+  router.push({
+    params: {
+      courseName: coursesName.value,
+      pageIndex: current_page.value + 1,
+    },
+  });
+}
+
+function prevPage() {
+  if (!store.isAvailblePage(current_page.value - 1)) return;
+  router.push({
+    params: {
+      courseName: coursesName.value,
+      pageIndex: current_page.value - 1,
+    },
+  });
+}
+
+watch(
+  () => route.params.pageIndex,
+  () => {
+    current_page.value = parseInt(route.params.pageIndex as string, 10);
+  }
+);
 </script>
 
 <style scoped>

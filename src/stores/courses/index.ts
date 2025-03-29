@@ -53,7 +53,6 @@ export const useCourseStoreManager = defineStore("CourseStore", {
       },
     } as Record<CourseName, CourseMeta>,
     current_course: ref<CourseName>("bubble"),
-    current_page: ref(1),
   }),
   getters: {
     current_store: (state) => {
@@ -74,22 +73,10 @@ export const useCourseStoreManager = defineStore("CourseStore", {
     //切换课程并将页码调至1
     selectCourse(course: CourseName) {
       this.current_course = course;
-      this.current_page = 1;
     },
     //页码合法检测
     isAvailblePage(page: number): boolean {
       return page >= 1 && page <= this.total_page;
-    },
-    //按钮响应
-    nextPage() {
-      if (this.isAvailblePage(this.current_page + 1)) {
-        this.current_page++;
-      }
-    },
-    prevPage() {
-      if (this.isAvailblePage(this.current_page - 1)) {
-        this.current_page--;
-      }
     },
   },
 });

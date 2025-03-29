@@ -9,12 +9,24 @@
 <script setup lang="ts" name="BubbleAnimation">
 import { useCourseStoreManager } from "@/stores/courses";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
+import { ref, watch } from "vue";
 import parchment from "@/assets/animation/parchment.png";
 import magicbook from "@/assets/animation/magicbook.png";
 import shields from "@/assets/animation/shields.png";
 
+const route = useRoute();
 const store = useCourseStoreManager();
-const { current_store, current_page } = storeToRefs(store);
+
+const current_page = ref(parseInt(route.params.pageIndex as string, 10));
+const { current_store } = storeToRefs(store);
+
+watch(
+  () => route.params.pageIndex,
+  () => {
+    current_page.value = parseInt(route.params.pageIndex as string, 10);
+  }
+);
 </script>
 
 <style scoped>

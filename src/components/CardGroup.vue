@@ -52,7 +52,7 @@ const { course_list } = storeToRefs(store);
 const router = useRouter();
 
 function handleClick(name: CourseName) {
-  router.push(`/course/${name}`);
+  router.push(`/course/${name}/1`);
 }
 </script>
 

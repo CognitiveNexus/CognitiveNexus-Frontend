@@ -4,6 +4,7 @@ import Home from "@/pages/Home.vue";
 import Course from "@/pages/Course.vue";
 import CourseSelection from "@/pages/CourseSelection.vue";
 import Playground from "@/pages/Playground.vue";
+import Practice from "@/pages/Practice.vue";
 
 // 创建路由器
 const router = createRouter({
@@ -19,8 +20,16 @@ const router = createRouter({
     },
     //课程部分地址配置
     {
-      path: "/course/:courseName",
+      path: "/course/:courseName/:pageIndex(\\d+)",
       component: Course,
+      props: true,
+      meta: {
+        requiresCourseData: true,
+      },
+    },
+    {
+      path: "/course/:courseName/p/:practiceIndex",
+      component: Practice,
       props: true,
       meta: {
         requiresCourseData: true,
