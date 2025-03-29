@@ -9,7 +9,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppHeader: typeof import('./src/components/layout/AppHeader.vue')['default']
-    BalanceBlock: typeof import('./src/components/animation/BalanceBlock.vue')['default']
     Bubble: typeof import('./src/components/animation/bubble.vue')['default']
     CardGroup: typeof import('./src/components/CardGroup.vue')['default']
     Carousel: typeof import('./src/components/ui/Carousel.vue')['default']

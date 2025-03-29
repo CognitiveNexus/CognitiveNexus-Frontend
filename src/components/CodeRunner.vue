@@ -48,7 +48,7 @@ import DockWidget from '@/components/layout/DockWidget.vue';
 import CodeEditor from '@/components/CodeEditor.vue';
 import CodeRunnerGraph from '@/components/CodeRunnerGraph.vue';
 
-const host = import.meta.env.CNCR_API_HOST;
+const host = import.meta.env.COGNEX_API_HOST ?? '';
 
 const code = ref<string>(
     '#include <stdio.h>\n\nint main() {\n    int a = 1, *b = &a;\n    printf("a = %d\\n", a);\n    *b = 114514;\n    printf("a = %d\\n", a);\n    return 0;\n}'
@@ -84,13 +84,12 @@ const runCode = async () => {
     }
     loading.value = true;
     codeRunnerData.value = blankCodeRunnerData;
-    await fetch(`${host}/run`, {
+    await fetch(`${host}/api/run-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             code: code.value,
             stdin: stdin.value,
-            usst: '1906',
         }),
     })
         .then((response) => response.json())
