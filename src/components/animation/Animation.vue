@@ -9,8 +9,6 @@
 </template>
 
 <script setup lang="ts" name="Animation">
-import { useCourseStoreManager } from '@/stores/courses';
-import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
 import parchment from '@/assets/animation/parchment.png';
