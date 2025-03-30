@@ -14,8 +14,8 @@
 </template>
 
 <script setup lang="ts" name="CourseSelecter">
-import { ref } from "vue";
-const activeNames = ref(["1", "2"]);
+import { ref } from 'vue';
+const activeNames = ref(['1', '2']);
 </script>
 
 <style scoped>

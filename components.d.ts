@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Animation: typeof import('./src/components/animation/Animation.vue')['default']
     AppHeader: typeof import('./src/components/layout/AppHeader.vue')['default']
     Bubble: typeof import('./src/components/animation/bubble.vue')['default']
     CardGroup: typeof import('./src/components/CardGroup.vue')['default']
@@ -21,6 +22,7 @@ declare module 'vue' {
     DockPanel: typeof import('./src/components/layout/DockPanel.vue')['default']
     DockWidget: typeof import('./src/components/layout/DockWidget.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElButtom: typeof import('element-plus/es')['ElButtom']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']

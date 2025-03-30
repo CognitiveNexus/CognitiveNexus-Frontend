@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
 
-import Home from "@/pages/Home.vue";
-import Course from "@/pages/Course.vue";
-import CourseSelection from "@/pages/CourseSelection.vue";
-import Playground from "@/pages/Playground.vue";
-import Practice from "@/pages/Practice.vue";
+import Home from '@/pages/Home.vue';
+import Course from '@/pages/Course.vue';
+import CourseSelection from '@/pages/CourseSelection.vue';
+import Playground from '@/pages/Playground.vue';
+import Practice from '@/pages/Practice.vue';
 
 // 创建路由器
 const router = createRouter({
@@ -14,13 +14,14 @@ const router = createRouter({
   routes: [
     {
       //选择课程页面
-      name: "course",
-      path: "/course",
+      name: 'select',
+      path: '/course',
       component: CourseSelection,
     },
     //课程部分地址配置
     {
-      path: "/course/:courseName/:pageIndex(\\d+)",
+      name: 'course',
+      path: '/course/:courseName/:pageIndex(\\d+)',
       component: Course,
       props: true,
       meta: {
@@ -28,7 +29,8 @@ const router = createRouter({
       },
     },
     {
-      path: "/course/:courseName/p/:practiceIndex",
+      name: 'practice',
+      path: '/course/:courseName/p/:practiceIndex',
       component: Practice,
       props: true,
       meta: {
@@ -37,18 +39,18 @@ const router = createRouter({
     },
     {
       // 主页重定向至/home，指向网页主页
-      name: "home",
-      path: "/home",
+      name: 'home',
+      path: '/home',
       component: Home,
     },
     {
-      name: "playground",
-      path: "/playground",
+      name: 'playground',
+      path: '/playground',
       component: Playground,
     },
     {
-      path: "/",
-      redirect: "/home",
+      path: '/',
+      redirect: '/home',
     },
   ],
 });

@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <button class="left" @click="prevPage()" :disabled="current_page === 1">
+    <button class="fliper" @click="prevPage()" :disabled="current_page === 1">
       <el-icon :size="40" color="gray">
         <ArrowLeft />
       </el-icon>
@@ -39,6 +39,16 @@
               >{{ tag.text }}</el-tag
             >
           </div>
+          <!-- 跳跃到练习界面的按钮 -->
+          <div class="warp-button" v-else-if="item.type === 'button'">
+            <el-button
+              :type="item.buttontype"
+              :size="item.size"
+              :icon="Flag"
+              @click="toPractice(item.practiceIndex)"
+              >{{ item.content }}
+            </el-button>
+          </div>
         </div>
       </el-scrollbar>
       <div class="page-counter">
@@ -46,7 +56,7 @@
       </div>
     </div>
     <button
-      class="right"
+      class="fliper"
       @click="nextPage()"
       :disabled="current_page === store.total_page"
     >
@@ -58,12 +68,13 @@
 </template>
 
 <script setup lang="ts" name="Reader">
-import { ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { useRouter } from "vue-router";
-import { useCourseStoreManager } from "@/stores/courses/index";
-import { storeToRefs } from "pinia";
-import type { CourseName } from "@/types/CoursesNameType";
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { useCourseStoreManager } from '@/stores/courses/index';
+import { storeToRefs } from 'pinia';
+import type { CourseName } from '@/types/CoursesNameType';
+import { Flag } from '@element-plus/icons-vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -101,10 +112,20 @@ watch(
     current_page.value = parseInt(route.params.pageIndex as string, 10);
   }
 );
+
+function toPractice(practiceIndex: number) {
+  router.push({
+    name: 'practice',
+    params: {
+      courseName: coursesName.value,
+      practiceIndex: practiceIndex,
+    },
+  });
+}
 </script>
 
 <style scoped>
-button {
+.fliper {
   margin: 0;
   padding: 0;
   border: none;
@@ -116,10 +137,10 @@ button {
   max-width: 100px;
   height: 99%;
 }
-button:hover {
+.fliper:hover {
   background-color: rgb(245, 245, 245);
 }
-button:active {
+.fliper:active {
   background-color: rgb(230, 230, 230);
 }
 .left {
@@ -208,5 +229,12 @@ button:active {
 }
 .el-tag {
   margin-right: 10px;
+}
+.warp-button {
+  margin-top: 50px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

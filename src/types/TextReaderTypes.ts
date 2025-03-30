@@ -1,35 +1,42 @@
-type elementType = "primary" | "success" | "info" | "warning" | "danger";
+type elementType = 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
 interface tagType {
   text: string;
   tagtype: elementType;
-  effect: "dark" | "light" | "plain";
+  effect: 'dark' | 'light' | 'plain';
   size?: string;
 }
 
 //Reader 富文本类型约束
 export type ContentItem =
   | {
-      type: "image";
+      type: 'image';
       src: string;
       alt?: string; // 可选属性
       width?: number;
       height?: number;
     }
   | {
-      type: "link";
+      type: 'link';
       url: string;
       text: string;
     }
   | {
-      type: "text";
+      type: 'text';
       content: string;
       class: string;
     }
   | {
-      type: "break";
+      type: 'break';
     }
   | {
-      type: "tag";
+      type: 'tag';
       content: tagType[];
+    }
+  | {
+      type: 'button';
+      buttontype: elementType;
+      content: string;
+      practiceIndex: number;
+      size?: string;
     };
