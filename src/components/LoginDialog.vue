@@ -1,12 +1,5 @@
 <template>
-  <el-dialog
-    v-loading="requesting"
-    :model-value="modelValue"
-    @update:model-value="updateModelValue"
-    :show-close="false"
-    direction="ltr"
-    width="480px"
-    header-class="no-bottom-padding">
+  <el-dialog :model-value="modelValue" @update:model-value="updateModelValue" :show-close="false" width="24em" header-class="no-bottom-padding">
     <template #header>
       <el-form-item>
         <el-segmented v-model="selectedTab" :options="tabs" size="large" style="width: 100%" />
@@ -25,7 +18,7 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="submit">{{ actionName }}</el-button>
+        <el-button type="primary" @click="submit" :loading="requesting">{{ actionName }}</el-button>
         <el-button @click="closeDialog">取消</el-button>
       </div>
     </template>

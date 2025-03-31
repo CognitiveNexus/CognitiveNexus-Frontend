@@ -1,12 +1,12 @@
 <template>
-  <el-menu :default-active="route.path.replace(/#.*$/, '')" mode="horizontal" :router="true" :ellipsis="false">
+  <el-menu :default-active="route.path.replace(/#.*$/, '')" mode="horizontal" :router="true">
     <el-menu-item index="/home">
       <span class="title">思维脉络</span>
     </el-menu-item>
     <el-menu-item index="/course">课程</el-menu-item>
     <el-menu-item index="/playground">练习场</el-menu-item>
     <el-menu-item v-if="!isAuthenticated" @click="openLoginWindow">登录</el-menu-item>
-    <el-sub-menu v-if="isAuthenticated" index="user-menu">
+    <el-sub-menu v-else index="user-menu">
       <template #title>{{ username }}</template>
       <el-menu-item @click="logout">注销</el-menu-item>
     </el-sub-menu>
