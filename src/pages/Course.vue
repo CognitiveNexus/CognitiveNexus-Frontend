@@ -5,16 +5,13 @@
     </el-aside>
     <el-divider direction="vertical" class="vertical-divider" />
     <el-main class="text-render">
-      <TextReader class="text-reader" :courseName="props.courseName" />
+      <CourseReader class="text-reader" />
     </el-main>
   </el-container>
 </template>
 
 <script setup lang="ts" name="Course">
 import Animation from '@/components/animation/Animation.vue';
-import type { CourseName } from '@/types/CoursesNameType';
-
-const props = defineProps<{ courseName: CourseName }>();
 </script>
 
 <style scoped>

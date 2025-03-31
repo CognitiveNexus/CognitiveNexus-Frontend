@@ -122,5 +122,14 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
         },
       ],
     } as Record<number, ContentItem[]>,
+    practice: {
+      1: [
+        {
+          type: 'text',
+          content: `冒泡排序练习1`,
+          class: 'content',
+        },
+      ],
+    } as Record<number, ContentItem[]>,
   }),
 });

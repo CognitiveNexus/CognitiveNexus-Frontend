@@ -1,10 +1,10 @@
-import { useBubbleSortStore } from "./BubbleSort";
-import { useSelectSortStore } from "./SelectSort";
-import { useIfStore } from "./If";
-import { useForStore } from "./For";
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import type { CourseName, CourseMeta } from "@/types/CoursesNameType";
+import { useBubbleSortStore } from './BubbleSort';
+import { useSelectSortStore } from './SelectSort';
+import { useIfStore } from './If';
+import { useForStore } from './For';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import type { CourseName, CourseMeta } from '@/types/CoursesNameType';
 
 /**
  * 这是所有课程内容的管理文件
@@ -25,7 +25,7 @@ import type { CourseName, CourseMeta } from "@/types/CoursesNameType";
  * 获得必要的显示元素
  */
 
-export const useCourseStoreManager = defineStore("CourseStore", {
+export const useCourseStoreManager = defineStore('CourseStore', {
   state: () => ({
     //所有课程的集合
     course: {
@@ -36,32 +36,32 @@ export const useCourseStoreManager = defineStore("CourseStore", {
     },
     courseMeta: {
       bubble: {
-        title: "冒泡排序算法",
-        diff: "normal",
+        title: '冒泡排序算法',
+        diff: 'normal',
       },
       select: {
-        title: "选择排序算法",
-        diff: "normal",
+        title: '选择排序算法',
+        diff: 'normal',
       },
       if: {
-        title: "if判断语句",
-        diff: "basic",
+        title: 'if判断语句',
+        diff: 'basic',
       },
       for: {
-        title: "for循环",
-        diff: "basic",
+        title: 'for循环',
+        diff: 'basic',
       },
     } as Record<CourseName, CourseMeta>,
-    current_course: ref<CourseName>("bubble"),
+    currentCourse: ref<CourseName>('bubble'),
   }),
   getters: {
-    current_store: (state) => {
-      return state.course[state.current_course];
+    currentStore: (state) => {
+      return state.course[state.currentCourse];
     },
-    total_page: (state) => {
-      return Object.keys(state.course[state.current_course].content).length;
+    totalPage: (state) => {
+      return Object.keys(state.course[state.currentCourse].content).length;
     },
-    course_list: (state) => {
+    courseList: (state) => {
       return Object.entries(state.courseMeta).map(([name, meta]) => ({
         name: name as CourseName,
         title: meta.title,
@@ -70,13 +70,13 @@ export const useCourseStoreManager = defineStore("CourseStore", {
     },
   },
   actions: {
-    //切换课程并将页码调至1
+    //切换课程
     selectCourse(course: CourseName) {
-      this.current_course = course;
+      this.currentCourse = course;
     },
     //页码合法检测
     isAvailblePage(page: number): boolean {
-      return page >= 1 && page <= this.total_page;
+      return page >= 1 && page <= this.totalPage;
     },
   },
 });

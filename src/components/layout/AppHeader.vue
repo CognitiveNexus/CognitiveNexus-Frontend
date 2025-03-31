@@ -1,11 +1,17 @@
 <template>
-  <el-menu :default-active="route.path.replace(/#.*$/, '')" mode="horizontal" :router="true">
+  <el-menu
+    :default-active="route.path.replace(/#.*$/, '')"
+    mode="horizontal"
+    :router="true"
+  >
     <el-menu-item index="/home">
       <span class="title">思维脉络</span>
     </el-menu-item>
     <el-menu-item index="/course">课程</el-menu-item>
     <el-menu-item index="/playground">练习场</el-menu-item>
-    <el-menu-item v-if="!isAuthenticated" @click="showLoginDialog = true">登录</el-menu-item>
+    <el-menu-item v-if="!isAuthenticated" @click="showLoginDialog = true"
+      >登录</el-menu-item
+    >
     <el-sub-menu v-else index="user-menu">
       <template #title>{{ username }}</template>
       <el-menu-item @click="logout">退出登录</el-menu-item>
@@ -48,5 +54,8 @@ const logout = () => {
   background-image: linear-gradient(90deg, #60afff, #b180ff);
   background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.el-menu--horizontal > .el-menu-item:nth-child(3) {
+  margin-right: auto;
 }
 </style>
