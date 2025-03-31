@@ -1,19 +1,17 @@
 <template>
-  <el-menu
-    :default-active="route.path.replace(/#.*$/, '')"
-    mode="horizontal"
-    :router="true"
-  >
+  <el-menu :default-active="route.path.replace(/#.*$/, '')" mode="horizontal" :router="true" :ellipsis="false">
     <el-menu-item index="/home">
       <span class="title">思维脉络</span>
     </el-menu-item>
     <el-menu-item index="/course">课程</el-menu-item>
     <el-menu-item index="/playground">练习场</el-menu-item>
-    <el-menu-item v-if="!isAuthenticated" @click="showLoginDialog = true"
-      >登录</el-menu-item
-    >
+    <el-menu-item v-if="!isAuthenticated" @click="showLoginDialog = true">
+      <el-icon><User /></el-icon>登录
+    </el-menu-item>
     <el-sub-menu v-else index="user-menu">
-      <template #title>{{ username }}</template>
+      <template #title>
+        <el-icon><User /></el-icon>{{ username }}
+      </template>
       <el-menu-item @click="logout">退出登录</el-menu-item>
     </el-sub-menu>
   </el-menu>
@@ -21,7 +19,6 @@
 </template>
 
 <script setup lang="ts" name="AppHeader">
-import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
@@ -55,7 +52,7 @@ const logout = () => {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.el-menu--horizontal > .el-menu-item:nth-child(3) {
+.el-menu--horizontal > .el-menu-item:nth-last-child(2) {
   margin-right: auto;
 }
 </style>
