@@ -13,7 +13,9 @@
         :disabled="loading"
         :page-size="1"
         :total="codeRunnerData.steps.length"
-        layout="total, prev, pager, next" />
+        layout="slot, prev, pager, next">
+        <el-text>第 {{ currentStep }} 步 / 共 {{ codeRunnerData.steps.length }} 步</el-text>
+      </el-pagination>
     </div>
     <DockPanel style="width: 100%; height: 100%">
       <DockWidget v-for="slotName in Object.keys(slots)" :id="'code-runner-custom-' + slotName" :title="slotName" mode="tab-after">
@@ -185,7 +187,7 @@ const runCode = async () => {
 .container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  /* height: 100%; */
   width: 100%;
 }
 .top-bar {
