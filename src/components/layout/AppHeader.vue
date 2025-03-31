@@ -5,13 +5,13 @@
     </el-menu-item>
     <el-menu-item index="/course">课程</el-menu-item>
     <el-menu-item index="/playground">练习场</el-menu-item>
-    <el-menu-item v-if="!isAuthenticated" @click="openLoginWindow">登录</el-menu-item>
+    <el-menu-item v-if="!isAuthenticated" @click="showLoginDialog = true">登录</el-menu-item>
     <el-sub-menu v-else index="user-menu">
       <template #title>{{ username }}</template>
-      <el-menu-item @click="logout">注销</el-menu-item>
+      <el-menu-item @click="logout">退出登录</el-menu-item>
     </el-sub-menu>
   </el-menu>
-  <LoginDialog v-model="userWindowVisible" />
+  <LoginDialog />
 </template>
 
 <script setup lang="ts" name="AppHeader">
@@ -24,18 +24,13 @@ import { useAuthStore } from '@/stores/Auth';
 
 const route = useRoute();
 
-const userWindowVisible = ref(false);
 const authStore = useAuthStore();
-const { username, isAuthenticated } = storeToRefs(authStore);
-
-const openLoginWindow = () => {
-  userWindowVisible.value = true;
-};
+const { username, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
 
 const logout = () => {
   authStore.clearAuth();
   ElNotification({
-    title: '注销成功',
+    title: '退出登录成功',
     type: 'success',
   });
 };

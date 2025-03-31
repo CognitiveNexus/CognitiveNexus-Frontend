@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('Auth', {
     token: ref<string | null>(localStorage.getItem('authToken')),
     isAuthenticated: ref<boolean>(!!localStorage.getItem('authToken')),
     username: ref<string | null>(localStorage.getItem('username')),
+    showLoginDialog: ref<boolean>(false),
   }),
   actions: {
     setAuth(token: string, username: string) {
@@ -21,6 +22,12 @@ export const useAuthStore = defineStore('Auth', {
       this.username = null;
       localStorage.removeItem('authToken');
       localStorage.removeItem('username');
+    },
+    openLoginDialog() {
+      this.showLoginDialog = true;
+    },
+    closeLoginDialog() {
+      this.showLoginDialog = false;
     },
   },
 });

@@ -65,7 +65,7 @@ const slots = useSlots();
 const slotsCount = computed(() => Object.keys(slots).length);
 
 const authStore = useAuthStore();
-const { token, isAuthenticated } = storeToRefs(authStore);
+const { token, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
 
 const code = ref<string>(
   '#include <stdio.h>\n\nint main() {\n    int a = 1, *b = &a;\n    printf("a = %d\\n", a);\n    *b = 114514;\n    printf("a = %d\\n", a);\n    return 0;\n}'
@@ -105,6 +105,7 @@ const runCode = async () => {
       type: 'warning',
       plain: true,
     });
+    showLoginDialog.value = true;
     return;
   }
   loading.value = true;
@@ -124,7 +125,7 @@ const runCode = async () => {
       if (response.status == 200) {
         return response.json();
       } else if (response.status == 401) {
-        throw new Error('用户未登录'); // TODO: 或许可以改成弹登录窗
+        showLoginDialog.value = true;
       }
       throw new Error((await response.json()).error);
     })

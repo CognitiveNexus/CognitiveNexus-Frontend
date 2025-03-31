@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :model-value="modelValue" @update:model-value="updateModelValue" :show-close="false" width="24em" header-class="no-bottom-padding">
+  <el-dialog :model-value="showLoginDialog" :show-close="false" width="24em" header-class="no-bottom-padding">
     <template #header>
       <el-form-item>
         <el-segmented v-model="selectedTab" :options="tabs" size="large" style="width: 100%" />
@@ -19,28 +19,19 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button type="primary" @click="submit" :loading="requesting">{{ actionName }}</el-button>
-        <el-button @click="closeDialog">取消</el-button>
+        <el-button @click="showLoginDialog = false">取消</el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
 import { useAuthStore } from '@/stores/Auth';
 
-defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true,
-  },
-});
-const emit = defineEmits(['update:modelValue']);
-const updateModelValue = (value: boolean) => {
-  emit('update:modelValue', value);
-};
-
 const authStore = useAuthStore();
+const { showLoginDialog } = storeToRefs(authStore);
 
 const tabs = [
   { label: '登录', value: 'login' },
@@ -54,10 +45,6 @@ const username = ref<string>('');
 const password = ref<string>('');
 const inviteCode = ref<string>('');
 const host = import.meta.env.COGNEX_API_HOST ?? '';
-
-const closeDialog = () => {
-  updateModelValue(false);
-};
 
 const submit = async () => {
   requesting.value = true;
@@ -88,7 +75,7 @@ const submit = async () => {
           title: `${actionName.value}成功`,
           type: 'success',
         });
-        closeDialog();
+        showLoginDialog.value = false;
       }
     })
     .catch((reason: Error) => {
