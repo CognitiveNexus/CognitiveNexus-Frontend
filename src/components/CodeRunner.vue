@@ -16,16 +16,23 @@
         layout="total, prev, pager, next" />
     </div>
     <DockPanel style="width: 100%; height: 100%">
-      <DockWidget id="code-runner-source-code" title="源代码" mode="split-left">
+      <DockWidget v-for="slotName in Object.keys(slots)" :id="'code-runner-custom-' + slotName" :title="slotName" mode="tab-after">
+        <slot :name="slotName"></slot>
+      </DockWidget>
+      <DockWidget id="code-runner-source-code" title="源代码" :mode="slotsCount ? 'split-right' : 'tab-after'">
         <CodeEditor v-model="code" :disabled="loading || running" :highlight-line="currentStepData?.line" />
       </DockWidget>
       <DockWidget id="code-runner-stdin" title="程序输入" mode="tab-after" ref-id="code-runner-source-code">
         <el-input v-model="stdin" :disabled="loading" type="textarea" placeholder="输入程序读取的标准输入流的内容" />
       </DockWidget>
-      <DockWidget id="code-runner-memory" title="内存可视化" mode="split-right" ref-id="code-runner-source-code">
+      <DockWidget id="code-runner-memory" title="内存可视化" :mode="slotsCount ? 'tab-after' : 'split-right'" ref-id="code-runner-source-code">
         <CodeRunnerGraph :currentStepData="currentStepData" :typeDefinitions="typeDefinitions" />
       </DockWidget>
-      <DockWidget id="code-runner-stdout" title="程序输出" mode="split-bottom" ref-id="code-runner-source-code">
+      <DockWidget
+        id="code-runner-stdout"
+        title="程序输出"
+        :mode="slotsCount ? 'tab-after' : 'split-bottom'"
+        :ref-id="slotsCount ? 'code-runner-stdin' : 'code-runner-source-code'">
         <el-text class="keepLineBreak"> {{ currentStdout }}</el-text>
       </DockWidget>
       <DockWidget id="code-runner-compile-log" title="编译日志" mode="tab-after" ref-id="code-runner-stdout">
@@ -39,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, useSlots } from 'vue';
 import { storeToRefs } from 'pinia';
 import { ElInput, ElButton, ElMessage, ElNotification, ElPagination, ElText } from 'element-plus';
 import { VideoPlay, VideoPause } from '@element-plus/icons-vue';
@@ -51,6 +58,9 @@ import CodeRunnerGraph from '@/components/CodeRunnerGraph.vue';
 import { useAuthStore } from '@/stores/Auth';
 
 const host = import.meta.env.COGNEX_API_HOST ?? '';
+
+const slots = useSlots();
+const slotsCount = computed(() => Object.keys(slots).length);
 
 const authStore = useAuthStore();
 const { token, isAuthenticated } = storeToRefs(authStore);
