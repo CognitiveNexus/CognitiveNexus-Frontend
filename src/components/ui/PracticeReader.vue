@@ -25,7 +25,9 @@ const coursesName = computed(() => {
 const currentContent = computed(() => currentStore.value.practice[currentPage.value] || []);
 
 function toCourse(pageIndex: number) {
-  store.markAsSolved(pageIndex - 1);
+  if (pageIndex > currentPage.value) {
+    store.markAsSolved(pageIndex - 1);
+  }
   router.push({
     name: 'course',
     params: {

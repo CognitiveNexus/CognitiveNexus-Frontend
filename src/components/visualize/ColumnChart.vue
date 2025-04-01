@@ -79,12 +79,7 @@ const option = computed(() => {
   border-radius: 5px;
   margin: 40px 80px;
   background-color: #fff;
-  transition: all 0.3s ease;
   height: 300px;
-}
-.canvas-render:hover {
-  box-shadow: 0 0 15px rgba(33, 150, 243, 0.8);
-  transform: scale(1.01);
 }
 
 .button-group {

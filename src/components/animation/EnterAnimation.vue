@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts" name="EnterAnimation">
-import { motion } from "motion-v";
+import { motion } from 'motion-v';
 
 const props = defineProps({
   src: String,
@@ -31,11 +31,11 @@ const props = defineProps({
   height: 100%;
 }
 .ani {
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 img {
-  width: 400px;
+  width: 500px;
 }
 </style>

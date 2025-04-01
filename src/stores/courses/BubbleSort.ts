@@ -88,7 +88,7 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
       3: [
         {
           type: 'text',
-          content: '🗡️第一章：武器店的试炼',
+          content: '🗡️武器店的试炼 I',
           class: 'title',
         },
         {
@@ -132,7 +132,7 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
       4: [
         {
           type: 'text',
-          content: '🗡️第一章：武器店的试炼',
+          content: '🗡️武器店的试炼 II',
           class: 'title',
         },
         {
@@ -183,7 +183,76 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
           ],
         },
       ],
-      5: [],
+      5: [
+        {
+          type: 'text',
+          content: '🗡️启程',
+          class: 'title',
+        },
+        {
+          type: 'text',
+          content: `"原来如此！"你轻触剑纹，柜中暗格应声而开。老铁匠抚掌大笑："你找到了遍历的奥义！这把传说中攻击力999的圣剑，属于懂得记录极值之人。"`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `历经重重考验，你终于获得了属于你的武器与盾牌，是时候向更远大的目标前行了！你看着远处天空弥漫的乌云，魔王城堡的塔尖直冲云端，道道雷电劈下，预示着危险的到来，你知道，不能再拖了。`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `你骑上骏马，即刻启程！`,
+          class: 'content',
+        },
+      ],
+      6: [
+        {
+          type: 'text',
+          content: `直面魔王`,
+          class: 'title',
+        },
+        {
+          type: 'text',
+          content: `漆黑的城堡中，你奋力战斗，终于走到魔王的门前，你的心情忐忑不安。`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `魔王缓缓走出，他的身上萦绕着闪亮的黑曜石护盾，看上去几乎坚不可摧，你斩出了伤害为{ 1, 2, 5, 4, 3 }的一套剑技，前三次的斩击似乎并没有被护盾反弹，但打到第四剑时，却被黑曜石护盾远远弹开。你急速后撤翻过石柱，思考着破局的思路。`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `魔王哈哈大笑：“我的护盾坚不可摧，你可拥有如此强大的力量？我构筑的算法术式完美无缺！”`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `你似乎想到什么，攻击的威力必须是不断递增的，否则就会被护盾弹开，前功尽弃，你决定试一试这个方法，但现在，你必须准备好下一套递增的剑技，该如何将乱序的排列变成有序的呢？`,
+          class: 'highlight',
+        },
+        {
+          type: 'break',
+        },
+        {
+          type: 'button',
+          content: [
+            {
+              text: `打败魔王！`,
+              size: 'large',
+              buttontype: 'primary',
+              targetIndex: 3,
+            },
+          ],
+        },
+      ],
+      7: [
+        {
+          type: 'text',
+          content: `FIN`,
+          class: 'title',
+        },
+      ],
     } as Record<number, ContentItem[]>,
     practice: {
       1: [
@@ -238,6 +307,12 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
           content: [
             {
               text: `返回课程`,
+              size: 'large',
+              buttontype: 'info',
+              targetIndex: 3,
+            },
+            {
+              text: `继续旅途`,
               size: 'large',
               buttontype: 'primary',
               targetIndex: 4,
@@ -302,8 +377,78 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
             {
               text: `返回课程`,
               size: 'large',
+              buttontype: 'info',
+              targetIndex: 4,
+            },
+            {
+              text: `继续旅途`,
+              size: 'large',
               buttontype: 'primary',
               targetIndex: 5,
+            },
+          ],
+        },
+      ],
+      3: [
+        {
+          type: 'text',
+          content: `击败魔王！`,
+          class: 'title',
+        },
+        {
+          type: 'text',
+          content: `让我们确定一下我们的目标：`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `将一个无序的数组排成一个升序（由小到大）的数组。`,
+          class: 'highlight',
+        },
+        {
+          type: 'text',
+          content: `结合一下我们前面学到的内容，我们开始尝试实现本课程的最终目标：冒泡排序 吧！`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `我们明确一下我们要实现的步骤和难点：`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `①：利用刚刚挑选武器的经验，将数组中最大的元素放到最后。`,
+          class: 'highlight',
+        },
+        {
+          type: 'text',
+          content: `②：这时候我们注意到数组最后一位已经在应该在的位置了，我们不需要再将它纳入排序，所以我们从这步开始将排序范围缩小到“数组开头”到“数组倒数第二个”。`,
+          class: 'highlight',
+        },
+        {
+          type: 'text',
+          content: `③：在我们约定的排序范围内再次进行①，这时候我们就将整个数组中第二大的元素（因为最大的元素已经不在我们的排序范围内了），放到了我们排序范围的最后一个（即整个数组的倒数第二个）。`,
+          class: 'highlight',
+        },
+        {
+          type: 'text',
+          content: `④：重复上述步骤直到我们的排序范围收缩到只有一个数，至此数组已经有序。`,
+          class: 'highlight',
+        },
+        {
+          type: 'button',
+          content: [
+            {
+              text: `返回课程`,
+              size: 'large',
+              buttontype: 'info',
+              targetIndex: 6,
+            },
+            {
+              text: `继续旅途`,
+              size: 'large',
+              buttontype: 'primary',
+              targetIndex: 7,
             },
           ],
         },

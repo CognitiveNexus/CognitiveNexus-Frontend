@@ -96,5 +96,6 @@ defineEmits(['link']);
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 100px;
 }
 </style>
