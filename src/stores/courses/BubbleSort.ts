@@ -1,9 +1,13 @@
 import { defineStore } from 'pinia';
-import type { ContentItem } from '@/types/TextReaderTypes';
+import type { ContentItem, Mapping } from '@/types/TextReaderTypes';
 
 export const useBubbleSortStore = defineStore('BubbleSort', {
   //数据存储
   state: () => ({
+    map: [
+      { page: 3, practice: 1, solved: false },
+      { page: 4, practice: 2, solved: false },
+    ] as Mapping[],
     content: {
       1: [
         {
@@ -115,12 +119,71 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
         },
         {
           type: 'button',
-          content: `接受试炼`,
-          size: 'large',
-          buttontype: 'primary',
-          practiceIndex: 1,
+          content: [
+            {
+              text: `接受试炼`,
+              size: 'large',
+              buttontype: 'primary',
+              targetIndex: 1,
+            },
+          ],
         },
       ],
+      4: [
+        {
+          type: 'text',
+          content: '🗡️第一章：武器店的试炼',
+          class: 'title',
+        },
+        {
+          type: 'text',
+          content: `你抽出代码剑，在空中绘出几行代码，眨眼间两个盾牌漂浮在空中，犹如被放置在天平的两端，一段时间后，品质更好的那个盾牌便飞入了你的手中，看来是你的比较大小的代码确实生效了！`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `老铁匠眯起眼睛："看来你懂得比较的智慧。但真正的考验在这里——"他推出一本泛黄的古籍，上面密密麻麻记录着999把武器的攻击数值。当你翻开时，数字像蚂蚁般在羊皮纸上爬动。`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `你知道这又是一道考验，而且比上一道考验难上不少。`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `老铁匠开口了：`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `“这本书记载着999把武器，但你只能拿走这本书上记载的最后一把武器，但是我允许你交换相邻两把武器的顺序！请问你真的有实力取得那把勇者之剑吗？”`,
+          class: 'highlight',
+        },
+        {
+          type: 'break',
+        },
+        {
+          type: 'text',
+          content: `TIPS:这是实现冒泡排序的第一步，通过从头到尾遍历数组，交换相邻的元素，尝试仅通过一次遍历，把最大的元素放到数组最后吧！在试炼页中，我们会更深入地探讨实现的方法！`,
+          class: 'highlight',
+        },
+        {
+          type: 'break',
+        },
+        {
+          type: 'button',
+          content: [
+            {
+              text: `接受试炼`,
+              size: 'large',
+              buttontype: 'primary',
+              targetIndex: 2,
+            },
+          ],
+        },
+      ],
+      5: [],
     } as Record<number, ContentItem[]>,
     practice: {
       1: [
@@ -169,6 +232,76 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
           type: 'text',
           content: `输入：31 21    输出：青铜盾`,
           class: 'content',
+        },
+        {
+          type: 'button',
+          content: [
+            {
+              text: `返回课程`,
+              size: 'large',
+              buttontype: 'primary',
+              targetIndex: 4,
+            },
+          ],
+        },
+      ],
+      2: [
+        {
+          type: 'text',
+          content: `武器店的试炼 II`,
+          class: 'title',
+        },
+        {
+          type: 'text',
+          content: `我们再回顾一下老铁匠的要求：`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `要求只通过一次遍历，仅能交换相邻的元素，实现将最大的元素移到数组的最后一位。`,
+          class: 'highlight',
+        },
+        {
+          type: 'break',
+        },
+        {
+          type: 'text',
+          content: `首先我们解决以下交换相邻元素的问题，我们希望“越大的值越往后”，那么可不可以在比较的时候让最大的值往后走，即：`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `有a与b，比较a与b，若a比b大，则交换a与b的位置。`,
+          class: 'highlight',
+        },
+        {
+          type: 'text',
+          content: `然后想想仅一次遍历吧，我们从数组开头比较到数组结尾，光说太枯燥了，我们举一个例子：`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `比如数组{9,1,2,3,4}，我们从前到后，除开最后一个数没有后一位数，其他的数都进行刚才提到的比较，我们会发现最大的9已经走到最后一位了！最后的数组是{1,2,3,4,9}`,
+          class: 'highlight',
+        },
+        {
+          type: 'break',
+        },
+        {
+          type: 'text',
+          content: `为了方便理解，我们提供了上述数组比较的可视化图，尝试去理解一下它的妙处吧！`,
+          class: 'content',
+        },
+        {
+          type: 'button',
+          content: [
+            {
+              text: `返回课程`,
+              size: 'large',
+              buttontype: 'primary',
+              targetIndex: 5,
+            },
+          ],
         },
       ],
     } as Record<number, ContentItem[]>,

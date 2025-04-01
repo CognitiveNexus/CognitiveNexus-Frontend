@@ -10,28 +10,16 @@
           height: item.height ? `${item.height}px` : 'auto',
         }"
       />
-      <el-text v-else-if="item.type === 'text'" :class="item.class">{{
-        item.content
-      }}</el-text>
+      <el-text v-else-if="item.type === 'text'" :class="item.class">{{ item.content }}</el-text>
       <a v-else-if="item.type === 'link'" :href="item.url">{{ item.text }}</a>
       <div v-else-if="item.type === 'break'"><br /></div>
       <div v-else-if="item.type === 'tag'" class="tag">
         <el-text>前置知识点：</el-text>
-        <el-tag
-          v-for="tag in item.content"
-          :type="tag.tagtype"
-          :effect="tag.effect"
-          :size="tag.size"
-          >{{ tag.text }}</el-tag
-        >
+        <el-tag v-for="tag in item.content" :type="tag.tagtype" :effect="tag.effect" :size="tag.size">{{ tag.text }}</el-tag>
       </div>
       <div class="warp-button" v-else-if="item.type === 'button'">
-        <el-button
-          :type="item.buttontype"
-          :size="item.size"
-          :icon="Flag"
-          @click="$emit('link', item.practiceIndex)"
-          >{{ item.content }}
+        <el-button v-for="button in item.content" :type="button.buttontype" :size="button.size" :icon="Flag" @click="$emit('link', button.targetIndex)"
+          >{{ button.text }}
         </el-button>
       </div>
     </div>

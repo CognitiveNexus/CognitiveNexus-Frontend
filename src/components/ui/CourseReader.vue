@@ -1,10 +1,5 @@
 <template>
-  <PaginationControl
-    :current="currentPage"
-    :total="totalPage"
-    @prev="prevPage"
-    @next="nextPage"
-  >
+  <PaginationControl :current="currentPage" :total="totalPage" @prev="prevPage" @next="nextPage">
     <ContentRender :content="currentContent" @link="toPractice" />
   </PaginationControl>
 </template>
@@ -30,20 +25,20 @@ const { currentStore, totalPage } = storeToRefs(store);
 const coursesName = computed(() => {
   return route.params.courseName as CourseName;
 });
-const currentContent = computed(
-  () => currentStore.value.content[currentPage.value] || []
-);
+const currentContent = computed(() => currentStore.value.content[currentPage.value] || []);
 
 store.selectCourse(coursesName.value);
 
 function nextPage() {
   if (!store.isAvailblePage(currentPage.value + 1)) return;
-  router.push({
-    params: {
-      courseName: coursesName.value,
-      pageIndex: currentPage.value + 1,
-    },
-  });
+  if (!store.isPracticeSolved(currentPage.value)) return;
+  if (currentStore.value.map)
+    router.push({
+      params: {
+        courseName: coursesName.value,
+        pageIndex: currentPage.value + 1,
+      },
+    });
 }
 
 function prevPage() {
@@ -56,12 +51,12 @@ function prevPage() {
   });
 }
 
-function toPractice(practiceIndex: number) {
+function toPractice(targetIndex: number) {
   router.push({
     name: 'practice',
     params: {
       courseName: coursesName.value,
-      practiceIndex: practiceIndex,
+      practiceIndex: targetIndex,
     },
   });
 }

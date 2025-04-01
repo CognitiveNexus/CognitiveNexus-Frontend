@@ -22,11 +22,10 @@ const { currentStore } = storeToRefs(store);
 const coursesName = computed(() => {
   return route.params.courseName as CourseName;
 });
-const currentContent = computed(
-  () => currentStore.value.practice[currentPage.value] || []
-);
+const currentContent = computed(() => currentStore.value.practice[currentPage.value] || []);
 
 function toCourse(pageIndex: number) {
+  store.markAsSolved(pageIndex - 1);
   router.push({
     name: 'course',
     params: {

@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia';
-import type { ContentItem } from '@/types/TextReaderTypes';
+import type { ContentItem, Mapping } from '@/types/TextReaderTypes';
 
 export const useIfStore = defineStore('If', {
   //数据存储
   state: () => ({
+    map: [] as Mapping[],
     content: {
       1: [
         {

@@ -3,7 +3,7 @@
     <div class="bubble" v-if="current_course === 'bubble'">
       <EnterAnimation :src="magicbook" alt="魔法书" v-if="current_page === 1" />
       <EnterAnimation :src="parchment" alt="羊皮卷" v-if="current_page === 2" />
-      <EnterAnimation :src="shields" alt="盾牌" v-if="current_page === 3" />
+      <EnterAnimation :src="shields" alt="盾牌" v-if="current_page === 3 || current_page === 4" />
     </div>
   </div>
 </template>

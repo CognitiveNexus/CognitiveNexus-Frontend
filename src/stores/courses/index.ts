@@ -78,5 +78,17 @@ export const useCourseStoreManager = defineStore('CourseStore', {
     isAvailblePage(page: number): boolean {
       return page >= 1 && page <= this.totalPage;
     },
+    //完成练习标记
+    markAsSolved(page: number) {
+      const target = this.currentStore.map.find((item) => item.page === page);
+      if (target) {
+        target.solved = true;
+      }
+    },
+    //是否有练习？是否完成练习？
+    isPracticeSolved(page: number) {
+      const target = this.currentStore.map.find((item) => item.page === page);
+      return !target || target.solved ? true : false;
+    },
   },
 });

@@ -7,6 +7,19 @@ interface tagType {
   size?: string;
 }
 
+interface buttonType {
+  buttontype: elementType;
+  text: string;
+  targetIndex: number;
+  size?: string;
+}
+
+export type Mapping = {
+  page: number;
+  practice: number;
+  solved: boolean;
+};
+
 //Reader 富文本类型约束
 export type ContentItem =
   | {
@@ -35,8 +48,5 @@ export type ContentItem =
     }
   | {
       type: 'button';
-      buttontype: elementType;
-      content: string;
-      practiceIndex: number;
-      size?: string;
+      content: buttonType[];
     };
