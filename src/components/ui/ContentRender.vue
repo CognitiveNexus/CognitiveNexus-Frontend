@@ -22,6 +22,10 @@
           >{{ button.text }}
         </el-button>
       </div>
+      <div class="visualizer" v-else-if="item.type === 'visualizer'">
+        <ColumnChart />
+        <Console />
+      </div>
     </div>
   </el-scrollbar>
 </template>

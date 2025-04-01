@@ -1,6 +1,6 @@
 <template>
   <div class="canvas-render">
-    <v-chart :option="option_column" :autoresize="true" style="height: 40vh" ref="chartRef" />
+    <v-chart :option="option" :autoresize="true" style="height: 100%" ref="chartRef" />
     <div class="button-group">
       <el-button type="primary" class="left-button" @click="store.prevPage()">
         <el-icon :size="20">
@@ -11,7 +11,7 @@
         <el-text>{{ current_page }} / {{ total_page }}</el-text>
       </div>
       <el-button type="primary" class="right-button" @click="store.nextPage()">
-        <el-icon :size="20"> 
+        <el-icon :size="20">
           <CaretRight />
         </el-icon>
       </el-button>
@@ -25,29 +25,23 @@ import { useColumnChartStore } from '@/stores/ColumnChart';
 import { storeToRefs } from 'pinia';
 
 const store = useColumnChartStore();
-const { current_page, total_page } = storeToRefs(store);
+const { current_page, total_page, colorScheme } = storeToRefs(store);
 
-const colorScheme = ref([
-  '#409EFF',
-  '#409EFF',
-  '#409EFF',
-  '#409EFF',
-  '#409EFF',
-  '#409EFF',
-  '#409EFF',
-  '#409EFF'
-])
+const props = defineProps({
+  width: Number,
+  height: Number,
+});
 
 //手动获取一下v-charts对象，方便一些强制更改option的操作
 const chartRef = ref();
 
-const option_column = computed(() => {
+const option = computed(() => {
   return {
     toolbox: {
       show: 'true',
       feature: {
         magicType: { type: ['line', 'bar'] },
-      }
+      },
     },
     tooltip: {
       trigger: 'item',
@@ -67,17 +61,15 @@ const option_column = computed(() => {
         name: 'value',
         type: 'bar',
         data: store.data.map((d) => {
-          return d.value
+          return d.value;
         }),
         itemStyle: {
-          color: (params: any) =>
-            colorScheme.value[params.dataIndex]
+          color: (params: { dataIndex: number }) => colorScheme.value[params.dataIndex],
         },
       },
     ],
-  }
+  };
 });
-
 </script>
 
 <style scoped>
@@ -85,11 +77,12 @@ const option_column = computed(() => {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
   padding: 10px 0px 0px 0px;
   border-radius: 5px;
-  margin-bottom: 40px;
+  margin: 40px 80px;
   background-color: #fff;
   transition: all 0.3s ease;
+  height: 300px;
 }
-.canvas-render:hover{
+.canvas-render:hover {
   box-shadow: 0 0 15px rgba(33, 150, 243, 0.8);
   transform: scale(1.01);
 }

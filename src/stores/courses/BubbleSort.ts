@@ -281,7 +281,7 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
         },
         {
           type: 'text',
-          content: `比如数组{9,1,2,3,4}，我们从前到后，除开最后一个数没有后一位数，其他的数都进行刚才提到的比较，我们会发现最大的9已经走到最后一位了！最后的数组是{1,2,3,4,9}`,
+          content: `比如数组{7,4,1,4,5,9,2,8}，我们从前到后，除开最后一个数没有后一位数，其他的数都进行刚才提到的比较，我们会发现最大的9已经走到最后一位了！最后的数组是{4,1,4,5,7,2,8,9}`,
           class: 'highlight',
         },
         {
@@ -291,6 +291,10 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
           type: 'text',
           content: `为了方便理解，我们提供了上述数组比较的可视化图，尝试去理解一下它的妙处吧！`,
           class: 'content',
+        },
+        {
+          type: 'visualizer',
+          name: 'ColumnChart',
         },
         {
           type: 'button',

@@ -49,4 +49,8 @@ export type ContentItem =
   | {
       type: 'button';
       content: buttonType[];
+    }
+  | {
+      type: 'visualizer';
+      name: string;
     };
