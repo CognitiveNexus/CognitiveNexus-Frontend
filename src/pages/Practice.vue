@@ -20,6 +20,7 @@
 .el-aside {
   height: 100%;
   width: 33%;
+  padding: 20px;
 }
 .el-main {
   height: 100%;

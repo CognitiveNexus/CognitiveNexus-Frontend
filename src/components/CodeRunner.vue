@@ -7,40 +7,87 @@
         :disabled="loading"
         :icon="running ? VideoPause : VideoPlay"
         :type="running ? 'danger' : 'success'"
-        @click="running ? stopCodeRun() : runCode()" />
+        @click="running ? stopCodeRun() : runCode()"
+      />
       <el-pagination
         v-model:current-page="currentStep"
         :disabled="loading"
         :page-size="1"
         :total="codeRunnerData.steps.length"
-        layout="slot, prev, pager, next">
-        <el-text>第 {{ currentStep }} 步 / 共 {{ codeRunnerData.steps.length }} 步</el-text>
+        layout="slot, prev, pager, next"
+      >
+        <el-text
+          >第 {{ currentStep }} 步 / 共
+          {{ codeRunnerData.steps.length }} 步</el-text
+        >
       </el-pagination>
     </div>
     <DockPanel style="width: 100%; height: 100%">
-      <DockWidget v-for="slotName in Object.keys(slots)" :id="'code-runner-custom-' + slotName" :title="slotName" mode="tab-after">
+      <DockWidget
+        v-for="slotName in Object.keys(slots)"
+        :id="'code-runner-custom-' + slotName"
+        :title="slotName"
+        mode="tab-after"
+      >
         <slot :name="slotName"></slot>
       </DockWidget>
-      <DockWidget id="code-runner-source-code" title="源代码" :mode="slotsCount ? 'split-right' : 'tab-after'">
-        <CodeEditor v-model="code" :disabled="loading || running" :highlight-line="currentStepData?.line" />
+      <DockWidget
+        id="code-runner-source-code"
+        title="源代码"
+        :mode="slotsCount ? 'split-right' : 'tab-after'"
+      >
+        <CodeEditor
+          v-model="code"
+          :disabled="loading || running"
+          :highlight-line="currentStepData?.line"
+        />
       </DockWidget>
-      <DockWidget id="code-runner-stdin" title="程序输入" mode="tab-after" ref-id="code-runner-source-code">
-        <el-input v-model="stdin" :disabled="loading" type="textarea" placeholder="输入程序读取的标准输入流的内容" />
+      <DockWidget
+        id="code-runner-stdin"
+        title="程序输入"
+        mode="tab-after"
+        ref-id="code-runner-source-code"
+      >
+        <el-input
+          v-model="stdin"
+          :disabled="loading"
+          type="textarea"
+          placeholder="输入程序读取的标准输入流的内容"
+        />
       </DockWidget>
-      <DockWidget id="code-runner-memory" title="内存可视化" :mode="slotsCount ? 'tab-after' : 'split-right'" ref-id="code-runner-source-code">
-        <CodeRunnerGraph :currentStepData="currentStepData" :typeDefinitions="typeDefinitions" />
+      <DockWidget
+        id="code-runner-memory"
+        title="内存可视化"
+        :mode="slotsCount ? 'tab-after' : 'split-right'"
+        ref-id="code-runner-source-code"
+      >
+        <CodeRunnerGraph
+          :currentStepData="currentStepData"
+          :typeDefinitions="typeDefinitions"
+        />
       </DockWidget>
       <DockWidget
         id="code-runner-stdout"
         title="程序输出"
         :mode="slotsCount ? 'tab-after' : 'split-bottom'"
-        :ref-id="slotsCount ? 'code-runner-stdin' : 'code-runner-source-code'">
+        :ref-id="slotsCount ? 'code-runner-stdin' : 'code-runner-source-code'"
+      >
         <el-text class="keepLineBreak"> {{ currentStdout }}</el-text>
       </DockWidget>
-      <DockWidget id="code-runner-compile-log" title="编译日志" mode="tab-after" ref-id="code-runner-stdout">
+      <DockWidget
+        id="code-runner-compile-log"
+        title="编译日志"
+        mode="tab-after"
+        ref-id="code-runner-stdout"
+      >
         <el-text class="keepLineBreak">{{ compileLog }}</el-text>
       </DockWidget>
-      <DockWidget id="code-runner-run-log" title="运行日志" mode="tab-after" ref-id="code-runner-compile-log">
+      <DockWidget
+        id="code-runner-run-log"
+        title="运行日志"
+        mode="tab-after"
+        ref-id="code-runner-compile-log"
+      >
         <el-text class="keepLineBreak">{{ runLog }}</el-text>
       </DockWidget>
     </DockPanel>
@@ -50,7 +97,14 @@
 <script setup lang="ts">
 import { ref, computed, useSlots } from 'vue';
 import { storeToRefs } from 'pinia';
-import { ElInput, ElButton, ElMessage, ElNotification, ElPagination, ElText } from 'element-plus';
+import {
+  ElInput,
+  ElButton,
+  ElMessage,
+  ElNotification,
+  ElPagination,
+  ElText,
+} from 'element-plus';
 import { VideoPlay, VideoPause } from '@element-plus/icons-vue';
 import type { CNCRResult, CNCRData } from '@/types/CodeRunnerTypes';
 import DockPanel from '@/components/layout/DockPanel.vue';
@@ -74,15 +128,23 @@ const stdin = ref<string>('');
 const loading = ref<boolean>(false);
 const running = ref<boolean>(false);
 
-const blankCodeRunnerData: CNCRData = { typeDefinitions: {}, steps: [], endState: 'finished' };
+const blankCodeRunnerData: CNCRData = {
+  typeDefinitions: {},
+  steps: [],
+  endState: 'finished',
+};
 const codeRunnerData = ref<CNCRData>(blankCodeRunnerData);
 const currentStep = ref<number>(0);
 const compileLog = ref<string>('(空)');
 const runLog = ref<string>('(空)');
 
-const currentStepData = computed(() => codeRunnerData.value.steps[currentStep.value - 1] ?? {});
+const currentStepData = computed(
+  () => codeRunnerData.value.steps[currentStep.value - 1] ?? {}
+);
 const currentStdout = computed(() => currentStepData.value?.stdout || '(空)');
-const typeDefinitions = computed(() => codeRunnerData.value.typeDefinitions ?? {});
+const typeDefinitions = computed(
+  () => codeRunnerData.value.typeDefinitions ?? {}
+);
 
 const stopCodeRun = () => {
   codeRunnerData.value = blankCodeRunnerData;
@@ -188,7 +250,7 @@ const runCode = async () => {
 .container {
   display: flex;
   flex-direction: column;
-  /* height: 100%; */
+  height: 100%;
   width: 100%;
 }
 .top-bar {

@@ -126,7 +126,48 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
       1: [
         {
           type: 'text',
-          content: `冒泡排序练习1`,
+          content: `武器店的试炼 I`,
+          class: 'title',
+        },
+        {
+          type: 'text',
+          content: `你现在正在武器店内挑选合适的盾牌，请使用if语句选出最好的那一个盾牌！这对你未来的冒险十分重要！`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `我们可以分别将两个盾的防御值设为a与b，通过输入a与b后比较a与b的大小得出结果！`,
+          class: 'content',
+        },
+        {
+          type: 'break',
+        },
+        {
+          type: 'text',
+          content: `输入格式：`,
+          class: 'highlight',
+        },
+        {
+          type: 'text',
+          content: `两个整数，中间用空格隔开，如“1 2”。`,
+          class: 'content',
+        },
+        {
+          type: 'break',
+        },
+        {
+          type: 'text',
+          content: `测试样例：`,
+          class: 'highlight',
+        },
+        {
+          type: 'text',
+          content: `输入：13 21    输出：白银盾`,
+          class: 'content',
+        },
+        {
+          type: 'text',
+          content: `输入：31 21    输出：青铜盾`,
           class: 'content',
         },
       ],
