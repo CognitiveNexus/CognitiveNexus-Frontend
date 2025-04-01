@@ -5,6 +5,7 @@
     </el-menu-item>
     <el-menu-item index="/course">课程</el-menu-item>
     <el-menu-item index="/playground">练习场</el-menu-item>
+    <el-menu-item @click="drawer = !drawer">问问 AI</el-menu-item>
     <el-menu-item v-if="!isAuthenticated" @click="showLoginDialog = true">
       <el-icon><User /></el-icon>登录
     </el-menu-item>
@@ -16,9 +17,11 @@
     </el-sub-menu>
   </el-menu>
   <LoginDialog />
+  <AskAI v-model="drawer" />
 </template>
 
 <script setup lang="ts" name="AppHeader">
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
@@ -26,6 +29,8 @@ import LoginDialog from '@/components/LoginDialog.vue';
 import { useAuthStore } from '@/stores/Auth';
 
 const route = useRoute();
+
+const drawer = ref<boolean>(false); // DEMO
 
 const authStore = useAuthStore();
 const { username, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
@@ -47,12 +52,11 @@ const logout = () => {
 .title {
   font-family: 'ChuangKeTieJin', sans-serif;
   font-size: 30px;
-  /** 文字渐变实现 */
   background-image: linear-gradient(90deg, #60afff, #b180ff);
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.el-menu--horizontal > .el-menu-item:nth-last-child(2) {
+.el-menu--horizontal > .el-menu-item:nth-last-child(3) {
   margin-right: auto;
 }
 </style>

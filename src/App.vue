@@ -5,8 +5,9 @@
       <el-container>
         <RouterView></RouterView>
       </el-container>
-      <el-footer></el-footer> </el-container
-  ></el-config-provider>
+      <el-footer></el-footer>
+    </el-container>
+  </el-config-provider>
 </template>
 
 <script setup lang="ts" name="App">
