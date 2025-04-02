@@ -8,8 +8,13 @@
           {{ msg.role == 'user' ? username ?? '您' : 'AI 导师' }}
         </el-text>
       </div>
+      <el-collapse v-if="msg.reasoning_content">
+        <el-collapse-item title="思考过程">
+          <pre>{{ msg.reasoning_content }}</pre>
+        </el-collapse-item>
+      </el-collapse>
       <el-text>
-        <el-skeleton v-if="!msg.content" :rows="0" class="loading" animated />
+        <el-skeleton v-if="msg.loading && !msg.content" :rows="0" class="loading" animated />
         <vue-markdown :source="msg.content" />
       </el-text>
     </template>
@@ -17,10 +22,14 @@
       <div class="input-container">
         <el-input v-model="message" :autosize="{ minRows: 2, maxRows: 6 }" type="textarea" resize="none" placeholder="输入你的问题…" @keydown="handleKeyDown" />
         <div class="input-action">
-          <el-select v-model="selectedModel" placeholder="选择模型">
+          <el-select v-model="selectedModel" :disabled="requesting" placeholder="选择模型">
             <el-option v-for="model in models" :key="model.model" :label="model.name" :value="model.model" />
           </el-select>
-          <el-button @click="ask" type="primary" :disabled="requesting">发送</el-button>
+          <el-tooltip content="按 Ctrl/Command + Enter 发送" placement="top-end" effect="light" :show-after="750">
+            <el-button @click="requesting ? stop() : ask()" :type="requesting ? 'danger' : 'primary'" :disabled="requesting || !message" :plain="requesting">{{
+              requesting ? '停止' : '发送'
+            }}</el-button>
+          </el-tooltip>
         </div>
       </div>
     </template>
@@ -38,20 +47,21 @@ const authStore = useAuthStore();
 const { token, username, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
 
 const models = [
-  { name: 'DeepSeek', model: 'deepseek-chat' },
-  { name: 'DeepSeek 深度思考', model: 'deepseek-reasoner' },
+  { name: 'DeepSeek-V3', model: 'deepseek-chat' },
+  { name: 'DeepSeek-R1 深度思考', model: 'deepseek-reasoner' },
 ];
 const selectedModel = ref<string>('deepseek-chat');
 
 const message = ref<string>('');
-const history = ref<{ role: string; content: string }[]>([]);
-const requesting = ref<boolean>(false);
+const history = ref<{ role: string; content: string; reasoning_content?: string; loading?: boolean }[]>([]);
+const requesting = ref<boolean | string>(false);
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if ((event.ctrlKey || event.metaKey) && event.key == 'Enter') {
     ask();
   }
 };
+const stop = async () => {};
 const ask = async () => {
   if (!message.value) {
     ElMessage({
@@ -76,6 +86,7 @@ const ask = async () => {
   message.value = '';
   const host = import.meta.env.COGNEX_API_HOST ?? '';
   const endpoint = `${host}/api/ask-ai/${selectedModel.value}`;
+  history.value.push({ role: 'assistant', content: '', reasoning_content: '', loading: true });
 
   fetch(endpoint, {
     method: 'POST',
@@ -83,31 +94,39 @@ const ask = async () => {
       Authorization: token.value!,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ messages: history.value }),
+    body: JSON.stringify({
+      messages: history.value.slice(0, -1).map((value) => {
+        return { role: value.role, content: value.content };
+      }),
+    }),
   })
     .then(async (response) => {
       if (!response.body) throw new Error('请求结果空');
       const reader = response.body.getReader();
       const decoder = new TextDecoder('utf-8');
 
-      let { value, done } = await reader.read();
-      const chunk = decoder.decode(value, { stream: true });
-      const status = JSON.parse(chunk);
-      if (status.error) {
-        throw new Error(status.error);
-      }
+      while (true) {
+        let { value, done } = await reader.read();
+        if (done) break;
 
-      history.value.push({ role: 'assistant', content: '' });
-      while (!done) {
-        ({ value, done } = await reader.read());
-        const chunk = decoder.decode(value, { stream: true });
-        history.value.at(-1)!.content += chunk;
+        for (const chunk of decoder.decode(value, { stream: true }).split('\n\n')) {
+          if (!chunk.trim().length) continue;
+          const result = JSON.parse(chunk);
+          if (result.error) throw new Error(result.error);
+          if (result.content) {
+            history.value.at(-1)!.content += result.content;
+          }
+          if (result.reasoning_content) {
+            history.value.at(-1)!.reasoning_content += result.reasoning_content;
+          }
+        }
       }
     })
     .catch((error: Error) => {
       ElNotification({ title: '请求失败', message: (error as Error).message, type: 'error' });
     })
     .finally(() => {
+      history.value.at(-1)!.loading = false;
       requesting.value = false;
     });
 };
@@ -140,6 +159,10 @@ const updateModelValue = (value: boolean) => {
   gap: 8px;
 }
 .loading {
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+.el-collapse {
   margin-top: 12px;
 }
 </style>
