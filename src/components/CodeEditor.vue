@@ -114,6 +114,36 @@ let resizeObserver: ResizeObserver;
 
 // 初始化编辑器
 onMounted(async () => {
+  if (!window.MonacoEnvironment) {
+    (window as any).MonacoEnvironment = {
+      getWorker: async function (moduleId: string, label: string) {
+        let workerModule;
+        switch (label) {
+          case 'json':
+            workerModule = await import('monaco-editor/esm/vs/language/json/json.worker?worker');
+            break;
+          case 'css':
+          case 'scss':
+          case 'less':
+            workerModule = await import('monaco-editor/esm/vs/language/css/css.worker?worker');
+            break;
+          case 'html':
+          case 'handlebars':
+          case 'razor':
+            workerModule = await import('monaco-editor/esm/vs/language/html/html.worker?worker');
+            break;
+          case 'typescript':
+          case 'javascript':
+            workerModule = await import('monaco-editor/esm/vs/language/typescript/ts.worker?worker');
+            break;
+          default:
+            workerModule = await import('monaco-editor/esm/vs/editor/editor.worker?worker');
+        }
+        return new workerModule.default();
+      },
+    };
+  }
+
   monaco.editor.defineTheme('github-dark', (await import('monaco-themes/themes/GitHub Dark.json')) as monaco.editor.IStandaloneThemeData);
   monaco.editor.defineTheme('github-light', (await import('monaco-themes/themes/GitHub Light.json')) as monaco.editor.IStandaloneThemeData);
   monaco.editor.defineTheme('chrome-devtools', (await import('monaco-themes/themes/Chrome DevTools.json')) as monaco.editor.IStandaloneThemeData);
