@@ -15,7 +15,7 @@
     </template>
     <template #footer>
       <div class="input-container">
-        <el-input v-model="message" :autosize="{ minRows: 2, maxRows: 6 }" type="textarea" resize="none" placeholder="输入你的问题…" />
+        <el-input v-model="message" :autosize="{ minRows: 2, maxRows: 6 }" type="textarea" resize="none" placeholder="输入你的问题…" @keydown="handleKeyDown" />
         <div class="input-action">
           <el-select v-model="selectedModel" placeholder="选择模型">
             <el-option v-for="model in models" :key="model.model" :label="model.name" :value="model.model" />
@@ -39,7 +39,7 @@ const { token, username, isAuthenticated, showLoginDialog } = storeToRefs(authSt
 
 const models = [
   { name: 'DeepSeek', model: 'deepseek-chat' },
-  { name: 'DeepSeek 推理', model: 'deepseek-reasoner' },
+  { name: 'DeepSeek 深度思考', model: 'deepseek-reasoner' },
 ];
 const selectedModel = ref<string>('deepseek-chat');
 
@@ -47,6 +47,11 @@ const message = ref<string>('');
 const history = ref<{ role: string; content: string }[]>([]);
 const requesting = ref<boolean>(false);
 
+const handleKeyDown = (event: KeyboardEvent) => {
+  if ((event.ctrlKey || event.metaKey) && event.key == 'Enter') {
+    ask();
+  }
+};
 const ask = async () => {
   if (!message.value) {
     ElMessage({
@@ -67,7 +72,7 @@ const ask = async () => {
   }
 
   requesting.value = true;
-  history.value.push({ role: 'user', content: message.value });
+  history.value.push({ role: 'user', content: message.value.trim() });
   message.value = '';
   const host = import.meta.env.COGNEX_API_HOST ?? '';
   const endpoint = `${host}/api/ask-ai/${selectedModel.value}`;
