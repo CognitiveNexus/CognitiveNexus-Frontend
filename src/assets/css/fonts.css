@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'ChuangKeTieJin';
-  src: url('../fonts/ChuangKeTieJinGangTi-2.otf') format('truetype');
+  src: url('../fonts/ChuangKeTieJinGangTi-2.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
