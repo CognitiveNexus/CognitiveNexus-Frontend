@@ -1,5 +1,6 @@
 <template>
   <el-drawer :model-value="modelValue" @update:model-value="updateModelValue" title="问问 AI" direction="rtl" footer-class="no-padding">
+    <el-empty v-if="!history.length" description="还没有问过问题哦" />
     <template v-for="msg in history">
       <div class="message-container">
         <el-avatar :icon="msg.role == 'user' ? Avatar : Management" :size="30" />
@@ -7,7 +8,10 @@
           {{ msg.role == 'user' ? username ?? '您' : 'AI 导师' }}
         </el-text>
       </div>
-      <el-text><vue-markdown :source="msg.content" /></el-text>
+      <el-text>
+        <el-skeleton v-if="!msg.content" :rows="0" class="loading" animated />
+        <vue-markdown :source="msg.content" />
+      </el-text>
     </template>
     <template #footer>
       <div class="input-container">
@@ -26,7 +30,7 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/Auth';
-import { ElNotification } from 'element-plus';
+import { ElNotification, ElMessage } from 'element-plus';
 import VueMarkdown from 'vue-markdown-render';
 import { Avatar, Management } from '@element-plus/icons-vue';
 
@@ -44,7 +48,20 @@ const history = ref<{ role: string; content: string }[]>([]);
 const requesting = ref<boolean>(false);
 
 const ask = async () => {
+  if (!message.value) {
+    ElMessage({
+      message: '消息内容为空',
+      type: 'warning',
+      plain: true,
+    });
+    return;
+  }
   if (!isAuthenticated.value) {
+    ElMessage({
+      message: '用户未登录',
+      type: 'warning',
+      plain: true,
+    });
     showLoginDialog.value = true;
     return;
   }
@@ -99,9 +116,6 @@ const updateModelValue = (value: boolean) => {
 * {
   white-space: pre-line;
 }
-::v-deep(.el-drawer__body) {
-  padding: 0 !important;
-}
 .message-container {
   display: flex;
   align-items: center;
@@ -119,6 +133,9 @@ const updateModelValue = (value: boolean) => {
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+}
+.loading {
+  margin-top: 12px;
 }
 </style>
 <style>
