@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="route.path.replace(/#.*$/, '')" mode="horizontal" :router="true" :ellipsis="false">
+  <el-menu :default-active="route.path.replace(/(?<=\/.+?)[\/#].*$/, '')" mode="horizontal" :router="true" :ellipsis="false">
     <el-menu-item index="/home">
       <span class="title">思维脉络</span>
     </el-menu-item>
