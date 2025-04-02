@@ -12,6 +12,7 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/Auth';
+import { ElNotification } from 'element-plus';
 
 const authStore = useAuthStore();
 const { token, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
@@ -30,31 +31,36 @@ const ask = async () => {
   const host = import.meta.env.COGNEX_API_HOST ?? '';
   const endpoint = `${host}/api/ask-ai/${model}`;
 
-  try {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        Authorization: token.value!,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ messages: history.value }),
-    });
+  fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      Authorization: token.value!,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ messages: history.value }),
+  })
+    .then(async (response) => {
+      if (!response.body) throw new Error('请求结果空');
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
 
-    history.value.push({ role: 'assistant', content: '' });
-    if (!response.body) throw new Error('No response body');
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder('utf-8');
-    let done = false;
-
-    while (!done) {
-      const { value, done: readerDone } = await reader.read();
-      done = readerDone;
+      let { value, done } = await reader.read();
       const chunk = decoder.decode(value, { stream: true });
-      history.value.at(-1)!.content += chunk;
-    }
-  } catch (error) {
-    history.value.at(-1)!.content = 'Error: 无法获取回复，请稍后再试。';
-  }
+      const status = JSON.parse(chunk);
+      if (status.error) {
+        throw new Error(status.error);
+      }
+
+      history.value.push({ role: 'assistant', content: '' });
+      while (!done) {
+        ({ value, done } = await reader.read());
+        const chunk = decoder.decode(value, { stream: true });
+        history.value.at(-1)!.content += chunk;
+      }
+    })
+    .catch((error: Error) => {
+      ElNotification({ title: '请求失败', message: (error as Error).message, type: 'error' });
+    });
 };
 const { modelValue } = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits(['update:modelValue']);
