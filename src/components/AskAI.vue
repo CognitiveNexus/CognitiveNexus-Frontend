@@ -38,7 +38,7 @@
             <el-button
               @click="requesting ? stop() : ask()"
               :type="requesting ? 'danger' : 'primary'"
-              :disabled="requesting || !message.trim()"
+              :disabled="!requesting && !message.trim()"
               :plain="requesting"
               >{{ requesting ? '停止' : '发送' }}</el-button
             >
@@ -82,7 +82,13 @@ const handleKeyDown = (event: KeyboardEvent) => {
     ask();
   }
 };
-const stop = async () => {};
+const stop = async () => {
+  ElMessage({
+    message: '当前模型不支持停止生成',
+    type: 'warning',
+    plain: true,
+  });
+};
 const ask = async () => {
   if (!message.value) {
     ElMessage({
