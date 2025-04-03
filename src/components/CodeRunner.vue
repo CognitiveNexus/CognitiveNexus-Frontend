@@ -22,7 +22,7 @@
         <slot :name="slotName"></slot>
       </DockWidget>
       <DockWidget id="code-runner-source-code" title="源代码" :mode="slotsCount ? 'split-right' : 'tab-after'">
-        <CodeEditor v-model="code" :disabled="loading || running" :highlight-line="currentStepData?.line" />
+        <CodeEditor v-model="code" :disabled="loading || running" :defaultLine="defaultLine" :highlight-line="currentStepData?.line" />
       </DockWidget>
       <DockWidget id="code-runner-stdin" title="程序输入" mode="tab-after" ref-id="code-runner-source-code">
         <el-input v-model="stdin" :disabled="loading" type="textarea" placeholder="输入程序读取的标准输入流的内容" />
@@ -67,7 +67,7 @@ const slotsCount = computed(() => Object.keys(slots).length);
 const authStore = useAuthStore();
 const { token, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
 
-const { code: defaultCode, stdin: defaultStdin } = defineProps<{ code?: string; stdin?: string }>();
+const { code: defaultCode, stdin: defaultStdin, defaultLine } = defineProps<{ code?: string; stdin?: string; defaultLine?: number }>();
 const code = ref<string>(defaultCode ?? '#include <stdio.h>\n\nint main(){\n    // 开始编写代码吧！\n    \n    return 0;\n}');
 const stdin = ref<string>(defaultStdin ?? '');
 const loading = ref<boolean>(false);

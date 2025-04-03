@@ -80,6 +80,10 @@ const props = defineProps({
   highlightLine: {
     type: Number,
   },
+  defaultLine: {
+    type: Number,
+    default: 5,
+  },
 });
 const emit = defineEmits(['update:modelValue']);
 
@@ -167,6 +171,13 @@ onMounted(async () => {
     cursorStyle: props.disabled ? 'block-outline' : 'line',
     cursorBlinking: props.disabled ? 'solid' : 'smooth',
   });
+
+  const model = editor.getModel();
+  if (model) {
+    const lineContent = model.getLineContent(props.defaultLine);
+    editor.setPosition({ lineNumber: props.defaultLine, column: lineContent.length + 1 });
+  }
+
   setCode(props.modelValue);
 
   if (props.highlightLine) {
