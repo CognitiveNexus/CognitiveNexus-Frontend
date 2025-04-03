@@ -1,5 +1,13 @@
 <template>
-  <el-drawer :model-value="modelValue" @update:model-value="updateModelValue" title="问问 AI" direction="rtl" footer-class="no-padding">
+  <el-drawer :model-value="modelValue" @update:model-value="updateModelValue" direction="rtl" footer-class="no-padding">
+    <template #header>
+      <el-text size="large">AI 导师</el-text>
+      <el-popconfirm title="确定重置会话？" placement="bottom-end" @confirm="resetHistory">
+        <template #reference>
+          <el-button :icon="Refresh" text round />
+        </template>
+      </el-popconfirm>
+    </template>
     <el-empty v-if="!history.length" description="还没有问过问题哦" />
     <template v-for="msg in history">
       <div class="message-container">
@@ -41,7 +49,7 @@ import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { ElNotification, ElMessage } from 'element-plus';
 import VueMarkdown from 'vue-markdown-render';
-import { Avatar, Management } from '@element-plus/icons-vue';
+import { Avatar, Management, Refresh } from '@element-plus/icons-vue';
 import { useAuthStore } from '@/stores/Auth';
 import { useCodeStore } from '@/stores/Code';
 
@@ -139,6 +147,10 @@ const ask = async () => {
       requesting.value = false;
     });
 };
+const resetHistory = () => {
+  history.value = [];
+};
+
 const { modelValue } = defineProps<{ modelValue: boolean }>();
 const emit = defineEmits(['update:modelValue']);
 const updateModelValue = (value: boolean) => {
