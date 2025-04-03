@@ -1,5 +1,5 @@
 <template>
-  <el-drawer :model-value="modelValue" @update:model-value="updateModelValue" direction="rtl" footer-class="no-padding">
+  <el-drawer :model-value="modelValue" @update:model-value="updateModelValue" direction="rtl" body-class="no-padding" footer-class="no-padding">
     <template #header>
       <el-text size="large">AI 导师</el-text>
       <el-popconfirm title="确定重置会话？" placement="bottom-end" @confirm="resetHistory">
@@ -9,23 +9,25 @@
       </el-popconfirm>
     </template>
     <el-empty v-if="!history.length" description="还没有问过问题哦" />
-    <template v-for="msg in history">
-      <div class="message-source">
-        <el-avatar :icon="msg.role == 'user' ? Avatar : Management" :size="30" />
-        <el-text size="large">
-          {{ msg.role == 'user' ? username ?? '您' : 'AI 导师' }}
-        </el-text>
-      </div>
-      <el-collapse v-if="msg.reasoning_content">
-        <el-collapse-item title="思考过程">
-          <pre>{{ msg.reasoning_content }}</pre>
-        </el-collapse-item>
-      </el-collapse>
-      <div class="message-container">
-        <el-skeleton v-if="msg.loading && !msg.content" :rows="0" class="loading" animated />
-        <MdPreview v-model="msg.content" previewTheme="github" />
-      </div>
-    </template>
+    <el-scrollbar class="message-container" ref="messageContainer">
+      <template v-for="msg in history">
+        <div class="message-sender">
+          <el-avatar :icon="msg.role == 'user' ? Avatar : Management" :size="30" />
+          <el-text size="large">
+            {{ msg.role == 'user' ? username ?? '您' : 'AI 导师' }}
+          </el-text>
+        </div>
+        <el-collapse v-if="msg.reasoning_content">
+          <el-collapse-item title="思考过程">
+            <pre>{{ msg.reasoning_content }}</pre>
+          </el-collapse-item>
+        </el-collapse>
+        <div class="message-content">
+          <el-skeleton v-if="msg.loading && !msg.content" :rows="0" class="loading" animated />
+          <MdPreview v-model="msg.content" previewTheme="github" />
+        </div>
+      </template>
+    </el-scrollbar>
     <template #footer>
       <div class="input-container">
         <el-input v-model="message" :autosize="{ minRows: 2, maxRows: 6 }" type="textarea" resize="none" placeholder="输入你的问题…" @keydown="handleKeyDown" />
@@ -49,10 +51,10 @@
   </el-drawer>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, nextTick } from 'vue';
 import { storeToRefs } from 'pinia';
-import { ElNotification, ElMessage } from 'element-plus';
-import { MdPreview, MdCatalog } from 'md-editor-v3';
+import { ElNotification, ElMessage, ElScrollbar } from 'element-plus';
+import { MdPreview } from 'md-editor-v3';
 import { Avatar, Management, Refresh } from '@element-plus/icons-vue';
 import { useAuthStore } from '@/stores/Auth';
 import { useCodeStore } from '@/stores/Code';
@@ -76,6 +78,7 @@ const message = ref<string>('');
 const askWithCode = ref<boolean>(true);
 const history = ref<{ role: string; content: string; reasoning_content?: string; loading?: boolean }[]>([]);
 const requesting = ref<boolean | string>(false);
+const messageContainer = ref();
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if ((event.ctrlKey || event.metaKey) && event.key == 'Enter') {
@@ -90,6 +93,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
     ask();
   }
 };
+
 const stop = async () => {
   ElMessage({
     message: '当前模型不支持停止生成',
@@ -97,6 +101,19 @@ const stop = async () => {
     plain: true,
   });
 };
+
+const scrollToBottom = async (force?: boolean) => {
+  const wrap = messageContainer.value.wrapRef;
+  const isAtBottom = wrap.scrollTop + wrap.clientHeight >= wrap.scrollHeight - 24;
+  await nextTick();
+  if (isAtBottom || force) {
+    wrap.scrollTo({
+      top: wrap.scrollHeight,
+      behavior: 'smooth',
+    });
+  }
+};
+
 const ask = async () => {
   if (!message.value) {
     ElMessage({
@@ -122,6 +139,7 @@ const ask = async () => {
   const host = import.meta.env.COGNEX_API_HOST ?? '';
   const endpoint = `${host}/api/ask-ai/${selectedModel.value}`;
   history.value.push({ role: 'assistant', content: '', reasoning_content: '', loading: true });
+  scrollToBottom(true);
 
   let body = {
     messages: history.value.slice(0, -1).map((value) => {
@@ -158,6 +176,8 @@ const ask = async () => {
             history.value.at(-1)!.reasoning_content += result.reasoning_content;
           }
         }
+
+        scrollToBottom();
       }
     })
     .catch((error: Error) => {
@@ -180,12 +200,15 @@ const updateModelValue = (value: boolean) => {
 };
 </script>
 <style scoped>
-.message-source {
+.message-container {
+  padding: 0px 16px;
+}
+.message-sender {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.message-container {
+.message-content {
   margin-top: 16px;
   margin-bottom: 32px;
 }
