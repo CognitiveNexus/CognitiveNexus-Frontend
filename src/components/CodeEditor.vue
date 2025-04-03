@@ -58,6 +58,7 @@
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { ElNotification } from 'element-plus';
 import * as monaco from 'monaco-editor';
+import { useCodeStore } from '@/stores/Code';
 
 const props = defineProps({
   modelValue: {
@@ -81,6 +82,9 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(['update:modelValue']);
+
+const codeStore = useCodeStore();
+const { setCode, clearCode } = codeStore;
 
 const theme = ref<string>('Chrome DevTools');
 const themes = [
@@ -163,6 +167,7 @@ onMounted(async () => {
     cursorStyle: props.disabled ? 'block-outline' : 'line',
     cursorBlinking: props.disabled ? 'solid' : 'smooth',
   });
+  setCode(props.modelValue);
 
   if (props.highlightLine) {
     highlightLine(props.highlightLine);
@@ -176,6 +181,7 @@ onMounted(async () => {
   // 监听内容变化
   editor.onDidChangeModelContent(() => {
     emit('update:modelValue', editor.getValue());
+    setCode(editor.getValue());
   });
 
   // 监听只读时修改失败
@@ -246,6 +252,7 @@ watch(
   (newValue) => {
     if (editor.getValue() !== newValue) {
       editor.setValue(newValue ?? '');
+      setCode(newValue);
     }
   }
 );
@@ -263,6 +270,7 @@ watch(fontSize, (new_size) => {
 // 清理资源
 onBeforeUnmount(() => {
   if (editor) editor.dispose();
+  clearCode();
 });
 </script>
 

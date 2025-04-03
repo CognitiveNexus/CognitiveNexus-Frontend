@@ -25,6 +25,7 @@
           <el-select v-model="selectedModel" :disabled="requesting" placeholder="选择模型">
             <el-option v-for="model in models" :key="model.model" :label="model.name" :value="model.model" />
           </el-select>
+          <el-checkbox v-model="askWithCode" :disabled="!code" label="包含当前代码" :border="true" checked />
           <el-tooltip content="按 Ctrl/Command + Enter 发送" placement="top-end" effect="light" :show-after="750">
             <el-button @click="requesting ? stop() : ask()" :type="requesting ? 'danger' : 'primary'" :disabled="requesting || !message" :plain="requesting">{{
               requesting ? '停止' : '发送'
@@ -38,13 +39,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useAuthStore } from '@/stores/Auth';
 import { ElNotification, ElMessage } from 'element-plus';
 import VueMarkdown from 'vue-markdown-render';
 import { Avatar, Management } from '@element-plus/icons-vue';
+import { useAuthStore } from '@/stores/Auth';
+import { useCodeStore } from '@/stores/Code';
 
 const authStore = useAuthStore();
 const { token, username, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
+const codeStore = useCodeStore();
+const { code } = storeToRefs(codeStore);
 
 const models = [
   { name: 'DeepSeek-V3', model: 'deepseek-chat' },
@@ -53,6 +57,7 @@ const models = [
 const selectedModel = ref<string>('deepseek-chat');
 
 const message = ref<string>('');
+const askWithCode = ref<boolean>(true);
 const history = ref<{ role: string; content: string; reasoning_content?: string; loading?: boolean }[]>([]);
 const requesting = ref<boolean | string>(false);
 
@@ -88,17 +93,20 @@ const ask = async () => {
   const endpoint = `${host}/api/ask-ai/${selectedModel.value}`;
   history.value.push({ role: 'assistant', content: '', reasoning_content: '', loading: true });
 
+  let body = {
+    messages: history.value.slice(0, -1).map((value) => {
+      return { role: value.role, content: value.content };
+    }),
+    code: askWithCode.value ? code.value : null,
+  };
+
   fetch(endpoint, {
     method: 'POST',
     headers: {
       Authorization: token.value!,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      messages: history.value.slice(0, -1).map((value) => {
-        return { role: value.role, content: value.content };
-      }),
-    }),
+    body: JSON.stringify(body),
   })
     .then(async (response) => {
       if (!response.body) throw new Error('请求结果空');
@@ -123,7 +131,8 @@ const ask = async () => {
       }
     })
     .catch((error: Error) => {
-      ElNotification({ title: '请求失败', message: (error as Error).message, type: 'error' });
+      ElNotification({ title: '请求失败', message: error.message, type: 'error' });
+      history.value.at(-1)!.content += `请求失败：${error.message}`;
     })
     .finally(() => {
       history.value.at(-1)!.loading = false;
