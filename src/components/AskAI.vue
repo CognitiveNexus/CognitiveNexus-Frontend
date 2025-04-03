@@ -79,6 +79,14 @@ const requesting = ref<boolean | string>(false);
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if ((event.ctrlKey || event.metaKey) && event.key == 'Enter') {
+    if (requesting.value) {
+      ElMessage({
+        message: '内容正在生成中，请稍后再发送',
+        type: 'warning',
+        plain: true,
+      });
+      return;
+    }
     ask();
   }
 };
