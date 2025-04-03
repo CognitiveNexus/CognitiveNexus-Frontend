@@ -33,7 +33,7 @@
           <el-select v-model="selectedModel" :disabled="requesting" placeholder="选择模型">
             <el-option v-for="model in models" :key="model.model" :label="model.name" :value="model.model" />
           </el-select>
-          <el-checkbox v-model="askWithCode" :disabled="!code" label="包含当前代码" :border="true" checked />
+          <el-checkbox v-show="code" v-model="askWithCode" :disabled="requesting" label="包含当前代码" :border="true" checked />
           <el-tooltip content="按 Ctrl/Command + Enter 发送" placement="top-end" effect="light" :show-after="750">
             <el-button
               @click="requesting ? stop() : ask()"
