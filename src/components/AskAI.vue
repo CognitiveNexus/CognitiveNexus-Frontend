@@ -35,9 +35,13 @@
           </el-select>
           <el-checkbox v-model="askWithCode" :disabled="!code" label="包含当前代码" :border="true" checked />
           <el-tooltip content="按 Ctrl/Command + Enter 发送" placement="top-end" effect="light" :show-after="750">
-            <el-button @click="requesting ? stop() : ask()" :type="requesting ? 'danger' : 'primary'" :disabled="requesting || !message" :plain="requesting">{{
-              requesting ? '停止' : '发送'
-            }}</el-button>
+            <el-button
+              @click="requesting ? stop() : ask()"
+              :type="requesting ? 'danger' : 'primary'"
+              :disabled="requesting || !message.trim()"
+              :plain="requesting"
+              >{{ requesting ? '停止' : '发送' }}</el-button
+            >
           </el-tooltip>
         </div>
       </div>
@@ -58,11 +62,15 @@ const { token, username, isAuthenticated, showLoginDialog } = storeToRefs(authSt
 const codeStore = useCodeStore();
 const { code } = storeToRefs(codeStore);
 
-const models = [
+let models: { name: string; model: string }[] = [
   { name: 'DeepSeek-V3', model: 'deepseek-chat' },
   { name: 'DeepSeek-R1 深度思考', model: 'deepseek-reasoner' },
 ];
 const selectedModel = ref<string>('deepseek-chat');
+if (import.meta.env.MODE === 'development') {
+  models.push({ name: '大模型模拟测试', model: 'test' });
+  selectedModel.value = 'test';
+}
 
 const message = ref<string>('');
 const askWithCode = ref<boolean>(true);
