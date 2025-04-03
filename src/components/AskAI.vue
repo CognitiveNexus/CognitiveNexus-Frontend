@@ -10,7 +10,7 @@
     </template>
     <el-empty v-if="!history.length" description="还没有问过问题哦" />
     <template v-for="msg in history">
-      <div class="message-container">
+      <div class="message-source">
         <el-avatar :icon="msg.role == 'user' ? Avatar : Management" :size="30" />
         <el-text size="large">
           {{ msg.role == 'user' ? username ?? '您' : 'AI 导师' }}
@@ -21,10 +21,10 @@
           <pre>{{ msg.reasoning_content }}</pre>
         </el-collapse-item>
       </el-collapse>
-      <el-text>
+      <div class="message-container">
         <el-skeleton v-if="msg.loading && !msg.content" :rows="0" class="loading" animated />
-        <vue-markdown :source="msg.content" />
-      </el-text>
+        <MdPreview v-model="msg.content" previewTheme="github" />
+      </div>
     </template>
     <template #footer>
       <div class="input-container">
@@ -52,7 +52,7 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { ElNotification, ElMessage } from 'element-plus';
-import VueMarkdown from 'vue-markdown-render';
+import { MdPreview, MdCatalog } from 'md-editor-v3';
 import { Avatar, Management, Refresh } from '@element-plus/icons-vue';
 import { useAuthStore } from '@/stores/Auth';
 import { useCodeStore } from '@/stores/Code';
@@ -180,13 +180,14 @@ const updateModelValue = (value: boolean) => {
 };
 </script>
 <style scoped>
-* {
-  white-space: pre-line;
-}
-.message-container {
+.message-source {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+.message-container {
+  margin-top: 16px;
+  margin-bottom: 32px;
 }
 .input-container {
   display: flex;
@@ -200,10 +201,6 @@ const updateModelValue = (value: boolean) => {
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-}
-.loading {
-  margin-top: 16px;
-  margin-bottom: 24px;
 }
 .el-collapse {
   margin-top: 12px;

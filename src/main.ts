@@ -8,6 +8,7 @@ import router from '@/router';
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
 import 'element-plus/dist/index.css';
+import 'md-editor-v3/lib/style.css';
 import '@lumino/widgets/style/index.css';
 import '@lumino/default-theme/style/index.css';
 
