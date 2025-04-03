@@ -63,7 +63,7 @@ import { useCodeStore } from '@/stores/Code';
 const props = defineProps({
   modelValue: {
     type: String,
-    default: '#include <stdio.h>\n\nint main(){\n    printf("Hello, world!");\n    return 0;\n}',
+    default: '#include <stdio.h>\n\nint main(){\n    // 开始编写代码吧！\n    return 0;\n}',
   },
   language: {
     type: String,
