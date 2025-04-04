@@ -49,7 +49,6 @@
 
 <script setup lang="ts">
 import { ref, computed, useSlots } from 'vue';
-import { storeToRefs } from 'pinia';
 import { ElInput, ElButton, ElMessage, ElNotification, ElPagination, ElText } from 'element-plus';
 import { VideoPlay, VideoPause } from '@element-plus/icons-vue';
 import type { CNCRResult, CNCRData } from '@/types/CodeRunnerTypes';
@@ -57,15 +56,10 @@ import DockPanel from '@/components/layout/DockPanel.vue';
 import DockWidget from '@/components/layout/DockWidget.vue';
 import CodeEditor from '@/components/CodeEditor.vue';
 import CodeRunnerGraph from '@/components/CodeRunnerGraph.vue';
-import { useAuthStore } from '@/stores/Auth';
-
-const host = import.meta.env.COGNEX_API_HOST ?? '';
+import sendRequest from '@/utils/SendRequest.ts';
 
 const slots = useSlots();
 const slotsCount = computed(() => Object.keys(slots).length);
-
-const authStore = useAuthStore();
-const { token, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
 
 const { code: defaultCode, stdin: defaultStdin, defaultLine } = defineProps<{ code?: string; stdin?: string; defaultLine?: number }>();
 const code = ref<string>(defaultCode ?? '#include <stdio.h>\n\nint main(){\n    // 开始编写代码吧！\n    \n    return 0;\n}');
@@ -102,21 +96,11 @@ const runCode = async () => {
     });
     return;
   }
-  if (!isAuthenticated.value) {
-    ElMessage({
-      message: '用户未登录',
-      type: 'warning',
-      plain: true,
-    });
-    showLoginDialog.value = true;
-    return;
-  }
   loading.value = true;
   codeRunnerData.value = blankCodeRunnerData;
-  await fetch(`${host}/api/run-code`, {
+  await sendRequest(true, '/api/run-code', {
     method: 'POST',
     headers: {
-      Authorization: token.value!,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -125,12 +109,7 @@ const runCode = async () => {
     }),
   })
     .then(async (response) => {
-      if (response.status == 200) {
-        return response.json();
-      } else if (response.status == 401) {
-        showLoginDialog.value = true;
-      }
-      throw new Error((await response.json()).error);
+      return response.json();
     })
     .then((result: CNCRResult) => {
       if (result.status === 'error') {

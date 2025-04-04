@@ -29,6 +29,7 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
 import { useAuthStore } from '@/stores/Auth';
+import sendRequest from '@/utils/SendRequest.ts';
 
 const authStore = useAuthStore();
 const { showLoginDialog } = storeToRefs(authStore);
@@ -44,7 +45,6 @@ const requesting = ref<boolean>(false);
 const username = ref<string>('');
 const password = ref<string>('');
 const inviteCode = ref<string>('');
-const host = import.meta.env.COGNEX_API_HOST ?? '';
 
 const submit = async () => {
   requesting.value = true;
@@ -55,7 +55,7 @@ const submit = async () => {
   if (selectedTab.value === 'register') {
     data.invite_code = inviteCode.value;
   }
-  await fetch(`${host}/api/auth/${selectedTab.value}`, {
+  await sendRequest(false, `/api/auth/${selectedTab.value}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -64,15 +64,15 @@ const submit = async () => {
     .then((result) => {
       if (result?.error) {
         ElNotification({
-          message: result.error,
           title: '登录失败',
+          message: result.error,
           type: 'error',
         });
       } else {
         authStore.setAuth(result.token, result.username);
         ElNotification({
-          message: result.success,
           title: `${actionName.value}成功`,
+          message: result.success,
           type: 'success',
         });
         showLoginDialog.value = false;
@@ -80,8 +80,8 @@ const submit = async () => {
     })
     .catch((reason: Error) => {
       ElNotification({
-        message: reason.message,
         title: `${actionName.value}失败`,
+        message: reason.message,
         type: 'error',
       });
     })

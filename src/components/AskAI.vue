@@ -56,11 +56,13 @@ import { storeToRefs } from 'pinia';
 import { ElNotification, ElMessage, ElScrollbar } from 'element-plus';
 import { MdPreview } from 'md-editor-v3';
 import { Avatar, Management, Refresh } from '@element-plus/icons-vue';
+import sendRequest from '@/utils/SendRequest.ts';
 import { useAuthStore } from '@/stores/Auth';
 import { useCodeStore } from '@/stores/Code';
 
 const authStore = useAuthStore();
-const { token, username, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
+const { username } = storeToRefs(authStore);
+
 const codeStore = useCodeStore();
 const { code } = storeToRefs(codeStore);
 
@@ -123,21 +125,11 @@ const ask = async () => {
     });
     return;
   }
-  if (!isAuthenticated.value) {
-    ElMessage({
-      message: '用户未登录',
-      type: 'warning',
-      plain: true,
-    });
-    showLoginDialog.value = true;
-    return;
-  }
 
   requesting.value = true;
   history.value.push({ role: 'user', content: message.value.trim() });
   message.value = '';
-  const host = import.meta.env.COGNEX_API_HOST ?? '';
-  const endpoint = `${host}/api/ask-ai/${selectedModel.value}`;
+  const endpoint = `/api/ask-ai/${selectedModel.value}`;
   history.value.push({ role: 'assistant', content: '', reasoning_content: '', loading: true });
   scrollToBottom(true);
 
@@ -148,10 +140,9 @@ const ask = async () => {
     code: askWithCode.value ? code.value : null,
   };
 
-  fetch(endpoint, {
+  sendRequest(true, endpoint, {
     method: 'POST',
     headers: {
-      Authorization: token.value!,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
