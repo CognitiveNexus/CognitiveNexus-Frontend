@@ -18,10 +18,9 @@ const { consoleArray } = storeToRefs(store);
 <style scoped>
 .console-render {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
-  margin: 0px 80px;
   padding: 0;
   border-radius: 5px;
-  height: 40%;
+  width: 50%;
 }
 .title {
   color: white;

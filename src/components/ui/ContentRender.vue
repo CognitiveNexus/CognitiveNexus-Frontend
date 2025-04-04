@@ -1,27 +1,21 @@
 <template>
   <el-scrollbar class="reader-container" height="700px">
     <div v-for="item in content as ContentItem[] ">
-      <img
-        v-if="item.type === 'image'"
-        :src="item.src"
-        :alt="item.alt"
-        :style="{
-          width: item.width ? `${item.width}px` : 'auto',
-          height: item.height ? `${item.height}px` : 'auto',
-        }"
-      />
-      <el-text v-else-if="item.type === 'text'" :class="item.class">{{ item.content }}</el-text>
-      <a v-else-if="item.type === 'link'" :href="item.url">{{ item.text }}</a>
-      <div v-else-if="item.type === 'break'"><br /></div>
+      <el-text v-if="item.type === 'title'" class="title">{{ item.content }}</el-text>
+
       <div v-else-if="item.type === 'tag'" class="tag">
         <el-text>前置知识点：</el-text>
         <el-tag v-for="tag in item.content" :type="tag.tagtype" :effect="tag.effect" :size="tag.size">{{ tag.text }}</el-tag>
       </div>
+
+      <MdPreview v-else-if="item.type === 'text'" :modelValue="item.content" />
+
       <div class="warp-button" v-else-if="item.type === 'button'">
         <el-button v-for="button in item.content" :type="button.buttontype" :size="button.size" :icon="Flag" @click="$emit('link', button.targetIndex)"
           >{{ button.text }}
         </el-button>
       </div>
+
       <div class="visualizer" v-else-if="item.type === 'visualizer'">
         <ColumnChart />
         <Console />
@@ -33,6 +27,8 @@
 <script setup lang="ts" name="ContentRender">
 import type { ContentItem } from '@/types/TextReaderTypes';
 import { Flag } from '@element-plus/icons-vue';
+import { MdPreview } from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
 
 defineProps({
   content: {
@@ -97,5 +93,10 @@ defineEmits(['link']);
   justify-content: center;
   align-items: center;
   gap: 100px;
+}
+.visualizer {
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: row;
 }
 </style>
