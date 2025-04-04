@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-header class="title">UserName</el-header>
+    <el-header class="title">{{ username }}</el-header>
     <el-divider></el-divider>
     <el-main><CourseProgress /></el-main>
   </el-container>

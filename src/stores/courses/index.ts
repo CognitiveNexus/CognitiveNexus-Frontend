@@ -4,7 +4,7 @@ import { useIfStore } from './If';
 import { useForStore } from './For';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { CourseName, CourseMeta } from '@/types/CoursesNameType';
+import type { CourseName, CourseMeta, CourseDiff, DiffProgress, DiffProgressDetail } from '@/types/CoursesNameType';
 
 /**
  * 这是所有课程内容的管理文件
@@ -68,16 +68,6 @@ export const useCourseStoreManager = defineStore('CourseStore', {
         diff: meta.diff,
       }));
     },
-    allCoursesProgress(): { name: String; percent: number }[] {
-      return Object.entries(this.course).map(([courseName, store]) => {
-        const total = store.map.length;
-        const solved = store.map.filter((p) => p.solved).length;
-        return {
-          name: this.courseMeta[courseName as CourseName].title,
-          percent: total === 0 ? 0 : Math.round((solved / total) * 100),
-        };
-      });
-    },
   },
   actions: {
     //切换课程
@@ -100,15 +90,30 @@ export const useCourseStoreManager = defineStore('CourseStore', {
       const target = this.currentStore.map.find((item) => item.page === page);
       return !target || target.solved ? true : false;
     },
-    //是否完成整章练习
-    isFullySolved() {
-      return this.currentStore.map.every((item) => item.solved);
-    },
-    //完成百分比(%)
-    isSolvedPercent() {
-      const solvedCount = this.currentStore.map.filter((item) => item.solved).length;
-      const totalCount = this.currentStore.map.length;
-      return Math.round((solvedCount / totalCount) * 100);
+    getDiffProgress(diff: CourseDiff): DiffProgress {
+      const targetCourses = Object.entries(this.courseMeta)
+        .filter(([_, meta]) => meta.diff === diff)
+        .map(([name]) => name as CourseName);
+
+      let total = 0;
+      let solved = 0;
+      let detail = [] as DiffProgressDetail[];
+
+      targetCourses.forEach((coursename) => {
+        const course = this.course[coursename];
+        const courseMetaName = this.courseMeta[coursename].title;
+        const courseTotal = course.map.length;
+        const courseSolved = course.map.filter((p) => p.solved).length;
+        total += courseTotal;
+        solved += courseSolved;
+        detail.push({
+          name: courseMetaName,
+          percent: courseTotal === 0 ? 0 : Math.round((courseSolved / courseTotal) * 100),
+        });
+      });
+
+      const totalPercent = total === 0 ? 0 : Math.round((solved / total) * 100);
+      return { diff, totalPercent, detail };
     },
   },
 });

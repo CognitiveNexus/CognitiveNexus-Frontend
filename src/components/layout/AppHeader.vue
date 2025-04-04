@@ -12,6 +12,7 @@
       <template #title>
         <el-icon><User /></el-icon>{{ username }}
       </template>
+      <el-menu-item @click="profile">学习记录</el-menu-item>
       <el-menu-item @click="logout">退出登录</el-menu-item>
     </el-sub-menu>
   </el-menu>
@@ -19,13 +20,14 @@
 </template>
 
 <script setup lang="ts" name="AppHeader">
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
 import LoginDialog from '@/components/LoginDialog.vue';
 import { useAuthStore } from '@/stores/Auth';
 
 const route = useRoute();
+const router = useRouter();
 
 const authStore = useAuthStore();
 const { username, isAuthenticated, showLoginDialog } = storeToRefs(authStore);
@@ -35,6 +37,12 @@ const logout = () => {
   ElNotification({
     title: '退出登录成功',
     type: 'success',
+  });
+};
+
+const profile = () => {
+  router.push({
+    name: 'profile',
   });
 };
 </script>
