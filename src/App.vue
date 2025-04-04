@@ -7,12 +7,20 @@
       </el-container>
       <el-footer></el-footer>
     </el-container>
+    <FloatButton :icon="ChatLineRound" @click="aiDrawer = !aiDrawer" />
+    <AskAI v-model="aiDrawer" />
   </el-config-provider>
 </template>
 
 <script setup lang="ts" name="App">
+import { ref } from 'vue';
 import { RouterView } from 'vue-router';
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
+import { ChatLineRound } from '@element-plus/icons-vue';
+import AskAI from '@/components/AskAI.vue';
+import FloatButton from '@/components/FloatButton.vue';
+
+const aiDrawer = ref<boolean>(false);
 </script>
 
 <style scoped>

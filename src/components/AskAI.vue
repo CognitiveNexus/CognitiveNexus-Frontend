@@ -41,9 +41,9 @@
               @click="requesting ? stop() : ask()"
               :type="requesting ? 'danger' : 'primary'"
               :disabled="!requesting && !message.trim()"
-              :plain="requesting"
-              >{{ requesting ? '停止' : '发送' }}</el-button
-            >
+              :plain="requesting">
+              {{ requesting ? '停止' : '发送' }}
+            </el-button>
           </el-tooltip>
         </div>
       </div>
@@ -104,7 +104,7 @@ const stop = async () => {
 
 const scrollToBottom = async (force?: boolean) => {
   const wrap = messageContainer.value.wrapRef;
-  const isAtBottom = wrap.scrollTop + wrap.clientHeight >= wrap.scrollHeight - 24;
+  const isAtBottom = wrap.scrollTop + wrap.clientHeight >= wrap.scrollHeight - 40;
   await nextTick();
   if (isAtBottom || force) {
     wrap.scrollTo({
