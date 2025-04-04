@@ -18,7 +18,7 @@
 
       <div class="visualizer" v-else-if="item.type === 'visualizer'">
         <ColumnChart />
-        <Console />
+        <Log />
       </div>
     </div>
   </el-scrollbar>
