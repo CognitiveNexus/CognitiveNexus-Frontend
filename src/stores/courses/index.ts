@@ -68,6 +68,16 @@ export const useCourseStoreManager = defineStore('CourseStore', {
         diff: meta.diff,
       }));
     },
+    allCoursesProgress(): { name: String; percent: number }[] {
+      return Object.entries(this.course).map(([courseName, store]) => {
+        const total = store.map.length;
+        const solved = store.map.filter((p) => p.solved).length;
+        return {
+          name: this.courseMeta[courseName as CourseName].title,
+          percent: total === 0 ? 0 : Math.round((solved / total) * 100),
+        };
+      });
+    },
   },
   actions: {
     //切换课程
@@ -89,6 +99,16 @@ export const useCourseStoreManager = defineStore('CourseStore', {
     isPracticeSolved(page: number) {
       const target = this.currentStore.map.find((item) => item.page === page);
       return !target || target.solved ? true : false;
+    },
+    //是否完成整章练习
+    isFullySolved() {
+      return this.currentStore.map.every((item) => item.solved);
+    },
+    //完成百分比(%)
+    isSolvedPercent() {
+      const solvedCount = this.currentStore.map.filter((item) => item.solved).length;
+      const totalCount = this.currentStore.map.length;
+      return Math.round((solvedCount / totalCount) * 100);
     },
   },
 });

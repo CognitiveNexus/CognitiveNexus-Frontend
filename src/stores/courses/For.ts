@@ -10,7 +10,6 @@ export const useForStore = defineStore('For', {
         {
           type: 'text',
           content: 'For循环',
-          class: 'title',
         },
       ],
       2: [],
@@ -20,7 +19,6 @@ export const useForStore = defineStore('For', {
         {
           type: 'text',
           content: `for练习1`,
-          class: 'content',
         },
       ],
     } as Record<number, ContentItem[]>,

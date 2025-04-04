@@ -5,6 +5,7 @@ import Course from '@/pages/Course.vue';
 import CourseSelection from '@/pages/CourseSelection.vue';
 import Playground from '@/pages/Playground.vue';
 import Practice from '@/pages/Practice.vue';
+import Profile from '@/pages/Profile.vue';
 
 // 创建路由器
 const router = createRouter({
@@ -47,6 +48,11 @@ const router = createRouter({
       name: 'playground',
       path: '/playground',
       component: Playground,
+    },
+    {
+      name: 'profile',
+      path: '/profile',
+      component: Profile,
     },
     {
       path: '/',

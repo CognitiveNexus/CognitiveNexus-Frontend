@@ -10,7 +10,6 @@ export const useSelectSortStore = defineStore('SelectSort', {
         {
           type: 'text',
           content: '选择排序',
-          class: 'title',
         },
       ],
       2: [],
@@ -20,7 +19,6 @@ export const useSelectSortStore = defineStore('SelectSort', {
         {
           type: 'text',
           content: `选择排序练习1`,
-          class: 'content',
         },
       ],
     } as Record<number, ContentItem[]>,

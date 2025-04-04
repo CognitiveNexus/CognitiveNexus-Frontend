@@ -10,7 +10,6 @@ export const useIfStore = defineStore('If', {
         {
           type: 'text',
           content: 'If判断',
-          class: 'title',
         },
       ],
       2: [],
@@ -20,7 +19,6 @@ export const useIfStore = defineStore('If', {
         {
           type: 'text',
           content: `if练习1`,
-          class: 'content',
         },
       ],
     } as Record<number, ContentItem[]>,
