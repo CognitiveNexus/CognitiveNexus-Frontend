@@ -2,7 +2,10 @@
   <div class="log-render">
     <div class="title">操作记录</div>
     <el-scrollbar height="300px" ref="scrollRef">
-      <div class="info" v-for="item in logArray">{{ item }}<br /></div>
+      <div class="info" v-for="item in logArray">
+        <el-text>{{ item }}</el-text>
+        <br />
+      </div>
     </el-scrollbar>
   </div>
 </template>
@@ -11,7 +14,6 @@
 import { useLog } from '@/stores/Log';
 import { storeToRefs } from 'pinia';
 import { ref, nextTick, watch } from 'vue';
-import type { ElScrollbar } from 'element-plus';
 
 const store = useLog();
 const { logArray } = storeToRefs(store);
@@ -58,10 +60,10 @@ watch(
   user-select: none;
 }
 .info {
-  background-color: rgb(216.8, 235.6, 255);
+  background-color: #f3f3f3;
   line-height: 2;
-  border-radius: 10px;
-  padding: 5px;
+  border-left: 5px solid #409eff;
+  padding: 5px 10px 5px 5px;
   margin: 10px;
   font-size: 15px;
   line-height: 1.5;

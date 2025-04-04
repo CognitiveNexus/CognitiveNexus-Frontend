@@ -1,20 +1,15 @@
 <template>
   <div class="bg">
     <div class="title">
-      <div class="main-title">思维脉络</div>
-      <br />
-      <div class="sub-title">—— C语言算法可视化学习平台</div>
+      <BlurEntrance>
+        <div class="main-title">思维脉络</div>
+        <br />
+        <div class="sub-title">—— C语言算法可视化学习平台</div>
+      </BlurEntrance>
     </div>
     <Carousel />
     <div class="btn-group">
-      <el-button
-        :icon="Promotion"
-        type="success"
-        size="large"
-        round
-        @click="handleStart()"
-        >Start</el-button
-      >
+      <el-button :icon="Promotion" type="success" size="large" round @click="handleStart()">Start</el-button>
     </div>
     <div class="specify">我们的特色</div>
     <div class="proj-info">
@@ -26,27 +21,19 @@
 </template>
 
 <script setup lang="ts" name="Home">
-import { Promotion } from "@element-plus/icons-vue";
-import { useRouter } from "vue-router";
+import { Promotion } from '@element-plus/icons-vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 function handleStart() {
-  router.push("/course");
+  router.push('/course');
 }
 </script>
 
 <style scoped>
 .bg {
-  background: linear-gradient(
-    125deg,
-    #5971b4,
-    #7656a1,
-    #a14d5b,
-    #b69858,
-    #57b18e,
-    #5e78c0
-  );
+  background: linear-gradient(125deg, #5971b4, #7656a1, #a14d5b, #b69858, #57b18e, #5e78c0);
   background-size: 400%;
   background-blend-mode: normal;
   width: 100%;
@@ -71,7 +58,7 @@ function handleStart() {
   align-items: center;
   justify-content: center;
   user-select: none;
-  font-family: "ChuangKeTieJin";
+  font-family: 'ChuangKeTieJin';
   flex-direction: column;
   line-height: 0.8;
   margin: 70px 0px;
@@ -104,7 +91,7 @@ function handleStart() {
   align-items: center;
   justify-content: center;
   user-select: none;
-  font-family: "ChuangKeTieJin";
+  font-family: 'ChuangKeTieJin';
   margin-top: 250px;
   margin-bottom: 50px;
   display: flex;
