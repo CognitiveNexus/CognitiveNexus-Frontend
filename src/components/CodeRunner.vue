@@ -98,7 +98,7 @@ const runCode = async () => {
   }
   loading.value = true;
   codeRunnerData.value = blankCodeRunnerData;
-  await sendRequest(true, '/api/run-code', {
+  await sendRequest(true, '/api/code/tracer', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -112,14 +112,14 @@ const runCode = async () => {
       return response.json();
     })
     .then((result: CNCRResult) => {
-      if (result.status === 'error') {
+      if (result.error) {
         if (!result.logs.run && result.logs.compile) {
           ElNotification({
             title: '执行失败：编译失败',
             message: result.logs.compile,
             type: 'error',
           });
-        } else if (result.message === 'empty result' && result.logs.run) {
+        } else if (result.error === 'empty result' && result.logs.run) {
           ElNotification({
             title: '执行失败：运行失败',
             message: result.logs.run,
@@ -128,7 +128,7 @@ const runCode = async () => {
         } else {
           ElNotification({
             title: '执行失败：未知错误',
-            message: result.message,
+            message: result.error,
             type: 'error',
           });
         }
@@ -141,13 +141,13 @@ const runCode = async () => {
               timeout: '运行超时',
               overstep: '步数超限',
               aborted: '异常终止',
-            }[result.data.endState] +
+            }[result.data!.endState] +
             '\n' +
-            result.data.steps.at(-1)?.stdout,
-          type: result.data.endState === 'finished' ? 'success' : 'warning',
+            result.data!.steps.at(-1)?.stdout,
+          type: result.data!.endState === 'finished' ? 'success' : 'warning',
         });
         running.value = true;
-        codeRunnerData.value = result.data;
+        codeRunnerData.value = result.data!;
         currentStep.value = 1;
       }
       compileLog.value = result.logs.compile || '(空)';
