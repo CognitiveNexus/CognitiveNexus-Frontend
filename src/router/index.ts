@@ -6,6 +6,7 @@ import CourseSelection from '@/pages/CourseSelection.vue';
 import Playground from '@/pages/Playground.vue';
 import Practice from '@/pages/Practice.vue';
 import Profile from '@/pages/Profile.vue';
+import Background from '@/components/Background.vue';
 
 // 创建路由器
 const router = createRouter({
@@ -42,7 +43,7 @@ const router = createRouter({
       // 主页重定向至/home，指向网页主页
       name: 'home',
       path: '/home',
-      component: Home,
+      component: Background,
     },
     {
       name: 'playground',
