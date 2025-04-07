@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="code-runner-container">
     <div class="top-bar">
       <el-button
         circle
@@ -167,7 +167,7 @@ const runCode = async () => {
 </script>
 
 <style scoped>
-.container {
+.code-runner-container {
   display: flex;
   flex-direction: column;
   height: 100%;

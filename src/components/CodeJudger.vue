@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="code-judger-container">
     <div class="top-bar">
       <el-button circle plain :disabled="loading" :icon="VideoPlay" type="success" @click="judge" />
     </div>
@@ -100,7 +100,7 @@ const judge = () => {
 </script>
 
 <style scoped>
-.container {
+.code-judger-container {
   display: flex;
   flex-direction: column;
   height: 100%;
