@@ -4,7 +4,7 @@
       <PracticeReader />
     </el-aside>
     <el-divider direction="vertical"></el-divider>
-    <el-main><CodeRunner /></el-main>
+    <el-main><CodeJudger /></el-main>
   </el-container>
 </template>
 

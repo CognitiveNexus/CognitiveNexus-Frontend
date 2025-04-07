@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { ContentItem, Mapping } from '@/types/TextReaderTypes';
+import type { ContentItem, Mapping, CodeTest } from '@/types/TextReaderTypes';
 
 export const useForStore = defineStore('For', {
   //数据存储
@@ -22,5 +22,7 @@ export const useForStore = defineStore('For', {
         },
       ],
     } as Record<number, ContentItem[]>,
+    judge: {} as Record<number, CodeTest[]>,
+    randomJudge: {},
   }),
 });

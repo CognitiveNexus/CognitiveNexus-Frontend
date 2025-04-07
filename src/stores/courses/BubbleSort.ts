@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { ContentItem, Mapping } from '@/types/TextReaderTypes';
+import type { ContentItem, Mapping, CodeTest } from '@/types/TextReaderTypes';
 
 export const useBubbleSortStore = defineStore('BubbleSort', {
   //数据存储
@@ -256,5 +256,67 @@ for(int i=0;i<n-1;i++){
         },
       ],
     } as Record<number, ContentItem[]>,
+    judge: {
+      1: [
+        {
+          stdin: '10 20',
+          expect: '白银盾',
+        },
+        {
+          stdin: '2.5 1.5',
+          expect: '青铜盾',
+        },
+      ],
+      2: [
+        {
+          stdin: `8
+7 4 1 4 5 9 2 8`,
+          expect: '4 1 4 5 7 2 8 9',
+        },
+      ],
+      3: [
+        {
+          stdin: `8
+7 4 1 4 5 9 2 8`,
+          expect: '1 2 4 4 5 7 8 9',
+        },
+      ],
+    } as Record<number, CodeTest[]>,
+    randomJudge: {
+      1: (): CodeTest => {
+        const a = Math.random() * 10;
+        const b = Math.random() * 10;
+        return { stdin: `${a} ${b}`, expect: a > b ? '青铜盾' : '白银盾' };
+      },
+      2: (): CodeTest => {
+        let a = [];
+        let b;
+        const len = Math.ceil(Math.random() * 5) + 5;
+        for (let i = 0; i < len; i++) {
+          a.push(Math.ceil(Math.random() * 100));
+        }
+        b = a.join(' ');
+        for (let i = 0; i < len - 1; i++) {
+          if (a[i] > a[i + 1]) {
+            [a[i], a[i + 1]] = [a[i + 1], a[i]];
+          }
+        }
+        return { stdin: b, expect: a.join(' ') };
+      },
+      3: (): CodeTest => {
+        let a = [];
+        const len = Math.ceil(Math.random() * 5) + 5;
+        for (let i = 0; i < len; i++) {
+          a.push(Math.ceil(Math.random() * 100));
+        }
+        let b = a.sort(cmp);
+        console.log(b.join(' '));
+        return { stdin: a.join(' '), expect: b.join(' ') };
+      },
+    },
   }),
 });
+
+function cmp(a: number, b: number) {
+  return a - b;
+}

@@ -20,6 +20,11 @@ export type Mapping = {
   solved: boolean;
 };
 
+export type CodeTest = {
+  stdin: string;
+  expect: string;
+};
+
 //Reader 富文本类型约束
 export type ContentItem =
   | {
