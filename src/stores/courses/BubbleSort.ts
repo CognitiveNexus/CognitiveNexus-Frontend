@@ -309,14 +309,10 @@ for(int i=0;i<n-1;i++){
         for (let i = 0; i < len; i++) {
           a.push(Math.ceil(Math.random() * 100));
         }
-        let b = a.sort(cmp);
+        let b = a.sort((x, y) => x - y);
         console.log(b.join(' '));
         return { stdin: a.join(' '), expect: b.join(' ') };
       },
     },
   }),
 });
-
-function cmp(a: number, b: number) {
-  return a - b;
-}
