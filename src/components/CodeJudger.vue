@@ -10,19 +10,21 @@
       <DockWidget id="code-judger-source-code" title="源代码" :mode="slotsCount ? 'split-right' : 'tab-after'">
         <CodeEditor v-model="code" :disabled="loading" :defaultLine="defaultLine" />
       </DockWidget>
-      <DockWidget id="code-judger-result" title="运行结果" mode="split-right" ref-id="code-judger-source-code">
-        <el-collapse>
-          <el-collapse-item v-for="(test, i) of judgeResult" :name="i">
+      <DockWidget id="code-judger-result" title="运行结果" mode="split-right" ref-id="code-judger-source-code" v-loading="loading">
+        <el-collapse v-model="activeResults">
+          <el-collapse-item v-for="(test, i) of judgeResult" :name="i.toString()">
             <template #title>
               <el-text :type="test.passed ? 'success' : 'danger'">测试{{ i + 1 }} {{ test.passed ? '通过' : '未通过' }}</el-text>
             </template>
-            <el-text>输入：{{ test.stdin }}</el-text>
-            <br />
-            <el-text>预期输出：{{ test.expect }}</el-text>
-            <br />
-            <el-text>实际输出：{{ test.stdout }}</el-text>
+            <el-text>输入：</el-text>
+            <pre>{{ test.stdin || '(空)' }}</pre>
+            <el-text>预期输出：</el-text>
+            <pre>{{ test.expect || '(空)' }}</pre>
+            <el-text>实际输出：</el-text>
+            <pre>{{ test.stdout || '(空)' }}</pre>
           </el-collapse-item>
         </el-collapse>
+        <Confetti ref="confettiRef" class="absolute left-0 top-0 z-0 size-full no-pointer-events" style="pointer-events: none" manualstart />
       </DockWidget>
     </DockPanel>
   </div>
@@ -44,6 +46,7 @@ const { defaultCode, defaultLine, tests, generateTest } = defineProps<{
   tests?: CodeTest[];
   generateTest?: () => CodeTest[];
 }>();
+const confettiRef = ref();
 
 const slots = useSlots();
 const slotsCount = computed(() => Object.keys(slots).length);
@@ -52,6 +55,7 @@ const code = ref<string>(defaultCode ?? '#include <stdio.h>\n\nint main(){\n    
 const loading = ref<boolean>(false);
 
 const judgeResult = ref<any>();
+const activeResults = ref<string[]>([]);
 
 const judge = () => {
   if (!code.value) {
@@ -66,6 +70,7 @@ const judge = () => {
 
   const generatedTests = Array.from(tests ?? []).concat(typeof generateTest === 'function' ? generateTest() : []);
   judgeResult.value = [];
+  activeResults.value = [];
 
   sendRequest(true, '/api/code/judge', {
     method: 'POST',
@@ -81,9 +86,18 @@ const judge = () => {
       return response.json();
     })
     .then((result) => {
+      let failed: string[] = [];
       judgeResult.value = result.data.tests;
-      for (const test of judgeResult.value) {
+      for (const i in judgeResult.value) {
+        const test = judgeResult.value[i];
         test.passed = test.expect.trim() === test.stdout.trim();
+        if (!test.passed) failed.push(i.toString());
+      }
+      if (!failed.length) {
+        activeResults.value = Array.from({ length: judgeResult.value.length }, (_, i) => i.toString());
+        confettiRef.value?.fire({});
+      } else {
+        activeResults.value = failed;
       }
     })
     .catch((reason: Error) => {
@@ -112,8 +126,5 @@ const judge = () => {
   align-items: center;
   padding: 8px;
   padding-bottom: 0px;
-}
-.keepLineBreak {
-  white-space: pre-line;
 }
 </style>
