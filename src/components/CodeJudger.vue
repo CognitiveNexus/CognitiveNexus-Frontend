@@ -39,6 +39,8 @@ import DockWidget from '@/components/layout/DockWidget.vue';
 import CodeEditor from '@/components/CodeEditor.vue';
 import sendRequest from '@/utils/SendRequest.ts';
 
+const emit = defineEmits(['accomplished']);
+
 type CodeTest = { stdin: string; expect: string };
 const { defaultCode, defaultLine, tests, generateTest } = defineProps<{
   defaultCode?: string;
@@ -96,6 +98,7 @@ const judge = () => {
       if (!failed.length) {
         activeResults.value = Array.from({ length: judgeResult.value.length }, (_, i) => i.toString());
         confettiRef.value?.fire({});
+        emit('accomplished');
       } else {
         activeResults.value = failed;
       }
