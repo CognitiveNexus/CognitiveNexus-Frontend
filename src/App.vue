@@ -13,14 +13,33 @@
 </template>
 
 <script setup lang="ts" name="App">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { RouterView } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import { ChatLineRound } from '@element-plus/icons-vue';
+
 import AskAI from '@/components/AskAI.vue';
 import FloatButton from '@/components/FloatButton.vue';
+import { useAuthStore } from '@/stores/Auth.ts';
+import { useProgressStore } from '@/stores/Progress.ts';
+
+const { isAuthenticated } = storeToRefs(useAuthStore());
+const { fetchProgress, clearProgress } = useProgressStore();
 
 const aiDrawer = ref<boolean>(false);
+
+if (isAuthenticated.value) {
+  fetchProgress();
+}
+
+watch(isAuthenticated, async (isNowAuthenticated) => {
+  if (isNowAuthenticated) {
+    await fetchProgress();
+  } else {
+    clearProgress();
+  }
+});
 </script>
 
 <style scoped>
