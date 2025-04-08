@@ -11,11 +11,11 @@
 </template>
 
 <script setup lang="ts" name="Log">
-import { useLog } from '@/stores/Log';
+import { useLogStore } from '@/stores/Log';
 import { storeToRefs } from 'pinia';
 import { ref, nextTick, watch } from 'vue';
 
-const store = useLog();
+const store = useLogStore();
 const { logArray } = storeToRefs(store);
 
 const scrollRef = ref();

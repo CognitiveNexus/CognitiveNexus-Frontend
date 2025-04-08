@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { useLog } from './Log';
+import { useLogStore } from './Log';
 
 export const useColumnChartStore = defineStore('ColumnChart', {
   //数据存储
@@ -51,7 +51,7 @@ export const useColumnChartStore = defineStore('ColumnChart', {
     //按钮响应
     nextPage() {
       if (this.isAvailblePage(this.current_page + 1)) {
-        const consoleArray = useLog();
+        const consoleArray = useLogStore();
         const command_index = this.current_page - 1;
         const command = this.command[command_index];
         if (command.type == 'swap') {
@@ -86,7 +86,7 @@ export const useColumnChartStore = defineStore('ColumnChart', {
     },
     prevPage() {
       if (this.isAvailblePage(this.current_page - 1)) {
-        const consoleArray = useLog();
+        const consoleArray = useLogStore();
         const command_index = this.current_page - 1;
         const command = this.command[command_index - 1];
         if (command.type == 'swap') {

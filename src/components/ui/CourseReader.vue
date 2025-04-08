@@ -1,6 +1,6 @@
 <template>
   <PaginationControl :current="currentPage" :total="totalPage" @prev="prevPage" @next="nextPage">
-    <ContentRender :content="currentContent" @link="toPractice" />
+    <ContentRender :content="currentContent" :practice="false" @link="toPractice" />
   </PaginationControl>
 </template>
 

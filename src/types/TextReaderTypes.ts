@@ -1,4 +1,4 @@
-type elementType = 'primary' | 'success' | 'info' | 'warning' | 'danger';
+export type elementType = 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
 interface tagType {
   text: string;
@@ -12,6 +12,7 @@ interface buttonType {
   text: string;
   targetIndex: number;
   size?: string;
+  ask?: boolean;
 }
 
 export type Mapping = {

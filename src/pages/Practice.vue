@@ -1,10 +1,10 @@
 <template>
   <el-container>
     <el-aside>
-      <ContentRender :content="currentContent" @link="toCourse" />
+      <ContentRender :content="currentContent" :solved="solved" @link="toCourse" />
     </el-aside>
     <el-divider direction="vertical"></el-divider>
-    <el-main><CodeJudger :tests="currentJudge" :generateTests="currentRandomJudge" /></el-main>
+    <el-main><CodeJudger :tests="currentJudge" :generateTests="currentRandomJudge" @accomplished="handleAccomplished" /></el-main>
   </el-container>
 </template>
 
@@ -32,6 +32,13 @@ const coursesName = computed(() => {
 const currentContent = computed(() => currentStore.value.practice[currentPage.value] || []);
 const currentJudge = computed(() => currentStore.value.judge[currentPage.value] || []);
 const currentRandomJudge = computed(() => (currentStore.value.randomJudge as Record<number, () => CodeTest>)[currentPage.value] || []);
+const solved = computed(() => {
+  const target = currentStore.value.map.find((item) => item.practice === currentPage.value);
+  if (target?.solved === undefined) {
+    return true;
+  }
+  return target?.solved;
+});
 
 function toCourse(pageIndex: number) {
   if (pageIndex > currentPage.value) {
@@ -46,6 +53,10 @@ function toCourse(pageIndex: number) {
   });
 }
 store.selectCourse(coursesName.value);
+
+function handleAccomplished() {
+  store.markAsSolved(currentPage.value);
+}
 </script>
 
 <style scoped>

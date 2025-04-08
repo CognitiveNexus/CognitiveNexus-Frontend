@@ -85,11 +85,12 @@ export const useCourseStoreManager = defineStore('CourseStore', {
         target.solved = true;
       }
     },
-    //是否有练习？是否完成练习？
+    //根据Course页数翻页判断，是否前方有未完成的练习
     isPracticeSolved(page: number) {
       const target = this.currentStore.map.find((item) => item.page === page);
       return !target || target.solved ? true : false;
     },
+    //获取diff难度课程完成信息
     getDiffProgress(diff: CourseDiff): DiffProgress {
       const targetCourses = Object.entries(this.courseMeta)
         .filter(([_, meta]) => meta.diff === diff)

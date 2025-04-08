@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, nextTick } from 'vue';
 
-export const useLog = defineStore('Log', {
+export const useLogStore = defineStore('Log', {
   //数据存储
   state: () => ({
     logArray: ref([] as string[]),
