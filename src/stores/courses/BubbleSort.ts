@@ -456,7 +456,46 @@ int main(){
 
     //输出
     printf("%s", ans);
+    return 0;
 }      `,
+      2: `#include <stdio.h>
+
+int main(){
+    //输入
+    int n ;
+    scanf("%d", &n);
+    int a[n];
+    for(int i = 0; i < n; i++ ){
+      scanf("%d", &a[i]);
+    }
+
+    //请在这里开始编写您的代码吧！
+
+    //输出
+    for(int i = 0; i < n; i++ ){
+      printf("%d ", a[i]);
+    }
+    return 0;
+}`,
+      3: `#include <stdio.h>
+
+int main(){
+    //输入
+    int n ;
+    scanf("%d", &n);
+    int a[n];
+    for(int i = 0; i < n; i++ ){
+      scanf("%d", &a[i]);
+    }
+
+    //请在这里开始编写您的代码吧！
+
+    //输出
+    for(int i = 0; i < n; i++ ){
+      printf("%d ", a[i]);
+    }
+    return 0;
+}`,
     } as Record<number, string>,
   }),
 });

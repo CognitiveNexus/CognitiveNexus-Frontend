@@ -9,7 +9,7 @@
     </div>
     <Carousel />
     <div class="btn-group">
-      <el-button :icon="Promotion" type="success" size="large" round @click="handleStart()">Start</el-button>
+      <el-button :icon="Promotion" type="success" size="large" round @click="handleStart()">开始</el-button>
     </div>
     <div class="specify">我们的特色</div>
     <div class="proj-info">
