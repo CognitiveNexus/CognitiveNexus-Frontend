@@ -12,50 +12,66 @@ import { ref } from 'vue';
 const emit = defineEmits(['click']);
 const { buttonText } = defineProps<{ buttonText?: string }>();
 const floatButton = ref<HTMLElement | null>(null);
+
 let isDragging = false;
 let hasDragged = false;
-let startX = 0;
-let startY = 0;
-let initialLeft = 0;
-let initialTop = 0;
+let transform = { offsetX: 0, offsetY: 0 };
 
 const onMouseDown = (event: MouseEvent) => {
   if (!floatButton.value) return;
 
+  const downX = event.clientX;
+  const downY = event.clientY;
+  const { offsetX, offsetY } = transform;
+
+  const rect = floatButton.value.getBoundingClientRect();
+  const targetLeft = rect.left;
+  const targetTop = rect.top;
+  const targetWidth = rect.width;
+  const targetHeight = rect.height;
+
+  const clientWidth = document.documentElement.clientWidth;
+  const clientHeight = document.documentElement.clientHeight;
+
+  const minLeft = -targetLeft + offsetX;
+  const minTop = -targetTop + offsetY;
+  const maxLeft = clientWidth - targetLeft - targetWidth + offsetX;
+  const maxTop = clientHeight - targetTop - targetHeight + offsetY;
+
   isDragging = true;
   hasDragged = false;
 
-  startX = event.clientX;
-  startY = event.clientY;
+  const onMouseMove = (moveEvent: MouseEvent) => {
+    // Reference:
+    // element-plus/hooks/use-draggable
 
-  const rect = floatButton.value.getBoundingClientRect();
-  initialLeft = rect.left;
-  initialTop = rect.top;
+    if (!isDragging || !floatButton.value) return;
+
+    let moveX = offsetX + moveEvent.clientX - downX;
+    let moveY = offsetY + moveEvent.clientY - downY;
+
+    moveX = Math.min(Math.max(moveX, minLeft), maxLeft);
+    moveY = Math.min(Math.max(moveY, minTop), maxTop);
+
+    if (Math.abs(moveX - offsetX) > 2 || Math.abs(moveY - offsetY) > 2) {
+      hasDragged = true;
+    }
+
+    transform = { offsetX: moveX, offsetY: moveY };
+
+    floatButton.value.style.transform = `translate(${moveX}px, ${moveY}px)`;
+  };
+
+  const onMouseUp = () => {
+    if (!isDragging) return;
+
+    isDragging = false;
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
 
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
-};
-
-const onMouseMove = (event: MouseEvent) => {
-  if (!isDragging || !floatButton.value) return;
-
-  const deltaX = event.clientX - startX;
-  const deltaY = event.clientY - startY;
-
-  if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
-    hasDragged = true;
-  }
-
-  floatButton.value.style.left = `${initialLeft + deltaX}px`;
-  floatButton.value.style.top = `${initialTop + deltaY}px`;
-};
-
-const onMouseUp = () => {
-  if (!isDragging) return;
-
-  isDragging = false;
-  document.removeEventListener('mousemove', onMouseMove);
-  document.removeEventListener('mouseup', onMouseUp);
 };
 
 const handleClick = (event: MouseEvent) => {
