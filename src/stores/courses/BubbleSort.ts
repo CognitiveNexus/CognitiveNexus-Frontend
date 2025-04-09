@@ -5,9 +5,9 @@ export const useBubbleSortStore = defineStore('BubbleSort', {
   //数据存储
   state: () => ({
     map: [
-      { page: 3, practice: 1, solved: false },
-      { page: 4, practice: 2, solved: false },
-      { page: 6, practice: 3, solved: false },
+      { page: 3, practice: 1 },
+      { page: 4, practice: 2 },
+      { page: 6, practice: 3 },
     ] as Mapping[],
     content: {
       1: [

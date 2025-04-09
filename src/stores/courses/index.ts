@@ -107,10 +107,11 @@ export const useCourseStoreManager = defineStore('CourseStore', {
       let detail = [] as DiffProgressDetail[];
 
       targetCourses.forEach((coursename) => {
+        const progress = useProgressStore();
         const course = this.course[coursename];
         const courseMetaName = this.courseMeta[coursename].title;
         const courseTotal = course.map.length;
-        const courseSolved = course.map.filter((p) => p.solved).length;
+        const courseSolved = progress.progress[coursename] ?? 0;
         total += courseTotal;
         solved += courseSolved;
         detail.push({

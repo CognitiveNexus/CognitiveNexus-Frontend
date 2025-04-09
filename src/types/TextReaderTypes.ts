@@ -18,7 +18,6 @@ interface buttonType {
 export type Mapping = {
   page: number;
   practice: number;
-  solved: boolean;
 };
 
 export type CodeTest = {
