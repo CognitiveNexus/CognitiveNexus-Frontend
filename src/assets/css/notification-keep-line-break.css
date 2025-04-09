@@ -1,3 +1,7 @@
 .el-notification {
-    white-space: pre-line;
+  white-space: pre-line;
+}
+
+.el-message-box {
+  white-space: pre-line;
 }

@@ -1,28 +1,11 @@
 <template>
   <div class="cards">
     <template v-for="item in courseList">
-      <el-card
-        style="max-width: 300px"
-        shadow="hover"
-        v-if="item.diff === props.diff"
-      >
-        <img
-          :src="imageMap[item.name]"
-          :alt="item.name"
-          width="200px"
-          height="200px"
-          style="border-radius: 5px"
-        />
+      <el-card style="max-width: 300px" shadow="hover" v-if="item.diff === props.diff">
+        <img :src="imageMap[item.name]" :alt="item.name" width="200px" height="200px" style="border-radius: 5px" />
         <template #footer>
           <el-text>{{ item.title }}</el-text>
-          <el-button
-            type="success"
-            :icon="Promotion"
-            round
-            @click="handleClick(item.name)"
-            style="float: right"
-            >Go
-          </el-button>
+          <el-button type="success" :icon="Promotion" round @click="handleClick(item.name)" style="float: right">Go </el-button>
         </template>
       </el-card>
     </template>
@@ -30,11 +13,14 @@
 </template>
 
 <script setup lang="ts" name="CardGroup">
-import { Promotion } from '@element-plus/icons-vue';
-import { useCourseStoreManager } from '@/stores/courses';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
+import { ElMessageBox } from 'element-plus';
+import { Promotion } from '@element-plus/icons-vue';
+
 import type { CourseName } from '@/types/CoursesNameType';
+import { useCourseStoreManager } from '@/stores/courses';
+import { useAuthStore } from '@/stores/Auth';
 
 const props = defineProps({
   diff: String,
@@ -51,7 +37,20 @@ const store = useCourseStoreManager();
 const { courseList } = storeToRefs(store);
 const router = useRouter();
 
-function handleClick(name: CourseName) {
+const { isAuthenticated, showLoginDialog } = storeToRefs(useAuthStore());
+
+async function handleClick(name: CourseName) {
+  if (!isAuthenticated.value) {
+    try {
+      await ElMessageBox.confirm('登录后可以享受完整高级功能（如AI导师、小练习等）。\n要现在登录或注册吗？', '用户未登录', {
+        confirmButtonText: '好的',
+        cancelButtonText: '稍后再说',
+        type: 'info',
+      });
+      showLoginDialog.value = true;
+      return;
+    } catch (err) {}
+  }
   router.push(`/course/${name}/1`);
 }
 </script>
