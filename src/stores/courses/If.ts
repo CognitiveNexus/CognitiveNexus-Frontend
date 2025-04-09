@@ -24,5 +24,6 @@ export const useIfStore = defineStore('If', {
     } as Record<number, ContentItem[]>,
     judge: {} as Record<number, CodeTest[]>,
     randomJudge: {},
+    defaultCode: {} as Record<number, string>,
   }),
 });

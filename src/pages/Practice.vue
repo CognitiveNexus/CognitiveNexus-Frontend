@@ -4,7 +4,7 @@
       <ContentRender :content="currentContent" :solved="solved" @link="toCourse" />
     </el-aside>
     <el-divider direction="vertical"></el-divider>
-    <el-main><CodeJudger :tests="currentJudge" :generateTests="currentRandomJudge" @accomplished="handleAccomplished" /></el-main>
+    <el-main><CodeJudger :tests="currentJudge" :generateTests="currentRandomJudge" :defaultCode="defaultCode" @accomplished="handleAccomplished" /></el-main>
   </el-container>
 </template>
 
@@ -38,6 +38,7 @@ const solved = computed(() => {
   const target = progress.progress[coursesName.value] ? progress.progress[coursesName.value] : 0;
   return target >= currentPage.value;
 });
+const defaultCode = currentStore.value.defaultCode[currentPage.value];
 
 function toCourse(pageIndex: number) {
   const prevPageIndex = currentStore.value.map.find((p) => p.practice === currentPage.value)?.page;

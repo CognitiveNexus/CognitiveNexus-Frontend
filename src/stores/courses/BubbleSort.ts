@@ -443,5 +443,20 @@ for(int i = 0; i < n - 1; i++) {
         return { stdin: a.join(' '), expect: b.join(' ') };
       },
     },
+    defaultCode: {
+      1: `#include <stdio.h>
+
+int main(){
+    float a,b;
+    string ans;
+    //输入
+    scanf("%f %f", &a, &b);
+
+    //请在这里开始编写您的代码吧！
+
+    //输出
+    printf("%s", ans);
+}      `,
+    } as Record<number, string>,
   }),
 });

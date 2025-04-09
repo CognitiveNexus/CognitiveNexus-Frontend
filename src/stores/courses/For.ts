@@ -24,5 +24,6 @@ export const useForStore = defineStore('For', {
     } as Record<number, ContentItem[]>,
     judge: {} as Record<number, CodeTest[]>,
     randomJudge: {},
+    defaultCode: {} as Record<number, string>,
   }),
 });

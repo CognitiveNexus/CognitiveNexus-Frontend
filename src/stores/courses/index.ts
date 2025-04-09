@@ -101,13 +101,13 @@ export const useCourseStoreManager = defineStore('CourseStore', {
       const targetCourses = Object.entries(this.courseMeta)
         .filter(([_, meta]) => meta.diff === diff)
         .map(([name]) => name as CourseName);
+      const progress = useProgressStore();
 
       let total = 0;
       let solved = 0;
       let detail = [] as DiffProgressDetail[];
 
       targetCourses.forEach((coursename) => {
-        const progress = useProgressStore();
         const course = this.course[coursename];
         const courseMetaName = this.courseMeta[coursename].title;
         const courseTotal = course.map.length;
