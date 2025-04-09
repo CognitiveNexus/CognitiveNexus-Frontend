@@ -2,6 +2,7 @@ import { useBubbleSortStore } from './BubbleSort';
 import { useSelectSortStore } from './SelectSort';
 import { useIfStore } from './If';
 import { useForStore } from './For';
+import { useProgressStore } from '../Progress';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { CourseName, CourseMeta, CourseDiff, DiffProgress, DiffProgressDetail } from '@/types/CoursesNameType';
@@ -80,15 +81,20 @@ export const useCourseStoreManager = defineStore('CourseStore', {
     },
     //完成练习标记
     markAsSolved(page: number) {
-      const target = this.currentStore.map.find((item) => item.page === page);
-      if (target) {
-        target.solved = true;
-      }
+      const progress = useProgressStore();
+      progress.setProgress(this.currentCourse, page);
     },
     //根据Course页数翻页判断，是否前方有未完成的练习
     isPracticeSolved(page: number) {
-      const target = this.currentStore.map.find((item) => item.page === page);
-      return !target || target.solved ? true : false;
+      const store = useProgressStore();
+      const practiceForward = this.currentStore.map.find((p) => p.page === page) ?? -1;
+      if (practiceForward === -1) {
+        return true;
+      }
+      const progress = store.progress[this.currentCourse] ?? -1;
+      return progress >= practiceForward.practice;
+      // const target = this.currentStore.map.find((item) => item.page === page);
+      // return !target || target.solved ? true : false;
     },
     //获取diff难度课程完成信息
     getDiffProgress(diff: CourseDiff): DiffProgress {

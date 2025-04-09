@@ -10,6 +10,7 @@
 
 <script setup lang="ts" name="Practice">
 import { useCourseStoreManager } from '@/stores/courses';
+import { useProgressStore } from '@/stores/Progress';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
@@ -25,6 +26,7 @@ const currentPage = computed(() => {
 });
 
 const store = useCourseStoreManager();
+const progress = useProgressStore();
 const { currentStore } = storeToRefs(store);
 const coursesName = computed(() => {
   return route.params.courseName as CourseName;
@@ -33,16 +35,17 @@ const currentContent = computed(() => currentStore.value.practice[currentPage.va
 const currentJudge = computed(() => currentStore.value.judge[currentPage.value] || []);
 const currentRandomJudge = computed(() => (currentStore.value.randomJudge as Record<number, () => CodeTest>)[currentPage.value] || []);
 const solved = computed(() => {
-  const target = currentStore.value.map.find((item) => item.practice === currentPage.value);
-  if (target?.solved === undefined) {
-    return true;
-  }
-  return target?.solved;
+  const target = progress.progress[coursesName.value] ? progress.progress[coursesName.value] : 0;
+  return target >= currentPage.value;
 });
 
 function toCourse(pageIndex: number) {
-  if (pageIndex > currentPage.value) {
-    store.markAsSolved(pageIndex - 1);
+  const prevPageIndex = currentStore.value.map.find((p) => p.practice === currentPage.value)?.page;
+  if (!prevPageIndex) {
+    console.error(`${coursesName.value}: map not found`);
+  }
+  if (pageIndex > (prevPageIndex ?? -1)) {
+    store.markAsSolved(currentPage.value);
   }
   router.push({
     name: 'course',

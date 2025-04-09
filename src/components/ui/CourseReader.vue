@@ -31,7 +31,10 @@ store.selectCourse(coursesName.value);
 
 function nextPage() {
   if (!store.isAvailblePage(currentPage.value + 1)) return;
-  if (!store.isPracticeSolved(currentPage.value)) return;
+  if (!store.isPracticeSolved(currentPage.value)) {
+    console.log('not solved');
+    return;
+  }
   if (currentStore.value.map)
     router.push({
       params: {
