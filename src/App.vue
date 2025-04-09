@@ -5,7 +5,11 @@
       <el-container>
         <RouterView></RouterView>
       </el-container>
-      <el-footer></el-footer>
+      <el-footer>
+        <div class="footer-text">
+          <el-text v-html="footerText" type="info" />
+        </div>
+      </el-footer>
     </el-container>
     <FloatButton :icon="ChatLineRound" @click="aiDrawer = !aiDrawer" />
     <AskAI v-model="aiDrawer" />
@@ -26,6 +30,8 @@ import { useProgressStore } from '@/stores/Progress.ts';
 
 const { isAuthenticated } = storeToRefs(useAuthStore());
 const { fetchProgress, clearProgress } = useProgressStore();
+
+const footerText = import.meta.env.COGNEX_FOOTER ?? '';
 
 const aiDrawer = ref<boolean>(false);
 
@@ -52,5 +58,9 @@ watch(isAuthenticated, async (isNowAuthenticated) => {
 }
 .el-footer {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
+}
+.footer-text {
+  text-align: center;
+  padding: 16px;
 }
 </style>
