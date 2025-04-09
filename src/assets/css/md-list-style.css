@@ -1,0 +1,4 @@
+.md-editor-preview ol,
+.md-editor-preview ul {
+  list-style: auto;
+}

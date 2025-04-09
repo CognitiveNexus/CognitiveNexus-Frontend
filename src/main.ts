@@ -15,6 +15,7 @@ import '@lumino/default-theme/style/index.css';
 import '@/assets/css/reset-router-link.css';
 import '@/assets/css/fonts.css';
 import '@/assets/css/notification-keep-line-break.css';
+import '@/assets/css/md-list-style.css';
 import '@/assets/css/tailwind.css';
 
 const app = createApp(App);

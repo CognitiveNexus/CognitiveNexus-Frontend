@@ -8,7 +8,7 @@
         <el-tag v-for="tag in item.content" :type="tag.tagtype" :effect="tag.effect" :size="tag.size">{{ tag.text }}</el-tag>
       </div>
 
-      <MdPreview v-else-if="item.type === 'text'" :modelValue="item.content" />
+      <MdPreview v-else-if="item.type === 'text'" :modelValue="item.content" previewTheme="github" />
 
       <div class="warp-button" v-else-if="item.type === 'button'">
         <el-button
@@ -57,7 +57,7 @@ function handleClick(targetIndex: number, ask: boolean | undefined) {
     emit('link', targetIndex);
     return;
   }
-  ElMessageBox.confirm('你还没有解决当前难题！确认前往下一步吗？', 'Warning', {
+  ElMessageBox.confirm('你还没有解决当前难题！确认前往下一步吗？', '确认前进', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning',
