@@ -43,7 +43,7 @@ const router = createRouter({
       // 主页重定向至/home，指向网页主页
       name: 'home',
       path: '/home',
-      component: Background,
+      component: Home,
     },
     {
       name: 'playground',
