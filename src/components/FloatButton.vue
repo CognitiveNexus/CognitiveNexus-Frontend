@@ -1,7 +1,7 @@
 <template>
   <div ref="floatButton" class="float-button" @mousedown="onMouseDown" @click="handleClick">
     <slot name="default">
-      <el-button class="shadow-button" type="info" size="large" circle v-bind="$attrs" />
+      <el-button class="shadow-button" type="info" size="large" round v-bind="$attrs">{{ buttonText ?? '' }}</el-button>
     </slot>
   </div>
 </template>
@@ -10,6 +10,7 @@
 import { ref } from 'vue';
 
 const emit = defineEmits(['click']);
+const { buttonText } = defineProps<{ buttonText?: string }>();
 const floatButton = ref<HTMLElement | null>(null);
 let isDragging = false;
 let hasDragged = false;

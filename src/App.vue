@@ -11,7 +11,7 @@
         </div>
       </el-footer>
     </el-container>
-    <FloatButton :icon="ChatLineRound" @click="aiDrawer = !aiDrawer" />
+    <FloatButton :icon="ChatLineRound" buttonText="AI导师" @click="aiDrawer = !aiDrawer" />
     <AskAI v-model="aiDrawer" />
   </el-config-provider>
 </template>
