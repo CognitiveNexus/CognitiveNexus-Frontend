@@ -2,7 +2,7 @@
   <Motion
     as="div"
     :initial="{ opacity: 0, y: 40, filter: 'blur(10px)' }"
-    :in-view="{
+    :whileInView="{
       opacity: 1,
       y: 0,
       filter: 'blur(0px)',
@@ -12,8 +12,7 @@
       duration: 0.8,
       ease: 'easeInOut',
     }"
-    class="relative flex flex-col items-center justify-center gap-4 px-4"
-  >
+    class="relative flex flex-col items-center justify-center gap-4 px-4">
     <slot></slot>
   </Motion>
 </template>
