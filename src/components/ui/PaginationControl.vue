@@ -1,6 +1,6 @@
 <template>
   <div class="pagination-container">
-    <button class="fliper" @click="$emit('prev')" :disabled="current === 1">
+    <button class="fliper" @click="$emit('prev')" :disabled="current === 0">
       <el-icon :size="40" color="gray">
         <ArrowLeft />
       </el-icon>
@@ -11,7 +11,7 @@
         <el-text>{{ current }}/{{ total }}</el-text>
       </div>
     </div>
-    <button class="fliper" @click="$emit('next')" :disabled="current === total">
+    <button class="fliper" @click="$emit('next')" :disabled="current === total - 1">
       <el-icon :size="40" color="gray">
         <ArrowRight />
       </el-icon>

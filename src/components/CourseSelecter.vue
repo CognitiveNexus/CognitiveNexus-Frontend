@@ -2,11 +2,8 @@
   <el-container>
     <el-main>
       <el-collapse v-model="activeNames">
-        <el-collapse-item title="基础" name="1">
-          <CardGroup diff="basic" />
-        </el-collapse-item>
-        <el-collapse-item title="普通" name="2">
-          <CardGroup diff="normal" />
+        <el-collapse-item v-for="(category, id) in courseCategories" :title="category.name" :name="id">
+          <CardGroup :courses="category.courses" />
         </el-collapse-item>
       </el-collapse>
     </el-main>
@@ -15,7 +12,8 @@
 
 <script setup lang="ts" name="CourseSelecter">
 import { ref } from 'vue';
-const activeNames = ref(['1', '2']);
+import { courseCategories } from '@/courses/index';
+const activeNames = ref(courseCategories.map((_, id) => id));
 </script>
 
 <style scoped>

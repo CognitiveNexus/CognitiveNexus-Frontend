@@ -1,27 +1,27 @@
 <template>
   <el-scrollbar class="reader-container" height="700px">
-    <div v-for="item in content as ContentItem[] ">
+    <div v-for="item in contents">
       <el-text v-if="item.type === 'title'" class="title">{{ item.content }}</el-text>
 
       <div v-else-if="item.type === 'tag'" class="tag">
         <el-text>前置知识点：</el-text>
-        <el-tag v-for="tag in item.content" :type="tag.tagtype" :effect="tag.effect" :size="tag.size">{{ tag.text }}</el-tag>
+        <el-tag v-for="tag in item.tags" :type="tag.type" :effect="tag.effect" :size="tag.size">{{ tag.text }}</el-tag>
       </div>
 
       <MdPreview v-else-if="item.type === 'text'" :modelValue="item.content" previewTheme="github" />
 
       <div class="warp-button" v-else-if="item.type === 'button'">
         <el-button
-          v-for="button in item.content"
-          :type="actualButtonType(button.buttontype, button.ask)"
+          v-for="button in item.buttons"
+          :type="button.requireSolved && !solved ? 'info' : button.type"
           :size="button.size"
           :icon="Flag"
-          @click="handleClick(button.targetIndex, button.ask)"
+          @click="handleClick(button.targetIndex, button.relative, button.requireSolved)"
           >{{ button.text }}
         </el-button>
       </div>
 
-      <div class="visualizer" v-else-if="item.type === 'visualizer'">
+      <div class="visualizer" v-else-if="item.type === 'visualization'">
         <ColumnChart />
         <Log />
       </div>
@@ -30,52 +30,31 @@
 </template>
 
 <script setup lang="ts" name="ContentRender">
-import type { ContentItem } from '@/types/TextReaderTypes';
-import { Flag } from '@element-plus/icons-vue';
-import { MdPreview } from 'md-editor-v3';
-import 'md-editor-v3/lib/style.css';
-import type { elementType } from '@/types/TextReaderTypes';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { MdPreview } from 'md-editor-v3';
+import { Flag } from '@element-plus/icons-vue';
+import type { StoryContent } from '@/types/CourseTypes';
 
-const { content, solved } = defineProps({
-  content: {
-    type: Array,
-    required: true,
-  },
-  solved: Boolean,
-});
-console.log(solved);
-const emit = defineEmits(['link']);
+const { contents, solved } = defineProps<{
+  contents: StoryContent[];
+  solved?: boolean;
+}>();
+const emit = defineEmits(['goto']);
 
-const actualButtonType = (buttontype: elementType, ask: boolean | undefined): elementType => {
-  if (!ask || solved) return buttontype;
-  return 'info';
-};
-
-function handleClick(targetIndex: number, ask: boolean | undefined) {
-  if (!ask || solved) {
-    emit('link', targetIndex);
-    return;
+const handleClick = async (targetIndex: number, relative?: boolean, requireSolved?: boolean) => {
+  if (requireSolved && !solved) {
+    try {
+      await ElMessageBox.confirm('你还没有解决当前难题！确认前往下一步吗？', '确认前进', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      });
+    } catch (err) {
+      return;
+    }
   }
-  ElMessageBox.confirm('你还没有解决当前难题！确认前往下一步吗？', '确认前进', {
-    confirmButtonText: '确认',
-    cancelButtonText: '取消',
-    type: 'warning',
-  })
-    .then(() => {
-      ElMessage({
-        type: 'info',
-        message: '继续前进',
-      });
-      emit('link', targetIndex);
-    })
-    .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: '继续挑战',
-      });
-    });
-}
+  emit('goto', targetIndex, relative);
+};
 </script>
 
 <style scoped>

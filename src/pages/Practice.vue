@@ -16,7 +16,7 @@ import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import type { CourseName } from '@/types/CoursesNameType';
-import type { CodeTest } from '@/types/TextReaderTypes';
+import type { CodeTest } from '@/types/CourseTypes';
 
 const route = useRoute();
 const router = useRouter();

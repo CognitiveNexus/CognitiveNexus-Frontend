@@ -2,7 +2,7 @@
   <el-text>课程完成情况</el-text>
   <br />
   <el-space :size="40" wrap>
-    <div v-for="item in courseArray" class="main">
+    <!-- <div v-for="item in courseArray" class="main">
       <el-progress type="dashboard" :percentage="item.totalPercent" :color="colorScheme">
         <template #default="{ percentage }">
           <span class="percentage-value">{{ percentage }}%</span>
@@ -20,12 +20,12 @@
           <br />
         </div>
       </el-popover>
-    </div>
+    </div> -->
   </el-space>
 </template>
 
 <script setup lang="ts" name="CourseProgress">
-import { useCourseStoreManager } from '@/stores/courses';
+// import { useCourseStoreManager } from '@/stores/courses';
 import type { DiffProgress } from '@/types/CoursesNameType';
 
 const colorScheme = [
@@ -36,10 +36,10 @@ const colorScheme = [
   { color: '#67C23A', percentage: 100 },
 ];
 
-const store = useCourseStoreManager();
-let courseArray = [] as DiffProgress[];
-courseArray.push(store.getDiffProgress('basic'));
-courseArray.push(store.getDiffProgress('normal'));
+// const store = useCourseStoreManager();
+// let courseArray = [] as DiffProgress[];
+// courseArray.push(store.getDiffProgress('basic'));
+// courseArray.push(store.getDiffProgress('normal'));
 </script>
 
 <style scoped>

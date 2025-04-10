@@ -1,14 +1,15 @@
-import { createTitle, createText, createContent, createTips, createCongratulation } from '@/utils/CreateCourse';
-import type { StoryPage } from '@/types/TextReaderTypes';
+import { createTitle, createText, createButtons, createTags, createTips, createCongratulation } from '@/utils/CreateCourse';
+import type { CoursePage } from '@/types/CourseTypes';
 
-const bubbleSort: StoryPage[] = [
+const pages: CoursePage[] = [
   {
     type: 'story',
+    emblem: 'magicBook',
     contents: [
       createTitle(`冒泡排序`),
-      createContent('tag', [
-        { text: 'for循环', tagType: 'primary', effect: 'dark', size: 'small' },
-        { text: 'if判断', tagType: 'primary', effect: 'dark', size: 'small' },
+      createTags([
+        { text: 'for循环', type: 'primary', effect: 'dark', size: 'small' },
+        { text: 'if判断', type: 'primary', effect: 'dark', size: 'small' },
       ]),
       createText(`欢迎来到**冒泡排序**章节！在本章节中，我们会跟随小骑士进行一场奇幻的冒险，挑选最好的武器和装备，向远处的目的地进发。
 
@@ -19,6 +20,7 @@ const bubbleSort: StoryPage[] = [
   },
   {
     type: 'story',
+    emblem: 'parchment',
     contents: [
       createTitle(`🔮前言：算法的圣约`),
       createText(`在古老的算法大陆上，流传着一卷褪色的羊皮手札：
@@ -37,6 +39,7 @@ const bubbleSort: StoryPage[] = [
   },
   {
     type: 'story',
+    emblem: 'shield',
     contents: [
       createTitle(`🗡️武器店的试炼 Ⅰ`),
       createText(`你为了做好讨伐魔王的准备，决定前往武器店买一点趁手的装备防身，于是你走向村子西面的武器店。
@@ -47,7 +50,7 @@ const bubbleSort: StoryPage[] = [
 走进武器店，老铁匠擦拭着柜台，两枚盾牌在烛光下泛着寒光：“年轻的骑士啊，左边青铜盾防御力85，右边白银盾防御力93，但你**只能选一枚**...”你知道是时候拔出你的代码剑了，该如何比较这两个盾牌哪个更好呢？
 
 > **TIPS**：盾牌的防御力**越高越好**，我们应该如何选出防御力**高**的那个盾牌呢？尝试使用if语句去比较吧，这是铁匠老板为你设置的第一道考验，点击“**接受试炼**”，用你的代码剑写出你的答案吧！`),
-      createContent('button', [{ text: `接受试炼`, size: 'large', buttonType: 'primary', targetIndex: 1 }]),
+      createButtons([{ text: `接受试炼`, size: 'large', type: 'primary', targetIndex: 1, relative: true }]),
     ],
   },
   {
@@ -63,9 +66,9 @@ const bubbleSort: StoryPage[] = [
         { input: '10 20', output: '白银盾' },
         { input: '20 10', output: '青铜盾' },
       ]),
-      createContent('button', [
-        { text: `返回课程`, size: 'large', buttonType: 'info', targetIndex: 3 },
-        { text: `继续旅途`, size: 'large', buttonType: 'primary', targetIndex: 4, ask: true },
+      createButtons([
+        { text: `返回上一步`, size: 'large', type: 'info', targetIndex: -1, relative: true },
+        { text: `继续旅途`, size: 'large', type: 'primary', targetIndex: 1, relative: true, requireSolved: true },
       ]),
     ],
     judge: [
@@ -97,6 +100,7 @@ int main(){
   },
   {
     type: 'story',
+    emblem: 'sword',
     contents: [
       createTitle(`🗡️武器店的试炼 Ⅱ`),
       createText(`你抽出代码剑，在空中绘出几行代码，眨眼间两个盾牌漂浮在空中，犹如被放置在天平的两端。
@@ -113,7 +117,7 @@ int main(){
 
 > **TIPS**：这是实现冒泡排序的第一步，通过从头到尾遍历数组，交换相邻的元素，尝试仅通过一次遍历，把最大的元素放到数组最后吧！在试炼页中，我们会更深入地探讨实现的方法！
 `),
-      createContent('button', [{ text: `接受试炼`, size: 'large', buttonType: 'primary', targetIndex: 2 }]),
+      createButtons([{ text: `接受试炼`, size: 'large', type: 'primary', targetIndex: 1, relative: true }]),
     ],
   },
   {
@@ -146,9 +150,9 @@ int main(){
       createTips('第一行为一个整数 n，第二行为 n 个数，中间由空格隔开，如：\n3\n1 2 3', '仅一行，有 n 个数，中间由空格隔开，如：1 2 3', [
         { input: '8\n7 4 1 4 5 9 2 8', output: '4 1 4 5 7 2 8 9' },
       ]),
-      createContent('button', [
-        { text: `返回课程`, size: 'large', buttonType: 'info', targetIndex: 4 },
-        { text: `继续旅途`, size: 'large', buttonType: 'primary', targetIndex: 5, ask: true },
+      createButtons([
+        { text: `返回上一步`, size: 'large', type: 'info', targetIndex: -1, relative: true },
+        { text: `继续旅途`, size: 'large', type: 'primary', targetIndex: 1, relative: true, requireSolved: true },
       ]),
     ],
     judge: [{ stdin: '8\n7 4 1 4 5 9 2 8', expect: '4 1 4 5 7 2 8 9' }],
@@ -187,6 +191,7 @@ int main(){
   },
   {
     type: 'story',
+    emblem: 'sword',
     contents: [
       createTitle(`🗡️启程`),
       createText(`“原来如此！”你轻触剑纹，柜中暗格应声而开。老铁匠抚掌大笑：“你找到了遍历的奥义！这把传说中攻击力999的圣剑，属于懂得**记录极值**之人。”
@@ -200,6 +205,7 @@ int main(){
   },
   {
     type: 'story',
+    emblem: 'castle',
     contents: [
       createTitle(`🗡️直面魔王`),
       createText(`漆黑的城堡中，你奋力战斗，终于走到魔王的门前，你的心情忐忑不安。
@@ -215,7 +221,7 @@ int main(){
 
 你似乎想到什么：攻击的威力或许需要是不断递增的，否则就会被护盾弹开，前功尽弃。
 你决定试一试。现在，你必须准备好递增的剑技，该如何将乱序的排列变成有序的呢？`),
-      createContent('button', [{ text: `打败魔王！`, size: 'large', buttonType: 'primary', targetIndex: 3 }]),
+      createButtons([{ text: `打败魔王！`, size: 'large', type: 'primary', targetIndex: 1, relative: true }]),
     ],
   },
   {
@@ -253,9 +259,9 @@ for(int i = 0; i < n - 1; i++) {
       createTips('第一行为一个整数n，第二行为n个数，中间由空格隔开，如：\n3\n3 2 1', '仅一行，有n个数，中间由空格隔开，如：1 2 3', [
         { input: '8\n7 4 1 4 5 9 2 8', output: '1 2 4 4 5 7 8 9' },
       ]),
-      createContent('button', [
-        { text: `返回课程`, size: 'large', buttonType: 'info', targetIndex: 6 },
-        { text: `继续旅途`, size: 'large', buttonType: 'primary', targetIndex: 7, ask: true },
+      createButtons([
+        { text: `返回上一步`, size: 'large', type: 'info', targetIndex: -1, relative: true },
+        { text: `继续旅途`, size: 'large', type: 'primary', targetIndex: 1, relative: true, requireSolved: true },
       ]),
     ],
     judge: [{ stdin: '8\n7 4 1 4 5 9 2 8', expect: '1 2 4 4 5 7 8 9' }],
@@ -263,7 +269,6 @@ for(int i = 0; i < n - 1; i++) {
       const len = Math.floor(Math.random() * 5) + 6;
       const arr = Array.from({ length: len }, () => Math.ceil(Math.random() * 100));
       const sorted = [...arr].sort((x, y) => x - y);
-      console.log(sorted.join(' '));
       return [{ stdin: `${len}\n${arr.join(' ')}`, expect: sorted.join(' ') }];
     },
     defaultCode: `#include <stdio.h>
@@ -290,6 +295,7 @@ int main(){
   },
   {
     type: 'story',
+    emblem: 'ribbon',
     contents: [
       createTitle(`🎉终结魔王！`),
       createText(`你挥舞着代码剑，剑光闪烁，剑势如虹，直逼魔王的护盾。
@@ -312,4 +318,8 @@ int main(){
   },
 ];
 
-export default bubbleSort;
+export default {
+  name: '冒泡排序',
+  id: 'bubbleSort',
+  pages: pages,
+};
