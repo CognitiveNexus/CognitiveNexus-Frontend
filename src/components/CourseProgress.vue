@@ -2,31 +2,46 @@
   <el-text>课程完成情况</el-text>
   <br />
   <el-space :size="40" wrap>
-    <!-- <div v-for="item in courseArray" class="main">
-      <el-progress type="dashboard" :percentage="item.totalPercent" :color="colorScheme">
+    <div v-for="category in categoryProgress" class="main">
+      <el-progress type="dashboard" :percentage="category.percentage" :color="colorScheme">
         <template #default="{ percentage }">
           <span class="percentage-value">{{ percentage }}%</span>
-          <span class="percentage-label">{{ item.diff }}</span>
+          <span class="percentage-label">{{ category.name }}</span>
         </template>
       </el-progress>
       <el-popover placement="bottom" :width="250" trigger="click">
         <template #reference>
           <el-button class="m-2">Detail</el-button>
         </template>
-        <div v-for="course in item.detail">
+        <div v-for="course in category.courses">
           <el-text style="float: left">{{ course.name }}</el-text>
           <br />
-          <el-progress :percentage="course.percent" :color="colorScheme"></el-progress>
+          <el-progress :percentage="Math.round((100 * (progress[course.id] ?? 0)) / course.pages.length)" :color="colorScheme"></el-progress>
           <br />
         </div>
       </el-popover>
-    </div> -->
+    </div>
   </el-space>
 </template>
 
 <script setup lang="ts" name="CourseProgress">
-// import { useCourseStoreManager } from '@/stores/courses';
-import type { DiffProgress } from '@/types/CoursesNameType';
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { courseCategories } from '@/courses';
+import { useProgressStore } from '@/stores/Progress';
+
+const { progress } = storeToRefs(useProgressStore());
+const categoryProgress = computed(() => {
+  return courseCategories.map((category) => {
+    const totalProgress = category.courses.reduce((acc, course) => acc + (progress.value[course.id] ?? 0), 0);
+    const totalPages = category.courses.reduce((acc, course) => acc + course.pages.length, 0);
+    const percentage = Math.round((100 * totalProgress) / totalPages);
+    return {
+      ...category,
+      percentage,
+    };
+  });
+});
 
 const colorScheme = [
   { color: '#909399', percentage: 20 },
@@ -35,11 +50,6 @@ const colorScheme = [
   { color: '#409EFF', percentage: 80 },
   { color: '#67C23A', percentage: 100 },
 ];
-
-// const store = useCourseStoreManager();
-// let courseArray = [] as DiffProgress[];
-// courseArray.push(store.getDiffProgress('basic'));
-// courseArray.push(store.getDiffProgress('normal'));
 </script>
 
 <style scoped>

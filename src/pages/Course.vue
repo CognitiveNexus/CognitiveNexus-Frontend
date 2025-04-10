@@ -48,13 +48,13 @@ const progressStore = useProgressStore();
 const { setProgress } = progressStore;
 const { progress } = storeToRefs(progressStore);
 
-const currentProgress = computed(() => progress.value[courseName.value]);
+const currentProgress = computed(() => progress.value[courseName.value] ?? 0);
 const pageFinished = computed(() => currentProgress.value - 1 >= pageIndex.value);
 
 const updateProgress = (page?: number) => {
   if (!page) page = pageIndex.value;
-  if (currentProgress.value - 1 >= page) {
-    setProgress(courseName.value, page);
+  if (page + 1 >= currentProgress.value) {
+    setProgress(courseName.value, page + 1);
   }
 };
 

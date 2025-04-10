@@ -8,7 +8,7 @@
     <div class="main-column">
       <slot></slot>
       <div class="page-counter">
-        <el-text>{{ current }}/{{ total }}</el-text>
+        <el-text>{{ current + 1 }}/{{ total }}</el-text>
       </div>
     </div>
     <button class="fliper" @click="$emit('next')" :disabled="current === total - 1">
