@@ -18,6 +18,7 @@ import { useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus';
 import { Promotion } from '@element-plus/icons-vue';
 import { useAuthStore } from '@/stores/Auth';
+import { useProgressStore } from '@/stores/Progress';
 import type { Course } from '@/types/CourseTypes';
 
 const { courses } = defineProps<{
@@ -33,6 +34,7 @@ const thumbnails = Object.entries(images).reduce((acc, [path, module]) => {
 
 const router = useRouter();
 const { isAuthenticated, showLoginDialog } = storeToRefs(useAuthStore());
+const { progress } = storeToRefs(useProgressStore());
 
 async function handleClick(name: string) {
   if (!isAuthenticated.value) {
@@ -46,7 +48,7 @@ async function handleClick(name: string) {
       return;
     } catch (err) {}
   }
-  router.push(`/course/${name}/1`); // TODO：按照进度继续
+  router.push(`/course/${name}/${(progress.value[name] ?? 0) + 1}`);
 }
 </script>
 
