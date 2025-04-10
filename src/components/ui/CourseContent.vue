@@ -25,6 +25,18 @@
         <ColumnChart />
         <Log />
       </div>
+
+      <div class="video-container" v-else-if="item.type === 'video'">
+        <iframe
+          v-if="item.platform === 'bilibili'"
+          :src="`//player.bilibili.com/player.html?bvid=${item.link}&autoplay=true&danmaku=false`"
+          scrolling="no"
+          frameborder="no"
+          framespacing="0"
+          allowfullscreen="true"
+          class="video-player"></iframe>
+        <video v-if="item.platform === 'local'" :src="item.link" class="video-player" controls></video>
+      </div>
     </div>
   </el-scrollbar>
 </template>
@@ -116,5 +128,27 @@ const handleClick = async (targetIndex: number, relative?: boolean, requireSolve
   margin: 10px 0px;
   display: flex;
   flex-direction: row;
+}
+.video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  position: relative;
+  margin: 24px 0;
+}
+
+.video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border: none;
 }
 </style>

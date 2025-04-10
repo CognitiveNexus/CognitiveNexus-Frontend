@@ -2,6 +2,7 @@ import type { Course, CourseCategory } from '@/types/CourseTypes';
 import bubbleSort from '@/courses/bubbleSort';
 import ifStatement from '@/courses/ifStatement';
 import forStatement from '@/courses/forStatement';
+import pointer from '@/courses/pointer';
 
 export const courseCategories: CourseCategory[] = [
   {
@@ -9,7 +10,11 @@ export const courseCategories: CourseCategory[] = [
     courses: [ifStatement, forStatement],
   },
   {
-    name: '普通',
+    name: '进阶',
+    courses: [pointer],
+  },
+  {
+    name: '算法',
     courses: [bubbleSort],
   },
 ];
