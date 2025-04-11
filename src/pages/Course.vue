@@ -1,31 +1,36 @@
 <template>
-  <el-container>
-    <template v-if="currentPage.type === 'story'">
-      <el-aside class="story-emblem-container">
-        <Emblem :emblem="currentPage.emblem" />
-      </el-aside>
-      <el-divider direction="vertical" class="vertical-divider" />
-      <el-main class="story-content-container">
-        <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
-          <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
-        </PaginationControl>
-      </el-main>
-    </template>
-    <template v-else>
-      <el-aside class="practice-content-container">
-        <CourseContent :contents="currentPage.contents" :solved="pageFinished" @goto="gotoPage" />
-      </el-aside>
-      <el-divider direction="vertical" class="vertical-divider"></el-divider>
-      <el-main class="practice-judger-container">
-        <CodeJudger
-          :tests="currentPage.judge"
-          :generateTests="currentPage.randomJudge"
-          :defaultCode="currentPage.defaultCode"
-          :defaultLine="currentPage.defaultLine"
-          @accomplished="updateProgress()" />
-      </el-main>
-    </template>
-  </el-container>
+  <div class="course">
+    <el-container class="course-main">
+      <template v-if="currentPage.type === 'story'">
+        <el-aside class="story-emblem-container">
+          <Emblem :emblem="currentPage.emblem" />
+        </el-aside>
+        <el-divider direction="vertical" class="vertical-divider" />
+        <el-main class="story-content-container">
+          <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
+            <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
+          </PaginationControl>
+        </el-main>
+      </template>
+      <template v-else>
+        <el-aside class="practice-content-container">
+          <CourseContent :contents="currentPage.contents" :solved="pageFinished" @goto="gotoPage" />
+        </el-aside>
+        <el-divider direction="vertical" class="vertical-divider"></el-divider>
+        <el-main class="practice-judger-container">
+          <CodeJudger
+            :tests="currentPage.judge"
+            :generateTests="currentPage.randomJudge"
+            :defaultCode="currentPage.defaultCode"
+            :defaultLine="currentPage.defaultLine"
+            @accomplished="updateProgress()" />
+        </el-main>
+      </template>
+    </el-container>
+    <div class="course-comments">
+      <Comments :courseName="courseName" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts" name="Course">
@@ -33,6 +38,7 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import Emblem from '@/components/animation/Emblem.vue';
+import Comments from '@/components/Comments.vue';
 import courses from '@/courses/index';
 import { useProgressStore } from '@/stores/Progress';
 
@@ -75,6 +81,21 @@ const gotoPage = (page: number, relative?: boolean) => {
 </script>
 
 <style scoped>
+.course {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
+  width: 100%;
+}
+.course-main {
+  flex: 1;
+  min-height: calc(100vh - 60px);
+}
+.course-comments {
+  width: 100%;
+  border-top: 1px solid #e5e7eb;
+}
 .story-content-container {
   padding: 0px;
   width: 70%;

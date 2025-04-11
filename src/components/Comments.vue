@@ -44,16 +44,7 @@ import { useAuthStore } from '@/stores/Auth';
 import { ElMessage } from 'element-plus';
 
 const { courseName } = defineProps<{ courseName: string }>();
-const comments = ref<Comment[]>([
-  {
-    username: '11',
-    id: 1,
-    content: 'ccc',
-    createdAt: new Date(),
-    totalLikes: 0,
-    ownRate: 0,
-  },
-]);
+const comments = ref<Comment[]>([]);
 const commentText = ref<string>('');
 const sending = ref<boolean>(false);
 
@@ -113,13 +104,19 @@ watch(isAuthenticated, (isNowAuthenticated) => {
 onMounted(updateComments);
 </script>
 <style scoped>
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 48em;
+  margin: 0 auto;
+}
 .comment-send {
   padding: 24px;
   padding-bottom: 12px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-top: 1px solid #e0e0e0;
   width: 100%;
 }
 .comment-display {
@@ -147,11 +144,6 @@ onMounted(updateComments);
   display: flex;
   align-items: center;
   gap: 8px;
-}
-.comment-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
 }
 .spacer {
   flex: 1;
