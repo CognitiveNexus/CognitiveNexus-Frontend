@@ -48,7 +48,7 @@ async function handleClick(name: string) {
       return;
     } catch (err) {}
   }
-  router.push(`/course/${name}/${(progress.value[name] ?? 0) + 1}`);
+  router.push(`/course/${name}/${progress.value[name] ?? 0}`);
 }
 </script>
 
