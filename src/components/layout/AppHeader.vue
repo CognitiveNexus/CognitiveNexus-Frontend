@@ -55,9 +55,9 @@ const profile = () => {
 .title {
   font-family: 'ChuangKeTieJin', sans-serif;
   font-size: 30px;
+  color: transparent;
   background-image: linear-gradient(90deg, #60afff, #b180ff);
   background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 .el-menu--horizontal > .el-menu-item:nth-last-child(2) {
   margin-right: auto;
