@@ -1,7 +1,9 @@
 <template>
   <el-config-provider :locale="zhCn">
     <el-container class="main-container">
-      <AppHeader />
+      <div v-show="!atHomepage">
+        <AppHeader />
+      </div>
       <el-container>
         <RouterView></RouterView>
       </el-container>
@@ -11,14 +13,16 @@
         </div>
       </el-footer>
     </el-container>
-    <FloatButton :icon="ChatLineRound" buttonText="AI导师" @click="aiDrawer = !aiDrawer" />
+    <div v-show="!atHomepage">
+      <FloatButton :icon="ChatLineRound" buttonText="AI导师" @click="aiDrawer = !aiDrawer" />
+    </div>
     <AskAI v-model="aiDrawer" />
   </el-config-provider>
 </template>
 
 <script setup lang="ts" name="App">
-import { ref, watch } from 'vue';
-import { RouterView } from 'vue-router';
+import { ref, watch, computed } from 'vue';
+import { RouterView, useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import { ChatLineRound } from '@element-plus/icons-vue';
@@ -34,6 +38,8 @@ const { fetchProgress, clearProgress } = useProgressStore();
 const footerText = import.meta.env.COGNEX_FOOTER ?? '';
 
 const aiDrawer = ref<boolean>(false);
+const route = useRoute();
+const atHomepage = computed(() => ['/', '/home'].includes(route.path));
 
 if (isAuthenticated.value) {
   fetchProgress();
