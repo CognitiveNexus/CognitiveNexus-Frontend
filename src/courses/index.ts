@@ -6,15 +6,11 @@ import pointer from '@/courses/pointer';
 
 export const courseCategories: CourseCategory[] = [
   {
-    name: '基础',
-    courses: [ifStatement, forStatement],
+    name: '知识点详解',
+    courses: [ifStatement, forStatement, pointer],
   },
   {
-    name: '进阶',
-    courses: [pointer],
-  },
-  {
-    name: '算法',
+    name: '趣味实战',
     courses: [bubbleSort],
   },
 ];

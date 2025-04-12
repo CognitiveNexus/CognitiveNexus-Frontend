@@ -1,14 +1,20 @@
 <template>
   <div class="cards">
-    <template v-for="course in courses">
-      <el-card style="max-width: 300px" shadow="hover">
-        <img :src="thumbnails[course.id]" :alt="course.name" width="200px" height="200px" style="border-radius: 5px" />
-        <template #footer>
-          <el-text>{{ course.name }}</el-text>
-          <el-button type="success" :icon="Promotion" round @click="handleClick(course.id)" style="float: right">Go</el-button>
+    <ElCard class="course-category" :header="category.name">
+      <template v-for="(course, index) in category.courses">
+        <ElDivider v-if="index > 0" />
+        <div class="course-item">
+          <span>{{ course.name }}</span>
+          <el-button type="success" :icon="Promotion" @click="handleClick(course.id)" round>Go</el-button>
+        </div>
+        <template v-if="category.name === '知识点详解' && index === category.courses.length - 1">
+          <ElDivider />
+          <div class="course-item">
+            <span>想学习更多知识点？点击“AI导师”问问吧~</span>
+          </div>
         </template>
-      </el-card>
-    </template>
+      </template>
+    </ElCard>
   </div>
 </template>
 
@@ -19,10 +25,10 @@ import { ElMessageBox } from 'element-plus';
 import { Promotion } from '@element-plus/icons-vue';
 import { useAuthStore } from '@/stores/Auth';
 import { useProgressStore } from '@/stores/Progress';
-import type { Course } from '@/types/CourseTypes';
+import type { CourseCategory } from '@/types/CourseTypes';
 
-const { courses } = defineProps<{
-  courses: Course[];
+const { category } = defineProps<{
+  category: CourseCategory;
 }>();
 
 const images = import.meta.glob('@/assets/course/*.png', { eager: true });
@@ -53,9 +59,17 @@ async function handleClick(name: string) {
 </script>
 
 <style scoped>
-.cards {
+.course-category {
+  width: 100%;
+}
+.course-item {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px;
+}
+.el-divider {
+  margin: 12px 0;
 }
 </style>

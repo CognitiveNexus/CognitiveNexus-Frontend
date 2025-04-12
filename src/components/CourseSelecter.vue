@@ -1,23 +1,28 @@
 <template>
-  <el-container>
-    <el-main>
-      <el-collapse v-model="activeNames">
-        <el-collapse-item v-for="(category, id) in courseCategories" :title="category.name" :name="id">
-          <CardGroup :courses="category.courses" />
-        </el-collapse-item>
-      </el-collapse>
-    </el-main>
-  </el-container>
+  <div class="course-select">
+    <div class="course-category" v-for="category in courseCategories">
+      <CardGroup :category="category" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts" name="CourseSelecter">
-import { ref } from 'vue';
 import { courseCategories } from '@/courses/index';
-const activeNames = ref(courseCategories.map((_, id) => id));
 </script>
 
 <style scoped>
-.el-main {
-  margin: 0px 10%;
+.course-select {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1280px;
+  gap: 20px;
+  justify-content: space-between;
+  margin: auto;
+  align-items: center;
+}
+
+.course-category {
+  flex: 1;
+  align-self: flex-start;
 }
 </style>
