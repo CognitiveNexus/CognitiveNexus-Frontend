@@ -10,7 +10,7 @@
         <p class="home-tagline">沉浸式的趣味 C 语言学习体验</p>
         <div class="home-buttons">
           <a
-            class="home-button home-button-secondary"
+            class="home-button home-button-primary"
             v-if="!isAuthenticated"
             @click="
               selectedTab = 'login';
@@ -150,24 +150,24 @@ const { showLoginDialog, selectedTab, isAuthenticated } = storeToRefs(useAuthSto
 
 .logo-container {
   position: relative;
-  max-width: 320px;
-  max-height: 320px;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo {
   width: 100%;
   height: 100%;
   padding: 18px;
-  filter: drop-shadow(-2px 4px 6px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.25));
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .logo-bg {
-  width: 320px;
-  height: 320px;
+  width: 200px;
+  height: 200px;
   background-image: linear-gradient(-45deg, #bd34fe 50%, #47caff 50%);
   filter: blur(68px);
 }
