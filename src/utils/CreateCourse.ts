@@ -1,4 +1,14 @@
-import type { ButtonContent, ButtonGroup, CongratulationContent, TagContent, TagGroup, TextContent, TitleContent, VideoContent } from '@/types/CourseTypes';
+import type {
+  ButtonContent,
+  ButtonGroup,
+  CongratulationContent,
+  TagContent,
+  TagGroup,
+  TextContent,
+  TitleContent,
+  VideoContent,
+  SlideshowContent,
+} from '@/types/CourseTypes';
 
 export const createTitle = (content: string): TitleContent => ({ type: 'title', content });
 export const createText = (content: string): TextContent => ({ type: 'text', content });
@@ -6,6 +16,7 @@ export const createButtons = (buttons: ButtonContent[]): ButtonGroup => ({ type:
 export const createTags = (tags: TagContent[]): TagGroup => ({ type: 'tag', tags });
 export const createCongratulation = (): CongratulationContent => ({ type: 'congratulation' });
 export const createVideo = (platform: VideoContent['platform'], link: string): VideoContent => ({ type: 'video', platform, link });
+export const createSlideshow = (filename: string): SlideshowContent => ({ type: 'slideshow', filename });
 
 export const createTips = (inputFormat?: string, outputFormat?: string, examples?: { input: string; output: string }[]): TextContent => {
   let tips = '';

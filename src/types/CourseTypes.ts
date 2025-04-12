@@ -24,7 +24,7 @@ export type PracticePage = {
   defaultLine?: number;
 };
 
-export type StoryContent = TitleContent | TextContent | TagGroup | ButtonGroup | CongratulationContent | VisualizationContent | VideoContent;
+export type StoryContent = TitleContent | TextContent | TagGroup | ButtonGroup | CongratulationContent | VisualizationContent | VideoContent | SlideshowContent;
 
 export type TitleContent = {
   type: 'title';
@@ -52,6 +52,10 @@ export type VideoContent = {
   type: 'video';
   platform: 'bilibili' | 'local';
   link: string;
+};
+export type SlideshowContent = {
+  type: 'slideshow';
+  filename: string;
 };
 
 export type TagContent = {

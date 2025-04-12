@@ -189,7 +189,7 @@ const { showLoginDialog, selectedTab, isAuthenticated } = storeToRefs(useAuthSto
 }
 
 .home-button-primary {
-  background-color: #5672cd;
+  background-color: #7e57c2;
   color: #ffffff;
 }
 

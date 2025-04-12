@@ -37,6 +37,12 @@
           class="video-player"></iframe>
         <video v-if="item.platform === 'local'" :src="item.link" class="video-player" controls></video>
       </div>
+
+      <div class="video-container" v-else-if="item.type === 'slideshow'">
+        <iframe
+          :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(`${origin}/static/${item.filename}`)}`"
+          class="video-player"></iframe>
+      </div>
     </div>
   </el-scrollbar>
 </template>
@@ -52,6 +58,7 @@ const { contents, solved } = defineProps<{
   solved?: boolean;
 }>();
 const emit = defineEmits(['goto']);
+const origin = window.location.origin;
 
 const handleClick = async (targetIndex: number, relative?: boolean, requireSolved?: boolean) => {
   if (requireSolved && !solved) {
