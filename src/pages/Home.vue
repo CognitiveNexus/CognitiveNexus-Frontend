@@ -9,9 +9,25 @@
         </h1>
         <p class="home-tagline">沉浸式的趣味 C 语言学习体验</p>
         <div class="home-buttons">
-          <a class="home-button home-button-primary">进入课堂</a>
-          <a class="home-button home-button-secondary">登录</a>
-          <a class="home-button home-button-secondary">注册</a>
+          <a
+            class="home-button home-button-secondary"
+            v-if="!isAuthenticated"
+            @click="
+              selectedTab = 'login';
+              showLoginDialog = true;
+            "
+            >登录</a
+          >
+          <a
+            class="home-button home-button-secondary"
+            v-if="!isAuthenticated"
+            @click="
+              selectedTab = 'register';
+              showLoginDialog = true;
+            "
+            >注册</a
+          >
+          <a class="home-button home-button-primary" v-if="isAuthenticated" @click="router.push('/course')">进入课堂</a>
         </div>
       </div>
       <div class="home-hero-right">
@@ -64,12 +80,11 @@
 
 <script setup lang="ts" name="Home">
 import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/Auth';
 
 const router = useRouter();
-
-function handleStart() {
-  router.push('/course');
-}
+const { showLoginDialog, selectedTab, isAuthenticated } = storeToRefs(useAuthStore());
 </script>
 
 <style scoped>
@@ -170,6 +185,7 @@ function handleStart() {
   display: inline-block;
   border-radius: 20px;
   padding: 0 20px;
+  cursor: pointer;
 }
 
 .home-button-primary {

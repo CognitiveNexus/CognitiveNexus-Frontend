@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('Auth', {
     token: ref<string | null>(localStorage.getItem('authToken')),
     isAuthenticated: ref<boolean>(!!localStorage.getItem('authToken')),
     username: ref<string | null>(localStorage.getItem('username')),
+    selectedTab: ref<'login' | 'register'>('login'),
     showLoginDialog: ref<boolean>(false),
   }),
   actions: {

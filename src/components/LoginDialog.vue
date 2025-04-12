@@ -32,13 +32,12 @@ import { useAuthStore } from '@/stores/Auth';
 import sendRequest from '@/utils/SendRequest.ts';
 
 const authStore = useAuthStore();
-const { showLoginDialog } = storeToRefs(authStore);
+const { showLoginDialog, selectedTab } = storeToRefs(authStore);
 
 const tabs = [
   { label: '登录', value: 'login' },
   { label: '注册', value: 'register' },
 ];
-const selectedTab = ref<string>('login');
 const actionName = computed(() => (selectedTab.value == 'login' ? '登录' : '注册'));
 const requesting = ref<boolean>(false);
 
