@@ -1,20 +1,21 @@
 <template>
-  <el-menu :default-active="route.path.replace(/(?<=\/.+?)[\/#].*$/, '')" mode="horizontal" :router="true" :ellipsis="false">
-    <el-menu-item index="/home">
+  <el-menu class="menu-container" :default-active="route.path.replace(/(?<=\/.+?)[\/#].*$/, '')" mode="horizontal" :router="true" :ellipsis="false">
+    <div class="menu-left"></div>
+    <el-menu-item index="/home" class="menu-title">
       <span class="title">思维脉络</span>
     </el-menu-item>
-    <el-menu-item index="/course">课程</el-menu-item>
-    <el-menu-item index="/playground">练习场</el-menu-item>
-    <el-menu-item v-if="!isAuthenticated" @click="showLoginDialog = true">
-      <el-icon><User /></el-icon>登录
-    </el-menu-item>
-    <el-sub-menu v-else index="user-menu">
-      <template #title>
-        <el-icon><User /></el-icon>{{ username }}
-      </template>
-      <el-menu-item @click="profile">学习记录</el-menu-item>
-      <el-menu-item @click="logout">退出登录</el-menu-item>
-    </el-sub-menu>
+    <div class="menu-right">
+      <el-menu-item v-if="!isAuthenticated" @click="showLoginDialog = true">
+        <el-icon><User /></el-icon>登录
+      </el-menu-item>
+      <el-sub-menu v-else index="user-menu">
+        <template #title>
+          <el-icon><User /></el-icon>{{ username }}
+        </template>
+        <el-menu-item @click="profile">学习记录</el-menu-item>
+        <el-menu-item @click="logout">退出登录</el-menu-item>
+      </el-sub-menu>
+    </div>
   </el-menu>
   <LoginDialog />
 </template>
@@ -48,18 +49,35 @@ const profile = () => {
 </script>
 
 <style scoped>
-.el-menu {
+.menu-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0px 50px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.151);
 }
+
+.menu-left {
+  flex: 1;
+}
+
+.menu-title {
+  flex: 1;
+  text-align: center;
+}
+
+.menu-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .title {
   font-family: 'ChuangKeTieJin', sans-serif;
   font-size: 30px;
   color: transparent;
   background-image: linear-gradient(90deg, #60afff, #b180ff);
   background-clip: text;
-}
-.el-menu--horizontal > .el-menu-item:nth-last-child(2) {
-  margin-right: auto;
 }
 </style>
