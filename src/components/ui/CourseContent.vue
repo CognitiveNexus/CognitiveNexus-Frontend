@@ -43,6 +43,8 @@
           :src="`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(`${origin}/static/${item.filename}`)}`"
           class="video-player"></iframe>
       </div>
+
+      <Confetti v-else-if="item.type === 'congratulation'" class="absolute left-0 top-0 z-0 size-full no-pointer-events" style="pointer-events: none" />
     </div>
   </el-scrollbar>
 </template>
