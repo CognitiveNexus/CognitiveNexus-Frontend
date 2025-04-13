@@ -7,6 +7,7 @@ export type Course = {
 export type CourseCategory = {
   name: string;
   courses: Course[];
+  remark?: string[];
 };
 
 export type CoursePage = StoryPage | PracticePage;

@@ -1,18 +1,12 @@
 <template>
   <div class="cards">
     <ElCard class="course-category" :header="category.name">
-      <template v-for="(course, index) in category.courses">
+      <template v-for="(item, index) in ([] as (Course|string)[]).concat(category.courses).concat(category.remark ?? [])">
         <ElDivider v-if="index > 0" />
         <div class="course-item">
-          <span>{{ course.name }}</span>
-          <el-button type="success" :icon="Promotion" @click="handleClick(course.id)" round>Go</el-button>
+          <span>{{ typeof item === 'string' ? item : item.name }}</span>
+          <el-button v-if="typeof item !== 'string'" type="success" :icon="Promotion" @click="handleClick(item.id)" round>Go</el-button>
         </div>
-        <template v-if="category.name === '知识点详解' && index === category.courses.length - 1">
-          <ElDivider />
-          <div class="course-item">
-            <span>想学习更多知识点？点击“AI导师”问问吧~</span>
-          </div>
-        </template>
       </template>
     </ElCard>
   </div>
@@ -25,7 +19,7 @@ import { ElMessageBox } from 'element-plus';
 import { Promotion } from '@element-plus/icons-vue';
 import { useAuthStore } from '@/stores/Auth';
 import { useProgressStore } from '@/stores/Progress';
-import type { CourseCategory } from '@/types/CourseTypes';
+import type { Course, CourseCategory } from '@/types/CourseTypes';
 
 const { category } = defineProps<{
   category: CourseCategory;

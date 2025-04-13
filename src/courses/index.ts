@@ -8,6 +8,7 @@ export const courseCategories: CourseCategory[] = [
   {
     name: '知识点详解',
     courses: [ifStatement, forStatement, pointer],
+    remark: ['想学习更多知识点？点击“AI导师”问问吧~'],
   },
   {
     name: '趣味实战',
