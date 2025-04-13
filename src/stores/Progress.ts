@@ -24,13 +24,7 @@ export const useProgressStore = defineStore('Progress', {
         if (result.error) {
           throw new Error(result.error);
         }
-      } catch (err) {
-        ElNotification({
-          title: '错误',
-          message: `上传课程进度时发生错误：${(err as Error).message}`,
-          type: 'error',
-        });
-      }
+      } catch (err) {}
     },
     async fetchProgress(): Promise<void> {
       try {
