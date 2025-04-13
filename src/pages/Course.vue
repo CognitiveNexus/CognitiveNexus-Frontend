@@ -8,7 +8,10 @@
               <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
             </PaginationControl>
           </div>
-          <div class="story-character" v-if="characterImages[pageIndex]">
+          <div
+            class="story-character"
+            v-if="characterImages[pageIndex]"
+            :style="typeof currentPage.character === 'string' || !currentPage.character?.style ? {} : currentPage.character.style">
             <BlurEntrance>
               <InfiniteMoving>
                 <img :src="characterImages[pageIndex]!" />
@@ -98,7 +101,8 @@ const loadImages = async (field: 'background' | 'character') => {
       if (page.type !== 'story' || !page[field]) return null;
 
       try {
-        const module = await import(`@/assets/${field}/${page[field]}.png`);
+        const name = typeof page[field] === 'string' ? page[field] : page[field].name;
+        const module = await import(`@/assets/${field}/${name}.png`);
         await preloadImage(module.default);
         return module.default;
       } catch (error) {

@@ -1,3 +1,5 @@
+import type { CSSProperties } from 'vue';
+
 export type Course = {
   name: string;
   id: string;
@@ -14,7 +16,7 @@ export type CoursePage = StoryPage | PracticePage;
 export type StoryPage = {
   type: 'story';
   background?: string;
-  character?: string;
+  character?: string | CharacterConfig;
   contents: StoryContent[];
   /**
    * @deprecated emblem 属性已弃用，无作用。
@@ -82,4 +84,9 @@ export type ButtonContent = {
 export type CodeTest = {
   stdin: string;
   expect: string;
+};
+
+export type CharacterConfig = {
+  name: string;
+  style?: CSSProperties;
 };

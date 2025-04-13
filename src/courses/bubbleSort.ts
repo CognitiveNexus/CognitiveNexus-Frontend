@@ -220,7 +220,12 @@ int main(){
   {
     type: 'story',
     background: 'castle',
-    character: 'shopkeeper3',
+    character: {
+      name: 'shopkeeper3',
+      style: {
+        width: '300px',
+      },
+    },
     contents: [
       createTitle(`🗡️启程`),
       createText(`“原来如此！”你轻触剑纹，柜中暗格应声而开。老铁匠抚掌大笑：“你找到了遍历的奥义！这把传说中攻击力999的圣剑，属于懂得**记录极值**之人。”
