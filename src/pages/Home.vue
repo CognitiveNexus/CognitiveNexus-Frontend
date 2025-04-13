@@ -16,7 +16,7 @@
           <template v-else>
             <span class="home-button home-button-primary" @click="router.push('/course')">进入课堂</span>
             <span class="home-button home-button-secondary" @click="router.push('/profile')">学习记录</span>
-            <span class="home-button home-button-secondary" @click="clearAuth()">退出登录</span>
+            <span class="home-button home-button-secondary" @click="logout()">退出登录</span>
           </template>
         </div>
       </div>
@@ -71,6 +71,7 @@
 <script setup lang="ts" name="Home">
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import { ElMessageBox, ElNotification } from 'element-plus';
 import { useAuthStore } from '@/stores/Auth';
 
 const router = useRouter();
@@ -81,6 +82,20 @@ const openLoginDialog = (tab: 'login' | 'register') => {
   selectedTab.value = tab;
   showLoginDialog.value = true;
 };
+const logout = async () => {
+  try {
+    await ElMessageBox.confirm('确定要退出登录吗？', '退出登录', {
+      type: 'warning',
+    });
+  } catch (err) {
+    return;
+  }
+  clearAuth();
+  ElNotification({
+    title: '退出登录成功',
+    type: 'success',
+  });
+};
 </script>
 
 <style scoped>
@@ -89,6 +104,8 @@ const openLoginDialog = (tab: 'login' | 'register') => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 80px;
 }
 
 .home-hero {
