@@ -1,11 +1,7 @@
 <template>
   <div class="course">
-    <el-container class="course-main">
+    <el-container class="course-main" v-loading="imageLoading">
       <template v-if="currentPage.type === 'story'">
-        <!-- <el-aside class="story-emblem-container">
-          <Emblem :emblem="currentPage.emblem" />
-        </el-aside> -->
-        <!-- <el-divider direction="vertical" class="vertical-divider" /> -->
         <el-main
           class="story-main-container"
           :class="{
@@ -14,8 +10,7 @@
             castle: pageIndex === 7,
             monster: pageIndex === 8,
             monsterdim: pageIndex === 9 || pageIndex === 10,
-          }"
-        >
+          }">
           <div class="story-content-container">
             <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
               <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
@@ -24,9 +19,9 @@
           <div class="story-character" v-if="pageIndex === 2 || pageIndex === 4 || pageIndex === 5 || pageIndex === 7 || pageIndex === 10">
             <BlurEntrance>
               <InfiniteMoving>
-                <img src="../assets/emblem/shopkeeper-1.png" v-if="pageIndex === 2" />
-                <img src="../assets/emblem/shopkeeper-2.png" v-if="pageIndex === 4" />
-                <img src="../assets/emblem/shopkeeper-3.png" style="width: 300px" v-if="pageIndex === 7" />
+                <img src="@/assets/emblem/shopkeeper-1.png" v-if="pageIndex === 2" />
+                <img src="@/assets/emblem/shopkeeper-2.png" v-if="pageIndex === 4" />
+                <img src="@/assets/emblem/shopkeeper-3.png" style="width: 300px" v-if="pageIndex === 7" />
               </InfiniteMoving>
             </BlurEntrance>
             <ColumnChart :index="pageIndex / 5" v-if="pageIndex === 5 || pageIndex === 10" />
@@ -44,8 +39,7 @@
             :generateTests="currentPage.randomJudge"
             :defaultCode="currentPage.defaultCode"
             :defaultLine="currentPage.defaultLine"
-            @accomplished="updateProgress()"
-          />
+            @accomplished="updateProgress()" />
         </el-main>
       </template>
     </el-container>
@@ -56,18 +50,30 @@
 </template>
 
 <script setup lang="ts" name="Course">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import ColumnChart from '@/components/visualize/ColumnChart.vue';
 import Comments from '@/components/Comments.vue';
 import courses from '@/courses/index';
 import { useProgressStore } from '@/stores/Progress';
+import { ElNotification } from 'element-plus';
+
+import imageParchment from '@/assets/emblem/parchment.png';
+import imageWeaponShop from '@/assets/emblem/weaponshop.png';
+import imageCastle from '@/assets/emblem/castle.png';
+import imageMonster from '@/assets/emblem/monster.png';
+import imageMonsterDim from '@/assets/emblem/monster-dim.png';
+import imageShopkeeper1 from '@/assets/emblem/shopkeeper-1.png';
+import imageShopkeeper2 from '@/assets/emblem/shopkeeper-2.png';
+import imageShopkeeper3 from '@/assets/emblem/shopkeeper-3.png';
+const images = [imageParchment, imageWeaponShop, imageCastle, imageMonster, imageMonsterDim, imageShopkeeper1, imageShopkeeper2, imageShopkeeper3];
 
 const route = useRoute();
 const router = useRouter();
 const pageIndex = computed(() => Math.max(0, parseInt(route.params.pageIndex as string) - 1));
 const courseName = computed(() => route.params.courseName as string);
+const imageLoading = ref<boolean>(true);
 
 const currentCourse = computed(() => courses[courseName.value]);
 const currentPage = computed(() => currentCourse.value.pages[pageIndex.value]);
@@ -100,6 +106,28 @@ const gotoPage = (page: number, relative?: boolean) => {
     },
   });
 };
+
+onMounted(async () => {
+  const preloadImage = (src: string) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = resolve;
+      img.onerror = reject;
+    });
+
+  try {
+    await Promise.all(images.map(preloadImage));
+  } catch (err) {
+    ElNotification({
+      title: '错误',
+      message: (err as Error).message,
+      type: 'error',
+    });
+  } finally {
+    imageLoading.value = false;
+  }
+});
 </script>
 
 <style scoped>
@@ -125,27 +153,27 @@ const gotoPage = (page: number, relative?: boolean) => {
   flex-direction: row;
 }
 .parchment {
-  background: url(../assets/emblem/parchment.png);
+  background: url(@/assets/emblem/parchment.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
 .weaponshop {
-  background: url(../assets/emblem/weaponshop.png);
+  background: url(@/assets/emblem/weaponshop.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
 .castle {
-  background: url(../assets/emblem/castle.png);
+  background: url(@/assets/emblem/castle.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
 .monster {
-  background: url(../assets/emblem/monster.png);
+  background: url(@/assets/emblem/monster.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
 .monsterdim {
-  background: url(../assets/emblem/monster-dim.png);
+  background: url(@/assets/emblem/monster-dim.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -159,7 +187,7 @@ const gotoPage = (page: number, relative?: boolean) => {
   width: 40%;
   height: 99%;
   overflow: hidden;
-  background-image: url(../assets/emblem/page.png);
+  background-image: url(@/assets/emblem/page.png);
   background-repeat: no-repeat;
   background-size: 90%;
 }
