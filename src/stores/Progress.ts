@@ -1,6 +1,7 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { ElNotification } from 'element-plus';
+import { useAuthStore } from '@/stores/Auth';
 import sendRequest from '@/utils/SendRequest';
 
 export const useProgressStore = defineStore('Progress', {
@@ -9,6 +10,8 @@ export const useProgressStore = defineStore('Progress', {
   }),
   actions: {
     async setProgress(courseName: string, progress: number) {
+      const { isAuthenticated } = storeToRefs(useAuthStore());
+      if (!isAuthenticated.value) return;
       this.progress[courseName] = progress;
       try {
         const response = await sendRequest(true, `/api/progress/${courseName}`, {
@@ -27,6 +30,8 @@ export const useProgressStore = defineStore('Progress', {
       } catch (err) {}
     },
     async fetchProgress(): Promise<void> {
+      const { isAuthenticated } = storeToRefs(useAuthStore());
+      if (!isAuthenticated.value) return;
       try {
         const response = await sendRequest(true, '/api/progress/all');
         const result = await response.json();
@@ -43,6 +48,8 @@ export const useProgressStore = defineStore('Progress', {
       }
     },
     clearProgress() {
+      const { isAuthenticated } = storeToRefs(useAuthStore());
+      if (!isAuthenticated.value) return;
       this.progress = {};
     },
   },

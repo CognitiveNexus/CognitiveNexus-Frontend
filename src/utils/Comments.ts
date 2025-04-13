@@ -1,4 +1,6 @@
 import { ElNotification } from 'element-plus';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/Auth';
 import sendRequest from '@/utils/SendRequest';
 
 export type Comment = {
@@ -12,6 +14,8 @@ export type Comment = {
 export type CommentRate = 0 | 1 | -1;
 
 export const getComments = async (courseName: string): Promise<Comment[]> => {
+  const { isAuthenticated } = storeToRefs(useAuthStore());
+  if (!isAuthenticated.value) return [];
   try {
     const response = await sendRequest(true, `/api/comments/${courseName}`);
     const result = await response.json();
