@@ -2,26 +2,16 @@
   <div class="course">
     <el-container class="course-main" v-loading="imageLoading">
       <template v-if="currentPage.type === 'story'">
-        <el-main
-          class="story-main-container"
-          :class="{
-            parchment: pageIndex <= 1,
-            weaponshop: pageIndex === 2 || pageIndex === 4 || pageIndex === 5,
-            castle: pageIndex === 7,
-            monster: pageIndex === 8,
-            monsterdim: pageIndex === 9 || pageIndex === 10,
-          }">
+        <el-main class="story-main-container" :style="{ backgroundImage: `url(${backgroundImages[pageIndex]})` }">
           <div class="story-content-container">
             <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
               <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
             </PaginationControl>
           </div>
-          <div class="story-character" v-if="pageIndex === 2 || pageIndex === 4 || pageIndex === 5 || pageIndex === 7 || pageIndex === 10">
+          <div class="story-character" v-if="characterImages[pageIndex]">
             <BlurEntrance>
               <InfiniteMoving>
-                <img src="@/assets/emblem/shopkeeper-1.png" v-if="pageIndex === 2" />
-                <img src="@/assets/emblem/shopkeeper-2.png" v-if="pageIndex === 4" />
-                <img src="@/assets/emblem/shopkeeper-3.png" style="width: 300px" v-if="pageIndex === 7" />
+                <img :src="characterImages[pageIndex]!" />
               </InfiniteMoving>
             </BlurEntrance>
             <ColumnChart :index="pageIndex / 5" v-if="pageIndex === 5 || pageIndex === 10" />
@@ -50,24 +40,15 @@
 </template>
 
 <script setup lang="ts" name="Course">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import { ElNotification } from 'element-plus';
+
 import ColumnChart from '@/components/visualize/ColumnChart.vue';
 import Comments from '@/components/Comments.vue';
 import courses from '@/courses/index';
 import { useProgressStore } from '@/stores/Progress';
-import { ElNotification } from 'element-plus';
-
-import imageParchment from '@/assets/emblem/parchment.png';
-import imageWeaponShop from '@/assets/emblem/weaponshop.png';
-import imageCastle from '@/assets/emblem/castle.png';
-import imageMonster from '@/assets/emblem/monster.png';
-import imageMonsterDim from '@/assets/emblem/monster-dim.png';
-import imageShopkeeper1 from '@/assets/emblem/shopkeeper-1.png';
-import imageShopkeeper2 from '@/assets/emblem/shopkeeper-2.png';
-import imageShopkeeper3 from '@/assets/emblem/shopkeeper-3.png';
-const images = [imageParchment, imageWeaponShop, imageCastle, imageMonster, imageMonsterDim, imageShopkeeper1, imageShopkeeper2, imageShopkeeper3];
 
 const route = useRoute();
 const router = useRouter();
@@ -77,6 +58,9 @@ const imageLoading = ref<boolean>(true);
 
 const currentCourse = computed(() => courses[courseName.value]);
 const currentPage = computed(() => currentCourse.value.pages[pageIndex.value]);
+
+const backgroundImages = ref<(string | null)[]>([]);
+const characterImages = ref<(string | null)[]>([]);
 
 const progressStore = useProgressStore();
 const { setProgress } = progressStore;
@@ -107,26 +91,42 @@ const gotoPage = (page: number, relative?: boolean) => {
   });
 };
 
-onMounted(async () => {
-  const preloadImage = (src: string) =>
-    new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = resolve;
-      img.onerror = reject;
-    });
+const loadImages = async (field: 'background' | 'character') => {
+  const pages = currentCourse.value?.pages || [];
+  return await Promise.all(
+    pages.map(async (page) => {
+      if (page.type !== 'story' || !page[field]) return null;
 
-  try {
-    await Promise.all(images.map(preloadImage));
-  } catch (err) {
-    ElNotification({
-      title: '错误',
-      message: (err as Error).message,
-      type: 'error',
-    });
-  } finally {
-    imageLoading.value = false;
-  }
+      try {
+        const module = await import(`@/assets/${field}/${page[field]}.png`);
+        await preloadImage(module.default);
+        return module.default;
+      } catch (error) {
+        ElNotification({
+          title: '错误',
+          message: (error as Error).message,
+          type: 'error',
+        });
+        return null;
+      }
+    })
+  );
+};
+const preloadImage = (src: string) =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = resolve;
+    img.onerror = reject;
+  });
+
+watchEffect(async () => {
+  const [bgResults, charResults] = await Promise.all([loadImages('background'), loadImages('character')]);
+
+  backgroundImages.value = bgResults;
+  characterImages.value = charResults;
+
+  imageLoading.value = false;
 });
 </script>
 
@@ -151,31 +151,8 @@ onMounted(async () => {
   width: 100%;
   display: flex;
   flex-direction: row;
-}
-.parchment {
-  background: url(@/assets/emblem/parchment.png);
-  background-repeat: no-repeat;
   background-size: cover;
-}
-.weaponshop {
-  background: url(@/assets/emblem/weaponshop.png);
   background-repeat: no-repeat;
-  background-size: cover;
-}
-.castle {
-  background: url(@/assets/emblem/castle.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.monster {
-  background: url(@/assets/emblem/monster.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.monsterdim {
-  background: url(@/assets/emblem/monster-dim.png);
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 .story-character {
   height: 100%;
@@ -187,7 +164,7 @@ onMounted(async () => {
   width: 40%;
   height: 99%;
   overflow: hidden;
-  background-image: url(@/assets/emblem/page.png);
+  background-image: url(@/assets/img/page.png);
   background-repeat: no-repeat;
   background-size: 90%;
 }

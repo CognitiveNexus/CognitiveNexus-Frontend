@@ -13,8 +13,13 @@ export type CourseCategory = {
 export type CoursePage = StoryPage | PracticePage;
 export type StoryPage = {
   type: 'story';
-  emblem: string;
+  background?: string;
+  character?: string;
   contents: StoryContent[];
+  /**
+   * @deprecated emblem 属性已弃用，无作用。
+   */
+  emblem?: string;
 };
 export type PracticePage = {
   type: 'practice';
