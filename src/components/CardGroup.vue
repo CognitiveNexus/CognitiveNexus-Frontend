@@ -46,9 +46,21 @@ async function handleClick(name: string) {
       });
       showLoginDialog.value = true;
       return;
-    } catch (err) {}
+    } catch {}
   }
-  router.push(`/course/${name}/${progress.value[name] ?? 0}`);
+  let targetPage = progress.value[name] ?? 1;
+  if (targetPage != 1) {
+    try {
+      await ElMessageBox.confirm('要从保存的进度继续吗？', '进度', {
+        confirmButtonText: '好的',
+        cancelButtonText: '从头开始',
+        type: 'info',
+      });
+    } catch {
+      targetPage = 1;
+    }
+  }
+  router.push(`/course/${name}/${targetPage}`);
 }
 </script>
 
