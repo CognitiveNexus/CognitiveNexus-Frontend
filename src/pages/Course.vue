@@ -2,14 +2,16 @@
   <div class="course">
     <el-container class="course-main">
       <template v-if="currentPage.type === 'story'">
-        <el-aside class="story-emblem-container">
+        <!-- <el-aside class="story-emblem-container">
           <Emblem :emblem="currentPage.emblem" />
-        </el-aside>
-        <el-divider direction="vertical" class="vertical-divider" />
-        <el-main class="story-content-container">
-          <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
-            <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
-          </PaginationControl>
+        </el-aside> -->
+        <!-- <el-divider direction="vertical" class="vertical-divider" /> -->
+        <el-main class="story-main-container">
+          <div class="story-content-container">
+            <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
+              <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
+            </PaginationControl>
+          </div>
         </el-main>
       </template>
       <template v-else>
@@ -23,7 +25,8 @@
             :generateTests="currentPage.randomJudge"
             :defaultCode="currentPage.defaultCode"
             :defaultLine="currentPage.defaultLine"
-            @accomplished="updateProgress()" />
+            @accomplished="updateProgress()"
+          />
         </el-main>
       </template>
     </el-container>
@@ -40,6 +43,7 @@ import { storeToRefs } from 'pinia';
 import Emblem from '@/components/animation/Emblem.vue';
 import Comments from '@/components/Comments.vue';
 import courses from '@/courses/index';
+import page from '@/assets/emblem/page.png';
 import { useProgressStore } from '@/stores/Progress';
 
 const route = useRoute();
@@ -96,14 +100,26 @@ const gotoPage = (page: number, relative?: boolean) => {
   width: 100%;
   border-top: 1px solid #e5e7eb;
 }
+.story-main-container {
+  height: 100%;
+  width: 100%;
+  background: url(../assets/emblem/parchment.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .story-content-container {
-  padding: 0px;
-  width: 70%;
+  padding-top: 30px;
+  padding-right: 50px;
+  width: 40%;
   height: 99%;
   overflow: hidden;
+  background-image: url(../assets/emblem/page.png);
+  background-repeat: no-repeat;
+  background-size: 90%;
 }
 .story-emblem-container {
-  width: 30%;
+  padding: 0px;
+  width: 60%;
   height: 100%;
   display: flex;
   justify-content: center;

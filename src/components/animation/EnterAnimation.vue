@@ -1,18 +1,21 @@
 <template>
   <div class="main">
-    <motion.div
-      :key="animationKey"
-      :initial="{ opacity: 0, scale: 0 }"
-      :animate="{ opacity: 1, scale: 1 }"
-      :whileHover="{ scale: 1.2 }"
-      :whilePress="{ scale: 0.8 }"
-      :transition="{
-        duration: 0.4,
-        scale: { type: 'spring', visualDuration: 0.4, bounce: 0.5 },
+    <Motion
+      as="div"
+      :initial="{ opacity: 0, y: 40, filter: 'blur(10px)' }"
+      :whileInView="{
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
       }"
-      class="ani">
+      :transition="{
+        delay: 0.3,
+        duration: 0.8,
+        ease: 'easeInOut',
+      }"
+    >
       <img :src="src" :alt="alt" />
-    </motion.div>
+    </Motion>
   </div>
 </template>
 
@@ -37,6 +40,7 @@ watch(
 
 <style scoped>
 .main {
+  padding: 0px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -44,6 +48,7 @@ watch(
   align-items: center;
 }
 .ani {
+  padding: 0px;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -52,6 +57,7 @@ watch(
   align-items: center;
 }
 img {
-  width: 500px;
+  width: 100vh;
+  max-height: 90vh;
 }
 </style>

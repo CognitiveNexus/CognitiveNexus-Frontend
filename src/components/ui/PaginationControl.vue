@@ -40,17 +40,17 @@ defineEmits(['prev', 'next']);
   border: none;
   background: none;
   transition: background-color 0.3s ease;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0);
   min-width: 40px;
   width: 20%;
   max-width: 100px;
   height: 99%;
 }
 .fliper:hover {
-  background-color: rgb(245, 245, 245);
+  background-color: rgba(245, 245, 245, 0.226);
 }
 .fliper:active {
-  background-color: rgb(230, 230, 230);
+  background-color: rgba(230, 230, 230, 0.322);
 }
 .main-container {
   position: relative;

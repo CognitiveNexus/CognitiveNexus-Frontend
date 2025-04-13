@@ -8,7 +8,7 @@
         <el-tag v-for="tag in item.tags" :type="tag.type" :effect="tag.effect" :size="tag.size">{{ tag.text }}</el-tag>
       </div>
 
-      <MdPreview v-else-if="item.type === 'text'" :modelValue="item.content" previewTheme="github" />
+      <MdPreview v-else-if="item.type === 'text'" :modelValue="item.content" previewTheme="github" class="text" />
 
       <div class="warp-button" v-else-if="item.type === 'button'">
         <el-button
@@ -34,7 +34,8 @@
           frameborder="no"
           framespacing="0"
           allowfullscreen="true"
-          class="video-player"></iframe>
+          class="video-player"
+        ></iframe>
         <video v-if="item.platform === 'local'" :src="item.link" class="video-player" controls></video>
       </div>
 
@@ -159,5 +160,9 @@ const handleClick = async (targetIndex: number, relative?: boolean, requireSolve
   max-height: 100%;
   object-fit: contain;
   border: none;
+}
+
+.text {
+  background-color: #ffffff00;
 }
 </style>
