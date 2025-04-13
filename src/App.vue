@@ -16,6 +16,7 @@
     <div v-show="!atHomepage">
       <FloatButton :icon="ChatLineRound" buttonText="AI导师" @click="aiDrawer = !aiDrawer" />
     </div>
+    <LoginDialog />
     <AskAI v-model="aiDrawer" />
   </el-config-provider>
 </template>
@@ -29,6 +30,7 @@ import { ChatLineRound } from '@element-plus/icons-vue';
 
 import AskAI from '@/components/AskAI.vue';
 import FloatButton from '@/components/FloatButton.vue';
+import LoginDialog from '@/components/LoginDialog.vue';
 import { useAuthStore } from '@/stores/Auth.ts';
 import { useProgressStore } from '@/stores/Progress.ts';
 

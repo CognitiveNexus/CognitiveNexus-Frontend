@@ -17,14 +17,12 @@
       </el-sub-menu>
     </div>
   </el-menu>
-  <LoginDialog />
 </template>
 
 <script setup lang="ts" name="AppHeader">
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
-import LoginDialog from '@/components/LoginDialog.vue';
 import { useAuthStore } from '@/stores/Auth';
 
 const route = useRoute();

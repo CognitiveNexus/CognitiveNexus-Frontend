@@ -7,27 +7,17 @@
           <span class="heading-name">思维脉络</span>
           <span>沉浸、可视化的<br />C 语言交互微课堂</span>
         </h1>
-        <p class="home-tagline">沉浸式的趣味 C 语言学习体验</p>
+        <p class="home-tagline">{{ isAuthenticated ? `欢迎您，${username}！` : '沉浸式的趣味 C 语言学习体验' }}</p>
         <div class="home-buttons">
-          <a
-            class="home-button home-button-primary"
-            v-if="!isAuthenticated"
-            @click="
-              selectedTab = 'login';
-              showLoginDialog = true;
-            "
-            >登录</a
-          >
-          <a
-            class="home-button home-button-secondary"
-            v-if="!isAuthenticated"
-            @click="
-              selectedTab = 'register';
-              showLoginDialog = true;
-            "
-            >注册</a
-          >
-          <a class="home-button home-button-primary" v-if="isAuthenticated" @click="router.push('/course')">进入课堂</a>
+          <template v-if="!isAuthenticated">
+            <span class="home-button home-button-primary" @click="openLoginDialog('login')">登录</span>
+            <span class="home-button home-button-secondary" @click="openLoginDialog('register')">注册</span>
+          </template>
+          <template v-else>
+            <span class="home-button home-button-primary" @click="router.push('/course')">进入课堂</span>
+            <span class="home-button home-button-secondary" @click="router.push('/profile')">学习记录</span>
+            <span class="home-button home-button-secondary" @click="clearAuth()">退出登录</span>
+          </template>
         </div>
       </div>
       <div class="home-hero-right">
@@ -84,7 +74,13 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/Auth';
 
 const router = useRouter();
-const { showLoginDialog, selectedTab, isAuthenticated } = storeToRefs(useAuthStore());
+const authStore = useAuthStore();
+const { clearAuth } = authStore;
+const { showLoginDialog, selectedTab, isAuthenticated, username } = storeToRefs(authStore);
+const openLoginDialog = (tab: 'login' | 'register') => {
+  selectedTab.value = tab;
+  showLoginDialog.value = true;
+};
 </script>
 
 <style scoped>
