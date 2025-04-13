@@ -1,16 +1,15 @@
 <template>
   <Motion
     as="div"
-    :initial="{ opacity: 0, y: 40, filter: 'blur(10px)' }"
     :whileInView="{
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
+      rotate: [-3, 3],
     }"
     :transition="{
-      delay: 0.3,
-      duration: 0.8,
+      repeat: Infinity, // 无限循环
+      repeatType: 'mirror', // 镜像回放（更自然）
       ease: 'easeInOut',
+      repeatDelay: 0.5,
+      duration: 3,
     }"
     class="relative flex flex-col items-center justify-center gap-4 px-4"
   >
@@ -18,7 +17,7 @@
   </Motion>
 </template>
 
-<script setup lang="ts" name="BlurEntrance">
+<script setup lang="ts" name="InfiniteMoving">
 import { Motion } from 'motion-v';
 </script>
 

@@ -6,11 +6,30 @@
           <Emblem :emblem="currentPage.emblem" />
         </el-aside> -->
         <!-- <el-divider direction="vertical" class="vertical-divider" /> -->
-        <el-main class="story-main-container">
+        <el-main
+          class="story-main-container"
+          :class="{
+            parchment: pageIndex <= 1,
+            weaponshop: pageIndex === 2 || pageIndex === 4 || pageIndex === 5,
+            castle: pageIndex === 7,
+            monster: pageIndex === 8,
+            monsterdim: pageIndex === 9 || pageIndex === 10,
+          }"
+        >
           <div class="story-content-container">
             <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
               <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
             </PaginationControl>
+          </div>
+          <div class="story-character" v-if="pageIndex === 2 || pageIndex === 4 || pageIndex === 5 || pageIndex === 7">
+            <BlurEntrance>
+              <InfiniteMoving>
+                <img src="../assets/emblem/shopkeeper-1.png" v-if="pageIndex === 2" />
+                <img src="../assets/emblem/shopkeeper-2.png" v-if="pageIndex === 4" />
+                <img src="../assets/emblem/shopkeeper-3.png" style="width: 300px" v-if="pageIndex === 7" />
+              </InfiniteMoving>
+            </BlurEntrance>
+            <ColumnChart v-if="pageIndex === 5" />
           </div>
         </el-main>
       </template>
@@ -40,10 +59,9 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import Emblem from '@/components/animation/Emblem.vue';
+import ColumnChart from '@/components/visualize/ColumnChart.vue';
 import Comments from '@/components/Comments.vue';
 import courses from '@/courses/index';
-import page from '@/assets/emblem/page.png';
 import { useProgressStore } from '@/stores/Progress';
 
 const route = useRoute();
@@ -103,13 +121,41 @@ const gotoPage = (page: number, relative?: boolean) => {
 .story-main-container {
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.parchment {
   background: url(../assets/emblem/parchment.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
+.weaponshop {
+  background: url(../assets/emblem/weaponshop.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.castle {
+  background: url(../assets/emblem/castle.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.monster {
+  background: url(../assets/emblem/monster.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.monsterdim {
+  background: url(../assets/emblem/monster-dim.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.story-character {
+  height: 100%;
+  width: 40%;
+}
 .story-content-container {
   padding-top: 30px;
-  padding-right: 50px;
+  padding-right: 70px;
   width: 40%;
   height: 99%;
   overflow: hidden;

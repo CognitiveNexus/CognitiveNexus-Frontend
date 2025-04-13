@@ -5,7 +5,7 @@ import { useLogStore } from './Log';
 export const useColumnChartStore = defineStore('ColumnChart', {
   //数据存储
   state: () => ({
-    colorScheme: ref(['#409EFF', '#409EFF', '#409EFF', '#409EFF', '#409EFF', '#409EFF', '#409EFF', '#409EFF']),
+    colorScheme: ref(['#75321E', '#75321E', '#75321E', '#75321E', '#75321E', '#75321E', '#75321E', '#75321E']),
     //默认数据组
     data: ref([{ value: 7 }, { value: 4 }, { value: 1 }, { value: 4 }, { value: 5 }, { value: 9 }, { value: 2 }, { value: 8 }]),
     //默认操作组
@@ -30,7 +30,7 @@ export const useColumnChartStore = defineStore('ColumnChart', {
   //计算属性
   getters: {
     total_page: (state) => {
-      return state.command.length + 1;
+      return state.command.length;
     },
   },
   //动作方法
@@ -51,35 +51,10 @@ export const useColumnChartStore = defineStore('ColumnChart', {
     //按钮响应
     nextPage() {
       if (this.isAvailblePage(this.current_page + 1)) {
-        const consoleArray = useLogStore();
-        const command_index = this.current_page - 1;
+        const command_index = this.current_page;
         const command = this.command[command_index];
         if (command.type == 'swap') {
-          consoleArray.pushString(
-            '交换 : a[' + command.index1 + ']=' + this.data[command.index1].value + ' 与 a[' + command.index2 + ']=' + this.data[command.index2].value
-          );
           this.swap(command.index1, command.index2);
-        } else if (command.type == 'compare') {
-          const sign = ref('');
-          if (this.data[command.index1].value > this.data[command.index2].value) {
-            sign.value = '>';
-          } else if (this.data[command.index1].value == this.data[command.index2].value) {
-            sign.value = '=';
-          } else {
-            sign.value = '<';
-          }
-          consoleArray.pushString(
-            '比较 : a[' +
-              command.index1 +
-              ']=' +
-              this.data[command.index1].value +
-              ' ' +
-              sign.value +
-              ' a[' +
-              command.index2 +
-              ']=' +
-              this.data[command.index2].value
-          );
         }
         this.current_page++;
       }
@@ -87,7 +62,7 @@ export const useColumnChartStore = defineStore('ColumnChart', {
     prevPage() {
       if (this.isAvailblePage(this.current_page - 1)) {
         const consoleArray = useLogStore();
-        const command_index = this.current_page - 1;
+        const command_index = this.current_page;
         const command = this.command[command_index - 1];
         if (command.type == 'swap') {
           this.swap(command.index1, command.index2);
