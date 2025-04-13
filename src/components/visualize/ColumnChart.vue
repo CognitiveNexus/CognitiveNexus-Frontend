@@ -1,16 +1,16 @@
 <template>
-  <div class="canvas-render">
+  <div class="canvas-render" :class="{ warmtheme: props.index === 1, darktheme: props.index === 2 }">
     <v-chart :option="option" :autoresize="true" style="height: 300px; width: 700px" ref="chartRef" />
     <div class="button-group">
-      <el-button type="primary" class="left-button" @click="store.prevPage()">
+      <el-button type="primary" class="left-button" :class="{ warmbuttom: props.index === 1, darkbuttom: props.index === 2 }" @click="store.prevPage()">
         <el-icon :size="20">
           <CaretLeft />
         </el-icon>
       </el-button>
-      <div class="progress-visualizer">
+      <div class="progress-visualizer" :class="{ warmbar: props.index === 1, darkbar: props.index === 2 }">
         <el-text>{{ current_page }} / {{ total_page }}</el-text>
       </div>
-      <el-button type="primary" class="right-button" @click="store.nextPage()">
+      <el-button type="primary" class="right-button" :class="{ warmbuttom: props.index === 1, darkbuttom: props.index === 2 }" @click="store.nextPage()">
         <el-icon :size="20">
           <CaretRight />
         </el-icon>
@@ -25,17 +25,21 @@
 
 <script setup lang="ts" name="ColumnChart">
 import { computed, ref } from 'vue';
-import { useColumnChartStore } from '@/stores/ColumnChart';
+import { useWeaponStoreChartStore } from '@/stores/WeaponStoreChart';
+import { useFinalBossChartStore } from '@/stores/FinalBossChart';
 import { storeToRefs } from 'pinia';
 import { MdPreview } from 'md-editor-v3';
-
-const store = useColumnChartStore();
-const { current_page, total_page, colorScheme } = storeToRefs(store);
+import { weaponStoreContent } from '@/courses/weaponStoreChart';
+import { finalBossContent } from '@/courses/finalBossChart';
 
 const props = defineProps({
-  width: Number,
-  height: Number,
+  index: Number,
 });
+
+const store = props.index === 1 ? useWeaponStoreChartStore() : useFinalBossChartStore();
+const content = props.index === 1 ? weaponStoreContent : finalBossContent;
+
+const { current_page, total_page, colorScheme } = storeToRefs(store);
 
 //手动获取一下v-charts对象，方便一些强制更改option的操作
 const chartRef = ref();
@@ -50,7 +54,7 @@ const option = computed(() => {
       },
     },
     xAxis: {
-      data: store.data.map((d) => {
+      data: store.current_data.map((d) => {
         return d.value;
       }),
     },
@@ -59,152 +63,16 @@ const option = computed(() => {
       {
         name: 'value',
         type: 'bar',
-        data: store.data.map((d) => {
+        data: store.current_data.map((d) => {
           return d.value;
         }),
         itemStyle: {
-          color: (params: { dataIndex: number }) => colorScheme.value[params.dataIndex],
+          color: colorScheme.value,
         },
       },
     ],
   };
 });
-
-const content = [
-  ``,
-  `## Step 01
-
-【操作】比较a[0]与a[1]的大小： a[0] > a[1]
-
-【结论】所以下一步要让a[0]与a[1]互换位置，这样**大的数**就会到偏后的位置！
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 7 | 4 | 1 | 4 | 5 | 9 | 2 | 8 |
-`,
-  `## Step 02
-
-【操作】交换a[0]与a[1]的位置
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 7 | 1 | 4 | 5 | 9 | 2 | 8 |`,
-  `## Step 03
-
-【操作】比较a[1]与a[2]的大小： a[1] > a[2]
-
-【结论】所以下一步要让a[1]与a[2]互换位置，这样**大的数**就会到偏后的位置！
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 7 | 1 | 4 | 5 | 9 | 2 | 8 |
-`,
-  `## Step 04
-
-【操作】交换a[1]与a[2]的位置
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 7 | 4 | 5 | 9 | 2 | 8 |
-`,
-  `## Step 05
-
-【操作】比较a[2]与a[3]的大小： a[2] > a[3]
-
-【结论】所以下一步要让a[2]与a[3]互换位置，这样**大的数**就会到偏后的位置！
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 7 | 4 | 5 | 9 | 2 | 8 |
-`,
-  `## Step 06
-
-【操作】交换a[2]与a[3]的位置
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 4 | 7 | 5 | 9 | 2 | 8 |
-`,
-  `## Step 07
-
-【操作】比较a[3]与a[4]的大小： a[3] > a[4]
-
-【结论】所以下一步要让a[3]与a[4]互换位置，这样**大的数**就会到偏后的位置！
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 4 | 7 | 5 | 9 | 2 | 8 |
-`,
-  `## Step 08
-
-【操作】交换a[3]与a[4]的位置
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 4 | 5 | 7 | 9 | 2 | 8 |
-`,
-  `## Step 09
-
-【操作】比较a[4]与a[5]的大小： a[4] < a[5]
-
-【结论】右侧的数比左边的数更大，不需要交换了！
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 4 | 5 | 7 | 9 | 2 | 8 |
-`,
-  `## Step 10
-
-【操作】比较a[5]与a[6]的大小： a[5] > a[6]
-
-【结论】所以下一步要让a[5]与a[6]互换位置，这样**大的数**就会到偏后的位置！
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 4 | 5 | 7 | 9 | 2 | 8 |
-`,
-  `## Step 11
-
-【操作】交换a[5]与a[6]的位置
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 4 | 5 | 7 | 2 | 9 | 8 |
-`,
-  `## Step 12
-
-【操作】比较a[6]与a[7]的大小： a[6] > a[7]
-
-【结论】所以下一步要让a[6]与a[7]互换位置，这样**大的数**就会到偏后的位置！
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 4 | 5 | 7 | 2 | 9 | 8 |
-`,
-  `## Step 13
-
-【操作】交换a[6]与a[7]的位置
-
-【当前数组】
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-| :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 4 | 1 | 4 | 5 | 7 | 2 | 8 | 9 |
-
-【结果】最大的数已经在最右边了！
-`,
-];
 </script>
 
 <style scoped>
@@ -212,8 +80,14 @@ const content = [
   margin-top: 50px;
   padding: 10px 0px 0px 0px;
   border-radius: 5px;
+}
+.warmtheme {
   background-color: #fdf8ec;
   border: solid 10px #672917;
+}
+.darktheme {
+  background-color: #ecf8fd;
+  border: solid 10px #15171a;
 }
 
 .button-group {
@@ -239,13 +113,24 @@ const content = [
   border: 0px;
 }
 
+.watmbuttom {
+  background-color: #975538 !important;
+}
+.darkbuttom {
+  background-color: #21242c !important;
+}
+.warmbar {
+  background-color: #fff3d6;
+}
+.darkbar {
+  background-color: #d9e5eb;
+}
+
 .progress-visualizer {
-  background-color: var(--el-color-primary-light-9);
   width: 100%;
   display: flex;
   justify-content: center;
   align-content: center;
-  background-color: #fff3d6;
   border-radius: 5px;
   padding: 0 10px;
   flex: 1 1 auto;

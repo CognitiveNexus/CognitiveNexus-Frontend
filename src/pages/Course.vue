@@ -21,7 +21,7 @@
               <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
             </PaginationControl>
           </div>
-          <div class="story-character" v-if="pageIndex === 2 || pageIndex === 4 || pageIndex === 5 || pageIndex === 7">
+          <div class="story-character" v-if="pageIndex === 2 || pageIndex === 4 || pageIndex === 5 || pageIndex === 7 || pageIndex === 10">
             <BlurEntrance>
               <InfiniteMoving>
                 <img src="../assets/emblem/shopkeeper-1.png" v-if="pageIndex === 2" />
@@ -29,7 +29,7 @@
                 <img src="../assets/emblem/shopkeeper-3.png" style="width: 300px" v-if="pageIndex === 7" />
               </InfiniteMoving>
             </BlurEntrance>
-            <ColumnChart v-if="pageIndex === 5" />
+            <ColumnChart :index="pageIndex / 5" v-if="pageIndex === 5 || pageIndex === 10" />
           </div>
         </el-main>
       </template>

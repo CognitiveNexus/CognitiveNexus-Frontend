@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { useLogStore } from './Log';
 
-export const useColumnChartStore = defineStore('ColumnChart', {
+export const useWeaponStoreChartStore = defineStore('WeaponStoreChart', {
   //数据存储
   state: () => ({
-    colorScheme: ref(['#75321E', '#75321E', '#75321E', '#75321E', '#75321E', '#75321E', '#75321E', '#75321E']),
+    colorScheme: '#75321E',
     //默认数据组
     data: ref([{ value: 7 }, { value: 4 }, { value: 1 }, { value: 4 }, { value: 5 }, { value: 9 }, { value: 2 }, { value: 8 }]),
     //默认操作组
@@ -31,6 +30,9 @@ export const useColumnChartStore = defineStore('ColumnChart', {
   getters: {
     total_page: (state) => {
       return state.command.length;
+    },
+    current_data: (state) => {
+      return state.data;
     },
   },
   //动作方法
@@ -61,14 +63,12 @@ export const useColumnChartStore = defineStore('ColumnChart', {
     },
     prevPage() {
       if (this.isAvailblePage(this.current_page - 1)) {
-        const consoleArray = useLogStore();
         const command_index = this.current_page;
         const command = this.command[command_index - 1];
         if (command.type == 'swap') {
           this.swap(command.index1, command.index2);
         }
         this.current_page--;
-        consoleArray.popString();
       }
     },
   },
