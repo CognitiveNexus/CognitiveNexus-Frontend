@@ -1,16 +1,16 @@
 <template>
-  <div class="canvas-render" :class="{ warmtheme: props.index === 1, darktheme: props.index === 2 }">
+  <div class="canvas-render" :class="{ [`${theme}Theme`]: true }">
     <v-chart :option="option" :autoresize="true" style="height: 300px; width: 700px" ref="chartRef" />
     <div class="button-group">
-      <el-button type="primary" class="left-button" :class="{ warmbuttom: props.index === 1, darkbuttom: props.index === 2 }" @click="store.prevPage()">
+      <el-button type="primary" class="left-button" :class="{ [`${theme}Button`]: true }" @click="store.prevPage()">
         <el-icon :size="20">
           <CaretLeft />
         </el-icon>
       </el-button>
-      <div class="progress-visualizer" :class="{ warmbar: props.index === 1, darkbar: props.index === 2 }">
+      <div class="progress-visualizer" :class="{ [`${theme}Bar`]: true }">
         <el-text>{{ current_page }} / {{ total_page }}</el-text>
       </div>
-      <el-button type="primary" class="right-button" :class="{ warmbuttom: props.index === 1, darkbuttom: props.index === 2 }" @click="store.nextPage()">
+      <el-button type="primary" class="right-button" :class="{ [`${theme}Button`]: true }" @click="store.nextPage()">
         <el-icon :size="20">
           <CaretRight />
         </el-icon>
@@ -25,23 +25,24 @@
 
 <script setup lang="ts" name="ColumnChart">
 import { computed, ref } from 'vue';
-import { useWeaponStoreChartStore } from '@/stores/WeaponStoreChart';
-import { useFinalBossChartStore } from '@/stores/FinalBossChart';
 import { storeToRefs } from 'pinia';
 import { MdPreview } from 'md-editor-v3';
-import { weaponStoreContent } from '@/courses/weaponStoreChart';
-import { finalBossContent } from '@/courses/finalBossChart';
+import type { ChartStore } from '@/types/ChartStoreTypes';
 
-const props = defineProps({
-  index: Number,
-});
-
-const store = props.index === 1 ? useWeaponStoreChartStore() : useFinalBossChartStore();
-const content = props.index === 1 ? weaponStoreContent : finalBossContent;
-
+const {
+  useStore,
+  content,
+  theme: themeName,
+} = defineProps<{
+  useStore: ChartStore;
+  content: string[];
+  theme?: string;
+}>();
+const store = useStore();
+const theme = themeName ?? 'warm';
 const { current_page, total_page, colorScheme } = storeToRefs(store);
 
-//手动获取一下v-charts对象，方便一些强制更改option的操作
+// 手动获取一下v-charts对象，方便一些强制更改option的操作
 const chartRef = ref();
 
 const option = computed(() => {
@@ -78,15 +79,16 @@ const option = computed(() => {
 <style scoped>
 .canvas-render {
   margin-top: 50px;
-  padding: 10px 0px 0px 0px;
+  padding: 12px 8px 0px 8px;
   border-radius: 5px;
+  height: fit-content;
 }
-.warmtheme {
-  background-color: #fdf8ec;
+.warmTheme {
+  background-color: rgba(253, 248, 236, 0.8);
   border: solid 10px #672917;
 }
-.darktheme {
-  background-color: #ecf8fd;
+.darkTheme {
+  background-color: rgba(236, 248, 253, 0.8);
   border: solid 10px #15171a;
 }
 
@@ -113,16 +115,16 @@ const option = computed(() => {
   border: 0px;
 }
 
-.watmbuttom {
+.warmButton {
   background-color: #975538 !important;
 }
-.darkbuttom {
+.darkButton {
   background-color: #21242c !important;
 }
-.warmbar {
+.warmBar {
   background-color: #fff3d6;
 }
-.darkbar {
+.darkBar {
   background-color: #d9e5eb;
 }
 

@@ -17,8 +17,13 @@
                 <img :src="characterImages[pageIndex]!" />
               </InfiniteMoving>
             </BlurEntrance>
-            <ColumnChart :index="pageIndex / 5" v-if="pageIndex === 5 || pageIndex === 10" />
           </div>
+          <ColumnChart
+            class="story-chart"
+            v-if="currentPage?.columnChart"
+            :useStore="currentPage.columnChart.store"
+            :content="currentPage.columnChart.content"
+            :theme="currentPage.columnChart.theme" />
         </el-main>
       </template>
       <template v-else>

@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'vue';
+import type { ChartStore } from '@/types/ChartStoreTypes';
 
 export type Course = {
   name: string;
@@ -22,6 +23,11 @@ export type StoryPage = {
    * @deprecated emblem 属性已弃用，无作用。
    */
   emblem?: string;
+  columnChart?: {
+    store: ChartStore;
+    content: string[];
+    theme?: string;
+  };
 };
 export type PracticePage = {
   type: 'practice';

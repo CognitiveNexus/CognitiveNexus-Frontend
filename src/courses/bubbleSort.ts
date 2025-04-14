@@ -1,6 +1,11 @@
 import { createTitle, createText, createButtons, createTags, createTips, createCongratulation } from '@/utils/CreateCourse';
 import type { CoursePage } from '@/types/CourseTypes';
 
+import { weaponStoreContent } from '@/courses/weaponStoreChart';
+import { finalBossContent } from '@/courses/finalBossChart';
+import { useWeaponStoreChartStore } from '@/stores/WeaponStoreChart';
+import { useFinalBossChartStore } from '@/stores/FinalBossChart';
+
 const pages: CoursePage[] = [
   {
     type: 'story',
@@ -138,6 +143,11 @@ int main(){
 理解之后，试着前往下一页尝试编写代码吧！
 `),
     ],
+    columnChart: {
+      store: useWeaponStoreChartStore,
+      content: weaponStoreContent,
+      theme: 'warm',
+    },
   },
   {
     type: 'practice',
@@ -291,6 +301,11 @@ int main(){
 | :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
 | 内容 | 7 | 4 | 1 | 4 | 5 | 9 | 2 | 8 |`),
     ],
+    columnChart: {
+      store: useFinalBossChartStore,
+      content: finalBossContent,
+      theme: 'dark',
+    },
   },
   {
     type: 'practice',

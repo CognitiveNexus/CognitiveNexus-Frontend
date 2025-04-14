@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import type { ChartStore, ChartStoreState } from '@/types/ChartStoreTypes';
 
-export const useWeaponStoreChartStore = defineStore('WeaponStoreChart', {
+export const useWeaponStoreChartStore: ChartStore = defineStore('WeaponStoreChart', {
   //数据存储
   state: () => ({
     colorScheme: '#75321E',
     //默认数据组
-    data: ref([{ value: 7 }, { value: 4 }, { value: 1 }, { value: 4 }, { value: 5 }, { value: 9 }, { value: 2 }, { value: 8 }]),
+    data: [{ value: 7 }, { value: 4 }, { value: 1 }, { value: 4 }, { value: 5 }, { value: 9 }, { value: 2 }, { value: 8 }],
     //默认操作组
     command: [
       { type: 'compare', index1: 0, index2: 1 },
@@ -24,35 +24,35 @@ export const useWeaponStoreChartStore = defineStore('WeaponStoreChart', {
       { type: 'swap', index1: 6, index2: 7 },
     ],
     //动画页数控制
-    current_page: ref(1),
+    current_page: 1,
   }),
   //计算属性
   getters: {
-    total_page: (state) => {
-      return state.command.length;
+    total_page(): number {
+      return this.command.length;
     },
-    current_data: (state) => {
-      return state.data;
+    current_data(): { value: number }[] {
+      return this.data;
     },
   },
   //动作方法
   actions: {
     //数据合法性检测
-    isAvailbleIndex(index: number): boolean {
+    isAvailableIndex(index: number): boolean {
       return index >= 0 && index <= this.data.length;
     },
-    isAvailblePage(page: number): boolean {
+    isAvailablePage(page: number): boolean {
       return page >= 1 && page <= this.total_page;
     },
     //交换
     swap(a: number, b: number) {
-      if (this.isAvailbleIndex(a) && this.isAvailbleIndex(b)) {
+      if (this.isAvailableIndex(a) && this.isAvailableIndex(b)) {
         [this.data[a], this.data[b]] = [this.data[b], this.data[a]];
       }
     },
     //按钮响应
     nextPage() {
-      if (this.isAvailblePage(this.current_page + 1)) {
+      if (this.isAvailablePage(this.current_page + 1)) {
         const command_index = this.current_page;
         const command = this.command[command_index];
         if (command.type == 'swap') {
@@ -62,7 +62,7 @@ export const useWeaponStoreChartStore = defineStore('WeaponStoreChart', {
       }
     },
     prevPage() {
-      if (this.isAvailblePage(this.current_page - 1)) {
+      if (this.isAvailablePage(this.current_page - 1)) {
         const command_index = this.current_page;
         const command = this.command[command_index - 1];
         if (command.type == 'swap') {
