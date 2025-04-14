@@ -12,7 +12,7 @@
         <template #title>
           <el-icon><User /></el-icon>{{ username }}
         </template>
-        <el-menu-item @click="profile">学习记录</el-menu-item>
+        <!-- <el-menu-item @click="profile">学习记录</el-menu-item> -->
         <el-menu-item @click="logout">退出登录</el-menu-item>
       </el-sub-menu>
     </div>
