@@ -14,7 +14,12 @@
       </el-footer>
     </el-container>
     <div v-show="!atHomepage">
-      <FloatButton :icon="ChatLineRound" buttonText="AI导师" @click="aiDrawer = !aiDrawer" />
+      <FloatButton @click="handleClick">
+        <div class="button-group">
+          <el-button :icon="ChatLineRound" :class="{ buttonUp: true, buttonNormal: false }" data-toggle="askAi" size="large" color="#3f51b5">AI导师</el-button>
+          <el-button :icon="ChatLineRound" :class="{ buttonDown: true }" data-toggle="forum" size="large" color="#009688">讨论</el-button>
+        </div>
+      </FloatButton>
     </div>
     <LoginDialog />
     <AskAI v-model="aiDrawer" />
@@ -54,6 +59,22 @@ watch(isAuthenticated, async (isNowAuthenticated) => {
     clearProgress();
   }
 });
+
+const toggleAiDrawer = () => {
+  aiDrawer.value = !aiDrawer.value;
+};
+const toggleForumDrawer = () => {
+  alert('捏');
+};
+const handleClick = (event: MouseEvent) => {
+  const target = event.target as HTMLElement;
+  const toggle = target.dataset.toggle;
+  if (toggle == 'askAi') {
+    toggleAiDrawer();
+  } else if (toggle == 'forum') {
+    toggleForumDrawer();
+  }
+};
 </script>
 
 <style scoped>
@@ -71,5 +92,23 @@ watch(isAuthenticated, async (isNowAuthenticated) => {
 .footer-text {
   text-align: center;
   padding: 16px;
+}
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+.buttonUp {
+  border-radius: 12px 12px 0px 0px !important;
+  margin: 0 !important;
+}
+.buttonDown {
+  border-radius: 0px 0px 12px 12px !important;
+  margin: 0 !important;
+}
+.buttonNormal {
+  border-radius: 12px !important;
 }
 </style>
