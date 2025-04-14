@@ -1,5 +1,5 @@
 <template>
-  <el-scrollbar class="reader-container" height="700px">
+  <el-scrollbar class="reader-container">
     <div v-for="item in contents">
       <el-text v-if="item.type === 'title'" class="title">{{ item.content }}</el-text>
 
@@ -34,8 +34,7 @@
           frameborder="no"
           framespacing="0"
           allowfullscreen="true"
-          class="video-player"
-        ></iframe>
+          class="video-player"></iframe>
         <video v-if="item.platform === 'local'" :src="item.link" class="video-player" controls></video>
       </div>
 
@@ -80,6 +79,10 @@ const handleClick = async (targetIndex: number, relative?: boolean, requireSolve
 </script>
 
 <style scoped>
+.reader-container {
+  height: calc(100vh - 240px);
+  padding: 12px 0;
+}
 .title {
   width: auto;
   font-size: 40px;

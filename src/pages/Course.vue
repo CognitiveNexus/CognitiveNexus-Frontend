@@ -175,8 +175,9 @@ watchEffect(async () => {
 .story-content-container {
   padding-top: 30px;
   padding-right: 70px;
-  width: 40%;
-  height: 99%;
+  height: calc(100vh - 60px - 20px);
+  width: auto;
+  aspect-ratio: 5 / 6;
   overflow: hidden;
   background-image: url(@/assets/img/page.png);
   background-repeat: no-repeat;
