@@ -1,6 +1,11 @@
 <template>
   <div class="course">
-    <el-container class="course-main" v-loading="imageLoading" :style="{ backgroundImage: `url(${backgroundImages[pageIndex]})` }">
+    <el-container class="course-main" v-loading="imageLoading">
+      <div
+        class="background-layer"
+        v-for="image in [...new Set(backgroundImages.filter((image) => image))]"
+        :key="image ?? 'blank'"
+        :style="{ backgroundImage: `url(${image})`, opacity: backgroundImages[pageIndex] === image ? 1 : 0 }"></div>
       <template v-if="currentPage.type === 'story'">
         <div class="story-content-container">
           <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
@@ -28,7 +33,6 @@
         <el-aside class="practice-content-container">
           <CourseContent :contents="currentPage.contents" :solved="pageFinished" @goto="gotoPage" />
         </el-aside>
-        <!-- <el-divider direction="vertical" class="vertical-divider"></el-divider> -->
         <el-main class="practice-judger-container">
           <CodeJudger
             :tests="currentPage.judge"
@@ -151,6 +155,7 @@ watchEffect(async () => {
 .course-main {
   flex: 1;
   min-height: calc(100vh - 60px);
+  position: relative;
   flex-direction: row;
   background-size: cover;
   background-repeat: no-repeat;
@@ -201,5 +206,17 @@ watchEffect(async () => {
 }
 .vertical-divider {
   height: 100%;
+}
+
+.background-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 0.5s ease;
+  z-index: -1;
 }
 </style>
