@@ -13,7 +13,7 @@
       <template v-if="currentPage.type === 'story'">
         <div class="story-content-container">
           <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
-            <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
+            <CourseContent class="story-content" :contents="currentPage.contents" @goto="gotoPage" />
           </PaginationControl>
         </div>
         <div
@@ -35,7 +35,7 @@
       </template>
       <template v-else>
         <el-aside class="practice-content-container">
-          <CourseContent :contents="currentPage.contents" :solved="pageFinished" @goto="gotoPage" />
+          <CourseContent class="practice-content" :contents="currentPage.contents" :solved="pageFinished" @goto="gotoPage" />
         </el-aside>
         <el-main class="practice-judger-container">
           <CodeJudger
@@ -158,7 +158,7 @@ watchEffect(async () => {
 }
 .course-main {
   flex: 1;
-  min-height: calc(100vh - 60px);
+  height: calc(100vh - 60px);
   position: relative;
   flex-direction: row;
   background-size: cover;
@@ -183,6 +183,10 @@ watchEffect(async () => {
   background-repeat: no-repeat;
   background-size: 90%;
 }
+.story-content {
+  height: calc(100vh - 240px);
+  padding: 12px 0;
+}
 .story-emblem-container {
   padding: 0px;
   width: 60%;
@@ -193,10 +197,10 @@ watchEffect(async () => {
   overflow: hidden;
 }
 .practice-content-container {
-  height: 100%;
+  height: calc(100vh - 60px);
   width: 33%;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.75);
 }
 .practice-judger-container {
   height: 100%;
