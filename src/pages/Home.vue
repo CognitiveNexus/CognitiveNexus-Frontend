@@ -14,8 +14,8 @@
             <span class="home-button home-button-secondary" @click="openLoginDialog('register')">注册</span>
           </template>
           <template v-else>
-            <span class="home-button home-button-primary" @click="router.push('/course')">进入课堂</span>
-            <span class="home-button home-button-secondary" @click="router.push('/profile')">学习记录</span>
+            <span class="home-button home-button-primary" @click="handleClick('bubbleSort')">进入课堂</span>
+            <span class="home-button home-button-secondary" @click="router.push('/playground')">自由练习</span>
             <span class="home-button home-button-secondary" @click="logout()">退出登录</span>
           </template>
         </div>
@@ -73,6 +73,7 @@ import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { ElMessageBox, ElNotification } from 'element-plus';
 import { useAuthStore } from '@/stores/Auth';
+import { useProgressStore } from '@/stores/Progress';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -96,6 +97,34 @@ const logout = async () => {
     type: 'success',
   });
 };
+
+const { progress } = storeToRefs(useProgressStore());
+async function handleClick(name: string) {
+  if (!isAuthenticated.value) {
+    try {
+      await ElMessageBox.confirm('登录后可以享受完整高级功能（如AI导师、小练习等）。\n要现在登录或注册吗？', '用户未登录', {
+        confirmButtonText: '好的',
+        cancelButtonText: '稍后再说',
+        type: 'info',
+      });
+      showLoginDialog.value = true;
+      return;
+    } catch {}
+  }
+  let targetPage = progress.value[name] ?? 1;
+  if (targetPage != 1) {
+    try {
+      await ElMessageBox.confirm('要从保存的进度继续吗？', '进度', {
+        confirmButtonText: '好的',
+        cancelButtonText: '从头开始',
+        type: 'info',
+      });
+    } catch {
+      targetPage = 1;
+    }
+  }
+  router.push(`/course/${name}/${targetPage}`);
+}
 </script>
 
 <style scoped>
