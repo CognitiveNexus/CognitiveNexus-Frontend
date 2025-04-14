@@ -1,7 +1,7 @@
 <template>
   <div class="comment-container">
     <div class="comment-send">
-      <el-input v-model="commentText" :disabled="sending" rows="5" type="textarea" resize="none" placeholder="输入你的想法…" />
+      <el-input v-model="commentText" :disabled="sending" :rows="5" type="textarea" resize="none" placeholder="输入你的想法…" />
       <el-button type="primary" :disabled="sending" @click="sendComment()">发送</el-button>
     </div>
     <div class="comment-display">
