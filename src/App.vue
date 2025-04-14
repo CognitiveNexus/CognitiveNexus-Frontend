@@ -7,7 +7,7 @@
       <el-container>
         <RouterView></RouterView>
       </el-container>
-      <el-footer>
+      <el-footer v-show="atHomepage">
         <div class="footer-text">
           <el-text v-html="footerText" type="info" />
         </div>
@@ -60,6 +60,7 @@ watch(isAuthenticated, async (isNowAuthenticated) => {
 .main-container {
   font-family: Inter, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   height: 100vh;
+  overflow: hidden;
 }
 .el-menu-vertical:not(.el-menu--collapse) {
   height: 100%;

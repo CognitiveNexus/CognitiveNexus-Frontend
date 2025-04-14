@@ -384,6 +384,7 @@ int main(){
   },
   {
     type: 'story',
+    background: 'finish',
     contents: [
       createTitle(`🎉终结魔王！`),
       createText(`你挥舞着代码剑，剑光闪烁，剑势如虹，直逼魔王的护盾。

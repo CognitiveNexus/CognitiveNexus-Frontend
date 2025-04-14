@@ -80,7 +80,7 @@ const handleClick = async (targetIndex: number, relative?: boolean, requireSolve
 
 <style scoped>
 .reader-container {
-  height: calc(100vh - 240px);
+  height: 100%;
   padding: 12px 0;
 }
 .title {

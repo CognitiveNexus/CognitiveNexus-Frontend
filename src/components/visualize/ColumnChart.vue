@@ -78,8 +78,7 @@ const option = computed(() => {
 
 <style scoped>
 .canvas-render {
-  margin-top: 50px;
-  padding: 12px 8px 0px 8px;
+  padding: 0 12px;
   border-radius: 5px;
   height: fit-content;
 }
