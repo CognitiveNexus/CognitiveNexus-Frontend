@@ -5,7 +5,11 @@
         class="background-layer"
         v-for="image in [...new Set(backgroundImages.filter((image) => image))]"
         :key="image ?? 'blank'"
-        :style="{ backgroundImage: `url(${image})`, opacity: backgroundImages[pageIndex] === image ? 1 : 0 }"></div>
+        :style="{
+          backgroundImage: `url(${image})`,
+          opacity: backgroundImages[pageIndex] === image ? 1 : 0,
+          zIndex: backgroundImages[pageIndex] === image ? -1 : -2,
+        }"></div>
       <template v-if="currentPage.type === 'story'">
         <div class="story-content-container">
           <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
@@ -217,6 +221,11 @@ watchEffect(async () => {
   background-size: cover;
   background-position: center;
   transition: opacity 0.5s ease;
-  z-index: -1;
+  transition-delay: 0s;
+  z-index: -2;
+}
+
+.background-layer[style*='opacity: 0'] {
+  transition-delay: 0.5s;
 }
 </style>
