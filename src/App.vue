@@ -16,13 +16,16 @@
     <div v-show="!atHomepage">
       <FloatButton @click="handleClick">
         <div class="button-group">
-          <el-button :icon="ChatLineRound" :class="{ buttonUp: true, buttonNormal: false }" data-toggle="askAi" size="large" color="#3f51b5">AI导师</el-button>
-          <el-button :icon="ChatLineRound" :class="{ buttonDown: true }" data-toggle="forum" size="large" color="#009688">讨论</el-button>
+          <el-button :icon="Management" :class="{ buttonUp: courseName, buttonNormal: !courseName }" data-toggle="askAi" size="large" color="#3f51b5">
+            AI导师
+          </el-button>
+          <el-button :icon="ChatLineRound" v-if="courseName" class="buttonDown" data-toggle="forum" size="large" color="#009688">小论坛</el-button>
         </div>
       </FloatButton>
     </div>
     <LoginDialog />
     <AskAI v-model="aiDrawer" />
+    <Comments v-model="forumDrawer" />
   </el-config-provider>
 </template>
 
@@ -31,20 +34,23 @@ import { ref, watch, computed } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
-import { ChatLineRound } from '@element-plus/icons-vue';
+import { ChatLineRound, Management } from '@element-plus/icons-vue';
 
 import AskAI from '@/components/AskAI.vue';
 import FloatButton from '@/components/FloatButton.vue';
 import LoginDialog from '@/components/LoginDialog.vue';
 import { useAuthStore } from '@/stores/Auth.ts';
+import { useCourseStore } from '@/stores/Course';
 import { useProgressStore } from '@/stores/Progress.ts';
 
 const { isAuthenticated } = storeToRefs(useAuthStore());
 const { fetchProgress, clearProgress } = useProgressStore();
+const { courseName } = storeToRefs(useCourseStore());
 
 const footerText = import.meta.env.COGNEX_FOOTER ?? '';
 
 const aiDrawer = ref<boolean>(false);
+const forumDrawer = ref<boolean>(false);
 const route = useRoute();
 const atHomepage = computed(() => ['/', '/home'].includes(route.path));
 
@@ -60,19 +66,13 @@ watch(isAuthenticated, async (isNowAuthenticated) => {
   }
 });
 
-const toggleAiDrawer = () => {
-  aiDrawer.value = !aiDrawer.value;
-};
-const toggleForumDrawer = () => {
-  alert('捏');
-};
 const handleClick = (event: MouseEvent) => {
   const target = event.target as HTMLElement;
   const toggle = target.dataset.toggle;
   if (toggle == 'askAi') {
-    toggleAiDrawer();
+    aiDrawer.value = !aiDrawer.value;
   } else if (toggle == 'forum') {
-    toggleForumDrawer();
+    forumDrawer.value = !forumDrawer.value;
   }
 };
 </script>

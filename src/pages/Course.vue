@@ -56,28 +56,20 @@ import { ElNotification } from 'element-plus';
 
 import ColumnChart from '@/components/visualize/ColumnChart.vue';
 import courses from '@/courses/index';
+import { useCourseStore } from '@/stores/Course';
 import { useProgressStore } from '@/stores/Progress';
 import type { ImageConfig } from '@/types/CourseTypes';
 
-const route = useRoute();
-const router = useRouter();
-const pageIndex = computed(() => Math.max(0, parseInt(route.params.pageIndex as string) - 1));
-const courseName = computed(() => route.params.courseName as string);
-const imageLoading = ref<boolean>(true);
+const { courseName, pageIndex, currentCourse, currentPage, currentProgress, pageFinished } = storeToRefs(useCourseStore());
 
-const currentCourse = computed(() => courses[courseName.value]);
-const currentPage = computed(() => currentCourse.value.pages[pageIndex.value]);
+const router = useRouter();
+const imageLoading = ref<boolean>(true);
 
 const backgroundImages = ref<(string | null)[]>([]);
 const characterImages = ref<(string | null)[]>([]);
 
 const progressStore = useProgressStore();
 const { setProgress } = progressStore;
-const { progress } = storeToRefs(progressStore);
-
-const currentProgress = computed(() => progress.value[courseName.value] ?? 0);
-const pageFinished = computed(() => currentProgress.value - 1 >= pageIndex.value);
-
 const updateProgress = (page?: number) => {
   if (!page) page = pageIndex.value;
   if (page + 1 >= currentProgress.value) {
