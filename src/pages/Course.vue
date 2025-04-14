@@ -1,36 +1,34 @@
 <template>
   <div class="course">
-    <el-container class="course-main" v-loading="imageLoading">
+    <el-container class="course-main" v-loading="imageLoading" :style="{ backgroundImage: `url(${backgroundImages[pageIndex]})` }">
       <template v-if="currentPage.type === 'story'">
-        <el-main class="story-main-container" :style="{ backgroundImage: `url(${backgroundImages[pageIndex]})` }">
-          <div class="story-content-container">
-            <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
-              <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
-            </PaginationControl>
-          </div>
-          <div
-            class="story-character"
-            v-if="characterImages[pageIndex]"
-            :style="typeof currentPage.character === 'string' || !currentPage.character?.style ? {} : currentPage.character.style">
-            <BlurEntrance>
-              <InfiniteMoving>
-                <img :src="characterImages[pageIndex]!" />
-              </InfiniteMoving>
-            </BlurEntrance>
-          </div>
-          <ColumnChart
-            class="story-chart"
-            v-if="currentPage?.columnChart"
-            :useStore="currentPage.columnChart.store"
-            :content="currentPage.columnChart.content"
-            :theme="currentPage.columnChart.theme" />
-        </el-main>
+        <div class="story-content-container">
+          <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
+            <CourseContent :contents="currentPage.contents" @goto="gotoPage" />
+          </PaginationControl>
+        </div>
+        <div
+          class="story-character"
+          v-if="characterImages[pageIndex]"
+          :style="typeof currentPage.character === 'string' || !currentPage.character?.style ? {} : currentPage.character.style">
+          <BlurEntrance>
+            <InfiniteMoving>
+              <img :src="characterImages[pageIndex]!" />
+            </InfiniteMoving>
+          </BlurEntrance>
+        </div>
+        <ColumnChart
+          class="story-chart"
+          v-if="currentPage?.columnChart"
+          :useStore="currentPage.columnChart.store"
+          :content="currentPage.columnChart.content"
+          :theme="currentPage.columnChart.theme" />
       </template>
       <template v-else>
         <el-aside class="practice-content-container">
           <CourseContent :contents="currentPage.contents" :solved="pageFinished" @goto="gotoPage" />
         </el-aside>
-        <el-divider direction="vertical" class="vertical-divider"></el-divider>
+        <!-- <el-divider direction="vertical" class="vertical-divider"></el-divider> -->
         <el-main class="practice-judger-container">
           <CodeJudger
             :tests="currentPage.judge"
@@ -57,6 +55,7 @@ import ColumnChart from '@/components/visualize/ColumnChart.vue';
 import Comments from '@/components/Comments.vue';
 import courses from '@/courses/index';
 import { useProgressStore } from '@/stores/Progress';
+import type { ImageConfig } from '@/types/CourseTypes';
 
 const route = useRoute();
 const router = useRouter();
@@ -103,10 +102,12 @@ const loadImages = async (field: 'background' | 'character') => {
   const pages = currentCourse.value?.pages || [];
   return await Promise.all(
     pages.map(async (page) => {
-      if (page.type !== 'story' || !page[field]) return null;
+      if (!(field in page)) return null;
+      const config: string | ImageConfig = page[field as keyof typeof page] as string | ImageConfig;
+      if (!config) return null;
 
       try {
-        const name = typeof page[field] === 'string' ? page[field] : page[field].name;
+        const name = typeof config === 'string' ? config : config.name;
         const module = await import(`@/assets/${field}/${name}.png`);
         await preloadImage(module.default);
         return module.default;
@@ -150,18 +151,13 @@ watchEffect(async () => {
 .course-main {
   flex: 1;
   min-height: calc(100vh - 60px);
+  flex-direction: row;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .course-comments {
   width: 100%;
   border-top: 1px solid #e5e7eb;
-}
-.story-main-container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  background-size: cover;
-  background-repeat: no-repeat;
 }
 .story-character {
   height: 100%;
@@ -190,10 +186,12 @@ watchEffect(async () => {
   height: 100%;
   width: 33%;
   padding: 20px;
+  background-color: rgba(255, 255, 255, 0.85);
 }
 .practice-judger-container {
   height: 100%;
   width: 67%;
+  background-color: #ffffff;
 }
 .pagination {
   flex: 1;

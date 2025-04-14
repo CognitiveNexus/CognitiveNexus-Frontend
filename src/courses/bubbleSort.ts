@@ -62,6 +62,7 @@ const pages: CoursePage[] = [
   },
   {
     type: 'practice',
+    background: 'weaponShop',
     contents: [
       createTitle(`🗡️武器店的试炼 Ⅰ`),
       createText(`你正在武器店内挑选合适的盾牌，请选出最好的那一个盾牌，这对你未来的冒险十分重要。
@@ -151,6 +152,7 @@ int main(){
   },
   {
     type: 'practice',
+    background: 'weaponShop',
     contents: [
       createTitle(`🗡️武器店的试炼 Ⅱ`),
       createText(`我们再回顾一下老铁匠的要求：
@@ -309,6 +311,7 @@ int main(){
   },
   {
     type: 'practice',
+    background: 'monsterDim',
     contents: [
       createTitle(`🗡️击败魔王！`),
       createText(`明确一下我们的目标：**将一个无序的数组排成一个升序（由小到大）的数组。**

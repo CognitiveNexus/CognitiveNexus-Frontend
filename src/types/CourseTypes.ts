@@ -17,7 +17,7 @@ export type CoursePage = StoryPage | PracticePage;
 export type StoryPage = {
   type: 'story';
   background?: string;
-  character?: string | CharacterConfig;
+  character?: string | ImageConfig;
   contents: StoryContent[];
   /**
    * @deprecated emblem 属性已弃用，无作用。
@@ -31,6 +31,7 @@ export type StoryPage = {
 };
 export type PracticePage = {
   type: 'practice';
+  background?: string;
   contents: StoryContent[];
   judge?: CodeTest[];
   randomJudge?: () => CodeTest[];
@@ -92,7 +93,7 @@ export type CodeTest = {
   expect: string;
 };
 
-export type CharacterConfig = {
+export type ImageConfig = {
   name: string;
   style?: CSSProperties;
 };
