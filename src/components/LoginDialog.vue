@@ -12,7 +12,7 @@
       <el-form-item label="密码" label-position="right">
         <el-input v-model="password" type="password" />
       </el-form-item>
-      <el-form-item v-show="selectedTab == 'register'" label="邀请码" label-position="right">
+      <el-form-item v-if="requireInviteCode" v-show="selectedTab == 'register'" label="邀请码" label-position="right">
         <el-input v-model="inviteCode" />
       </el-form-item>
     </el-form>
@@ -40,6 +40,7 @@ const tabs = [
 ];
 const actionName = computed(() => (selectedTab.value == 'login' ? '登录' : '注册'));
 const requesting = ref<boolean>(false);
+const requireInviteCode = import.meta.env.COGNEX_REQUIRE_INVITE_CODE !== 'false';
 
 const username = ref<string>('');
 const password = ref<string>('');
