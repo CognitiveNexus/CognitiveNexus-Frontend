@@ -14,7 +14,7 @@
       </el-footer>
     </el-container>
     <div v-show="!atHomepage">
-      <FloatButton @click="handleClick">
+      <FloatButton ref="floatButton" @click="handleClick">
         <div class="button-group">
           <el-button :icon="Management" :class="{ buttonUp: courseName, buttonNormal: !courseName }" data-toggle="askAi" size="large" color="#3f51b5">
             AI导师
@@ -54,6 +54,8 @@ const forumDrawer = ref<boolean>(false);
 const route = useRoute();
 const atHomepage = computed(() => ['/', '/home'].includes(route.path));
 
+const floatButton = ref();
+
 if (isAuthenticated.value) {
   fetchProgress();
 }
@@ -67,8 +69,12 @@ watch(isAuthenticated, async (isNowAuthenticated) => {
 });
 
 const handleClick = (event: MouseEvent) => {
-  const target = event.target as HTMLElement;
-  const toggle = target.dataset.toggle;
+  let target = event.target as HTMLElement;
+  let toggle = target.dataset.toggle;
+  while (!toggle && target != floatButton.value.$el) {
+    target = target.parentElement as HTMLElement;
+    toggle = target.dataset.toggle;
+  }
   if (toggle == 'askAi') {
     aiDrawer.value = !aiDrawer.value;
   } else if (toggle == 'forum') {
