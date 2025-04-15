@@ -278,7 +278,7 @@ const pages: CoursePage[] = [
   {
     type: 'story',
     chapter: '任务Ⅰ 交换',
-    background: 'weaponShop',
+    background: 'parchment',
     contents: [
       createTitle(`📜任务Ⅰ 交换`),
       createText(`还记得我们在武器店中**交换盾牌**的经历吗？
@@ -317,7 +317,7 @@ int main() {
   {
     type: 'challenge',
     chapter: '任务Ⅰ 交换',
-    background: 'weaponShop',
+    background: 'parchment',
     contents: [
       createTitle(`📜任务Ⅰ 交换`),
       createText(`现在，亲自试试交换变量值吧！`),
@@ -351,7 +351,7 @@ int main(){
   {
     type: 'story',
     chapter: '任务Ⅱ 冒泡',
-    background: 'weaponShop',
+    background: 'parchment',
     contents: [
       createTitle(`📜任务Ⅱ 冒泡`),
       createText(`再来回忆一下我们在武器店中**取得圣剑**的经历：
@@ -389,7 +389,7 @@ for(int i = 0; i < 7; i++) {
   {
     type: 'challenge',
     chapter: '任务Ⅱ 冒泡',
-    background: 'weaponShop',
+    background: 'parchment',
     contents: [
       createTitle(`📜任务Ⅱ 冒泡`),
       createText(`为了实现**把最大的元素放在最后**，我们的代码逻辑是这样的：
@@ -446,7 +446,7 @@ int main(){
   {
     type: 'story',
     chapter: '任务Ⅲ 排序',
-    background: 'monsterDim',
+    background: 'parchment',
     contents: [
       createTitle(`📜任务Ⅲ 排序`),
       createText(`恭喜你，你已经掌握了我们的“**技能**”：将最大的数放在最后。
@@ -472,7 +472,7 @@ int main(){
       columnChart: {
         store: useFinalBossChartStore,
         content: finalBossContent,
-        theme: 'dark',
+        theme: 'warm',
       },
       code: `int arr[8] = { 7, 4, 1, 4, 5, 9, 2, 8 };
 
@@ -487,7 +487,7 @@ for(int i = 7; i >= 1; i--) {
   {
     type: 'challenge',
     chapter: '任务Ⅲ 排序',
-    background: 'monsterDim',
+    background: 'parchment',
     contents: [
       createTitle(`📜任务Ⅲ 排序`),
       createText(`现在，亲自试试实现**完整的**冒泡排序过程吧！
@@ -537,7 +537,7 @@ int main(){
   {
     type: 'story',
     chapter: '结局',
-    background: 'parchment',
+    background: 'finish',
     contents: [
       createTitle('🎖️真正的勇者'),
       createText(`你已用秩序之光**驱散混沌**，成为真正的**算法勇者**！
