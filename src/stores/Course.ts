@@ -22,7 +22,7 @@ export const useCourseStore = defineStore('Course', () => {
 
   const currentProgress = computed<number | null>(() => (courseName.value ? progress.value[courseName.value] ?? 0 : null));
   const pageFinished = computed<boolean | null>(() =>
-    currentProgress.value !== null && pageIndex.value !== null ? currentProgress.value - 1 >= pageIndex.value : null
+    currentProgress.value !== null && pageIndex.value !== null ? currentProgress.value - 1 >= pageIndex.value || !pageIndex.value : null
   );
 
   return { courseName, pageIndex, currentCourse, currentPage, currentChapter, currentProgress, pageFinished };
