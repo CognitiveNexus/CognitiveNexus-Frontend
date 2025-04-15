@@ -1,5 +1,5 @@
 <template>
-  <div class="shield-swap-container">
+  <div class="shield-swap-container" :style="{ opacity: initialized ? 1 : 0 }">
     <Confetti ref="confettiRef" class="absolute left-0 top-0 z-0 size-full no-pointer-events" style="pointer-events: none" manualstart />
     <img ref="bronzeShield" :src="shieldBronzeImg" class="shield" />
     <img ref="silverShield" :src="shieldSilverImg" class="shield" />
@@ -21,9 +21,11 @@ import shieldSilverImg from '@/assets/img/shieldSilver.png';
 import rackBronzeImg from '@/assets/img/rackBronze.png';
 import rackSilverImg from '@/assets/img/rackSilver.png';
 import floorImg from '@/assets/img/floor.png';
+import { ElNotification } from 'element-plus';
 
 const emit = defineEmits(['accomplished']);
 const confettiRef = ref();
+const initialized = ref<boolean>(false);
 
 const bronzeShield = ref<HTMLElement>();
 const silverShield = ref<HTMLElement>();
@@ -70,6 +72,15 @@ function alignToZone(shield: HTMLElement, zone: HTMLElement) {
   return { x: offsetX, y: offsetY };
 }
 
+function animatePosition(shield: HTMLElement, position: { x: number; y: number }) {
+  shield.style.transition = 'transform 0.1s ease';
+  shield.style.transform = `translate(${position.x}px, ${position.y}px)`;
+
+  setTimeout(() => {
+    shield.style.transition = '';
+  }, 300);
+}
+
 function setupDraggable(
   shield: HTMLElement,
   position: typeof bronzePosition,
@@ -107,17 +118,17 @@ function setupDraggable(
 
           if (otherCurrentZone.value === targetZoneType) {
             position.value = { x: startX, y: startY };
-            event.target.style.transform = `translate(${startX}px, ${startY}px)`;
+            animatePosition(event.target, { x: startX, y: startY });
             return;
           }
 
           const newPos = alignToZone(event.target, validZone);
           position.value = newPos;
-          event.target.style.transform = `translate(${newPos.x}px, ${newPos.y}px)`;
+          animatePosition(event.target, newPos);
           currentZone.value = targetZoneType;
         } else {
           position.value = { x: startX, y: startY };
-          event.target.style.transform = `translate(${startX}px, ${startY}px)`;
+          animatePosition(event.target, { x: startX, y: startY });
         }
       },
     },
@@ -144,6 +155,37 @@ onMounted(() => {
 
       setupDraggable(bronzeShield.value, bronzePosition, dropZones, bronzeCurrentZone, silverCurrentZone);
       setupDraggable(silverShield.value, silverPosition, dropZones, silverCurrentZone, bronzeCurrentZone);
+
+      const resizeObserver = new ResizeObserver(() => {
+        if (bronzeShield.value && silverShield.value) {
+          const bronzeZone =
+            bronzeCurrentZone.value === 'silverRack' ? silverRack.value : bronzeCurrentZone.value === 'bronzeRack' ? bronzeRack.value : floor.value;
+          const silverZone =
+            silverCurrentZone.value === 'silverRack' ? silverRack.value : silverCurrentZone.value === 'bronzeRack' ? bronzeRack.value : floor.value;
+
+          if (bronzeZone) {
+            const newBronzePos = alignToZone(bronzeShield.value, bronzeZone);
+            bronzePosition.value = newBronzePos;
+            animatePosition(bronzeShield.value, newBronzePos);
+          }
+
+          if (silverZone) {
+            const newSilverPos = alignToZone(silverShield.value, silverZone);
+            silverPosition.value = newSilverPos;
+            animatePosition(silverShield.value, newSilverPos);
+          }
+        }
+      });
+
+      resizeObserver.observe(bronzeShield.value.parentElement!);
+
+      initialized.value = true;
+    } else {
+      ElNotification({
+        title: '错误',
+        message: '未能加载交互',
+        type: 'error',
+      });
     }
   });
 });
@@ -154,6 +196,7 @@ onMounted(() => {
   position: relative;
   height: 90vh;
   z-index: 1;
+  transition: opacity 0.5s ease;
 }
 
 .shield {
