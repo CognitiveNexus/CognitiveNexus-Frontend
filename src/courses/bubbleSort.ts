@@ -178,7 +178,7 @@ const pages: CoursePage[] = [
   {
     type: 'story',
     chapter: '直面魔王',
-    background: 'monsterDim',
+    background: 'monster',
     contents: [
       createTitle(`🏰直面魔王`),
       createText(`要让我们的攻击数值从无序**变为有序**，还真是一个难题。
