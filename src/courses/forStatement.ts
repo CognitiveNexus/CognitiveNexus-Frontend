@@ -4,7 +4,7 @@ import type { CoursePage } from '@/types/CourseTypes';
 const pages: CoursePage[] = [
   {
     type: 'story',
-    emblem: 'shield',
+    chapter: '',
     contents: [createTitle(`for 语句`), createText(`for 语句`)],
   },
 ];

@@ -89,7 +89,15 @@ const judge = () => {
     })
     .then((result) => {
       let failed: string[] = [];
-      judgeResult.value = result.data.tests;
+      judgeResult.value = result.data?.tests;
+      if (!judgeResult.value) {
+        ElNotification({
+          title: '执行失败',
+          message: '运行失败，请检查代码',
+          type: 'error',
+        });
+        return;
+      }
       for (const i in judgeResult.value) {
         const test = judgeResult.value[i];
         test.passed = test.expect.trim() === test.stdout.trim();

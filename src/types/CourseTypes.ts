@@ -1,5 +1,6 @@
-import type { CSSProperties } from 'vue';
+import type { CSSProperties, DefineComponent } from 'vue';
 import type { ChartStore } from '@/types/ChartStoreTypes';
+import type { ModuleEvaluator } from 'vite/module-runner';
 
 export type Course = {
   name: string;
@@ -13,30 +14,31 @@ export type CourseCategory = {
   remark?: string[];
 };
 
-export type CoursePage = StoryPage | PracticePage;
-export type StoryPage = {
-  type: 'story';
+export type CoursePage = {
+  type: 'story' | 'challenge';
+  chapter: string;
   background?: string;
   character?: string | ImageConfig;
   contents: StoryContent[];
-  /**
-   * @deprecated emblem 属性已弃用，无作用。
-   */
-  emblem?: string;
   columnChart?: {
     store: ChartStore;
     content: string[];
     theme?: string;
   };
-};
-export type PracticePage = {
-  type: 'practice';
-  background?: string;
-  contents: StoryContent[];
-  judge?: CodeTest[];
-  randomJudge?: () => CodeTest[];
-  defaultCode?: string;
-  defaultLine?: number;
+  codeJudge?: {
+    judge?: CodeTest[];
+    randomJudge?: () => CodeTest[];
+    defaultCode?: string;
+    defaultLine?: number;
+  };
+  codeVisualize?: {
+    defaultCode?: string;
+    defaultLine?: number;
+    defaultStdin?: string;
+  };
+  component?: DefineComponent<any, any, any, any, any, any, any, any, any, any, any, any, any, any, any, any, any, any, any, any>; // ???????
+  componentProps?: { [prop: string]: any };
+  componentStyle?: CSSProperties;
 };
 
 export type StoryContent = TitleContent | TextContent | TagGroup | ButtonGroup | CongratulationContent | VisualizationContent | VideoContent | SlideshowContent;

@@ -15,6 +15,7 @@ export const useCourseStore = defineStore('Course', () => {
   const courseName = computed<string | null>(() => (route.params.courseName as string | undefined) ?? null);
   const currentCourse = computed<Course | null>(() => (courseName.value ? courses[courseName.value] : null));
   const currentPage = computed<CoursePage | null>(() => (currentCourse.value && pageIndex.value !== null ? currentCourse.value.pages[pageIndex.value] : null));
+  const currentChapter = computed<string | null>(() => (currentPage.value ? currentPage.value.chapter : null));
 
   const progressStore = useProgressStore();
   const { progress } = storeToRefs(progressStore);
@@ -24,5 +25,5 @@ export const useCourseStore = defineStore('Course', () => {
     currentProgress.value !== null && pageIndex.value !== null ? currentProgress.value - 1 >= pageIndex.value : null
   );
 
-  return { courseName, pageIndex, currentCourse, currentPage, currentProgress, pageFinished };
+  return { courseName, pageIndex, currentCourse, currentPage, currentChapter, currentProgress, pageFinished };
 });

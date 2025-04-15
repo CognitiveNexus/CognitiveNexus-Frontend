@@ -9,41 +9,43 @@
         opacity: backgroundImages[pageIndex!] === image ? 1 : 0,
         zIndex: backgroundImages[pageIndex!] === image ? -1 : -2,
       }"></div>
-    <template v-if="currentPage!.type === 'story'">
-      <div class="story-content-container">
-        <PaginationControl :current="pageIndex" :total="currentCourse!.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
-          <CourseContent class="story-content" :contents="currentPage!.contents" @goto="gotoPage" />
-        </PaginationControl>
-      </div>
-      <div
-        class="story-character"
-        v-if="characterImages[pageIndex!]"
-        :style="typeof currentPage!.character === 'string' || !currentPage!.character?.style ? {} : currentPage!.character.style">
-        <BlurEntrance>
-          <InfiniteMoving>
-            <img :src="characterImages[pageIndex!]!" />
-          </InfiniteMoving>
-        </BlurEntrance>
-      </div>
-      <ColumnChart
-        class="story-chart"
-        v-if="currentPage?.columnChart"
-        :useStore="currentPage.columnChart.store"
-        :content="currentPage.columnChart.content"
-        :theme="currentPage.columnChart.theme" />
-    </template>
-    <div v-else class="course-practice">
-      <div class="practice-content-container">
-        <CourseContent class="practice-content" :contents="currentPage!.contents" :solved="pageFinished" @goto="gotoPage" />
-      </div>
-      <div class="practice-judger-container">
-        <CodeJudger
-          :tests="currentPage!.judge"
-          :generateTests="currentPage!.randomJudge"
-          :defaultCode="currentPage!.defaultCode"
-          :defaultLine="currentPage!.defaultLine"
-          @accomplished="updateProgress()" />
-      </div>
+    <div class="story-content-container">
+      <PaginationControl :current="pageIndex" :total="currentCourse!.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
+        <CourseContent class="story-content" :contents="currentPage!.contents" @goto="gotoPage" />
+      </PaginationControl>
+    </div>
+    <div
+      class="story-character"
+      v-if="characterImages[pageIndex!]"
+      :style="typeof currentPage!.character === 'string' || !currentPage!.character?.style ? {} : currentPage!.character.style"
+      :key="pageIndex!">
+      <BlurEntrance>
+        <InfiniteMoving>
+          <img :src="characterImages[pageIndex!]!" />
+        </InfiniteMoving>
+      </BlurEntrance>
+    </div>
+    <ColumnChart
+      class="story-chart"
+      v-if="currentPage?.columnChart"
+      :useStore="currentPage.columnChart.store"
+      :content="currentPage.columnChart.content"
+      :theme="currentPage.columnChart.theme"
+      :key="pageIndex!" />
+    <component
+      v-if="currentPage?.component"
+      :is="currentPage?.component"
+      v-bind="currentPage?.componentProps ?? {}"
+      class="course-custom-component"
+      :style="currentPage?.componentStyle ?? {}"
+      @accomplished="updateProgress()" />
+    <div v-if="currentPage?.codeJudge" class="practice-judger-container" :key="pageIndex!">
+      <CodeJudger
+        :tests="currentPage.codeJudge.judge"
+        :generateTest="currentPage.codeJudge.randomJudge"
+        :defaultCode="currentPage.codeJudge.defaultCode"
+        :defaultLine="currentPage.codeJudge.defaultLine"
+        @accomplished="updateProgress()" />
     </div>
   </div>
 </template>
@@ -52,7 +54,7 @@
 import { ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import { ElNotification } from 'element-plus';
+import { ElMessageBox, ElNotification } from 'element-plus';
 
 import ColumnChart from '@/components/visualize/ColumnChart.vue';
 import { useCourseStore } from '@/stores/Course';
@@ -76,12 +78,23 @@ const updateProgress = (page?: number) => {
   }
 };
 
-const gotoPage = (page: number, relative?: boolean) => {
+const gotoPage = async (page: number, relative?: boolean) => {
   if (relative) page += pageIndex.value!;
+  if (!pageFinished.value && page > pageIndex.value!) {
+    try {
+      await ElMessageBox.confirm('你还没有解决当前难题！确认前往下一步吗？', '确认前进', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      });
+    } catch {
+      return;
+    }
+  }
+
   if (currentCourse.value!.pages[page].type === 'story') {
     updateProgress(page);
   }
-
   router.push({
     name: 'course',
     params: {
@@ -161,6 +174,7 @@ watchEffect(async () => {
   background-position: center;
 }
 .story-chart {
+  flex: 1;
   margin-right: 6vh;
 }
 .course-practice {
@@ -170,14 +184,16 @@ watchEffect(async () => {
   height: 100%;
   background-color: rgba(255, 255, 255, 0.75);
 }
-.practice-content-container {
-  height: 92vh;
-  width: 33%;
-  padding: 20px;
-}
 .practice-judger-container {
-  width: 67%;
+  flex: 1;
+  height: 80vh;
+  margin: 20px 48px 20px 0;
+  border: solid 10px #672917;
+  border-radius: 5px;
   background-color: #ffffff;
+}
+.course-custom-component {
+  flex: 1;
 }
 .pagination {
   flex: 1;

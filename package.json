@@ -21,6 +21,7 @@
         "canvas-confetti": "^1.9.3",
         "echarts": "^5.6.0",
         "element-plus": "^2.9.6",
+        "interactjs": "^1.10.27",
         "md-editor-v3": "^5.4.5",
         "monaco-editor": "^0.52.2",
         "monaco-themes": "^0.4.4",

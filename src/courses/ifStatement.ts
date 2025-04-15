@@ -4,12 +4,12 @@ import type { CoursePage } from '@/types/CourseTypes';
 const pages: CoursePage[] = [
   {
     type: 'story',
-    emblem: 'shield',
+    chapter: '',
     contents: [createTitle(`if 语句`), createText(`if 语句`)],
   },
   {
     type: 'story',
-    emblem: 'shield',
+    chapter: '',
     contents: [createSlideshow('ifStatement.pptx')],
   },
 ];

@@ -4,7 +4,7 @@ import type { CoursePage } from '@/types/CourseTypes';
 const pages: CoursePage[] = [
   {
     type: 'story',
-    emblem: 'magicBook',
+    chapter: '',
     contents: [
       createTitle(`指针`),
       createTags([{ text: '变量', type: 'primary', effect: 'dark', size: 'small' }]),
@@ -13,7 +13,7 @@ const pages: CoursePage[] = [
   },
   {
     type: 'story',
-    emblem: 'magicBook',
+    chapter: '',
     contents: [createVideo('bilibili', 'BV1YB4y1D7cS')],
   },
 ];

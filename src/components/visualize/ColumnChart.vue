@@ -1,6 +1,6 @@
 <template>
   <div class="canvas-render" :class="{ [`${theme}Theme`]: true }">
-    <v-chart :option="option" :autoresize="true" style="height: 300px; width: 700px" ref="chartRef" />
+    <v-chart :option="option" :autoresize="true" style="height: 300px; width: 100%" ref="chartRef" />
     <div class="button-group">
       <el-button type="primary" class="left-button" :class="{ [`${theme}Button`]: true }" @click="store.prevPage()">
         <el-icon :size="20">

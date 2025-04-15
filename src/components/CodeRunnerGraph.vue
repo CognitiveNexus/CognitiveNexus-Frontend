@@ -24,8 +24,8 @@ onMounted(() => {
     autoResize: false,
     zoom: 1.5,
     zoomRange: [0.1, 2],
-    x: 400,
-    y: 200,
+    x: 200,
+    y: 150,
     data: {},
     animation: {
       duration: 500,

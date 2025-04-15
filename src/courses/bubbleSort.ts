@@ -1,147 +1,127 @@
-import { createTitle, createText, createButtons, createTags, createTips, createCongratulation } from '@/utils/CreateCourse';
+import { createTitle, createText, createButtons, createTips, createCongratulation } from '@/utils/CreateCourse';
 import type { CoursePage } from '@/types/CourseTypes';
 
 import { weaponStoreContent } from '@/courses/weaponStoreChart';
 import { finalBossContent } from '@/courses/finalBossChart';
 import { useWeaponStoreChartStore } from '@/stores/WeaponStoreChart';
 import { useFinalBossChartStore } from '@/stores/FinalBossChart';
+import ShieldSwap from '@/components/ShieldSwap.vue';
+import CodeDemonstrator from '@/components/CodeDemonstrator.vue';
+import CodeRunner from '@/components/CodeRunner.vue';
 
 const pages: CoursePage[] = [
   {
     type: 'story',
+    chapter: '序章',
     background: 'parchment',
     contents: [
-      createTitle(`冒泡排序`),
-      createTags([
-        { text: 'for循环', type: 'primary', effect: 'dark', size: 'small' },
-        { text: 'if判断', type: 'primary', effect: 'dark', size: 'small' },
-      ]),
-      createText(`欢迎来到**冒泡排序**章节！在本章节中，我们会跟随小骑士进行一场奇幻的冒险，挑选最好的武器和装备，向远处的目的地进发。
-
-如果你准备好了的话，就点击右边的**翻页箭头**，让我们开始这一章节的冒险吧！
-
-> **TIPS**：本章节会大量用到**for循环**以及**if判断**的知识，请确保你已经熟练掌握了这两个语句哦～`),
-    ],
-  },
-  {
-    type: 'story',
-    background: 'parchment',
-    contents: [
-      createTitle(`🔮前言：算法的圣约`),
+      createTitle(`🔮序章：混沌降临`),
       createText(`在古老的算法大陆上，流传着一卷褪色的羊皮手札：
-“当混乱吞噬秩序时，持盾者将用**布尔之眼**甄选真理，执剑者将以**极值之光**劈开迷雾，而真正的勇者，会让人群如气泡般轻盈归位。”
+> “当混乱吞噬秩序时，持盾者将用**布尔之眼**甄选真理，执剑者将以**极值之光**劈开迷雾，而真正的勇者，会让秩序如气泡般轻盈归位。”
 
-你，一名刚获得编程纹章的见习骑士，在月夜收到神秘信笺——羊皮纸上跳动的不是文字，而是一串**未排序的数组**。
-信末烙印着魔王的狂笑：“若连村民的身高都无法**理顺**，如何破解我的混沌结界？”
+你，刚获编程纹章的见习骑士，月夜收到神秘信笺，羊皮纸上是一排**混沌数字**。
 
-推开吱呀作响的城堡图书馆大门，尘封的《排序圣典》自动翻页，泛着蓝光的代码如星河倾泻。
-原来早在千年前，先知们就将对抗混沌的魔法藏在最朴素的逻辑里：\`比较、交换、循环直至有序\`。
+正在你疑惑这些不断变化的数字的意义时，天空被一道绿光撕裂，魔王的城堡在远山显现。
+于此同时，村庄的秩序似乎开始逐渐崩塌——刚出生不久的婴儿变得有两米高，守卫村庄的士兵却变成了婴儿体型。
 
-此刻，你腰间的铜钥匙突然发热变形，化作一柄可擦拭的**代码剑**。
-
-命运的齿轮开始转动——这趟征程，每个抉择都在揭示算法的本质，而魔王城堡尖塔上闪烁的，正是无数勇者终其一生追寻的真理：以优雅逻辑，驯服无序世界。`),
+你意识到，魔王的**混沌结界**已经降临在村庄上。
+你决心找到魔王，打破结界，拯救村庄，成为预言中的勇者。`),
     ],
   },
   {
     type: 'story',
+    chapter: '盾牌的考验',
     background: 'weaponShop',
     character: 'shopkeeper1',
     contents: [
-      createTitle(`🗡️武器店的试炼 Ⅰ`),
-      createText(`你为了做好讨伐魔王的准备，决定前往武器店买一点趁手的装备防身，于是你走向村子西面的武器店。
+      createTitle(`🛡️盾牌的考验`),
+      createText(`为了做好讨伐魔王的准备，你决定前往武器店**买一点趁手的装备**防身。
+  
+你走向村子西面的武器店。
 那里住着一位年迈的铁匠，他的手艺很好，他铸出的剑斩铁如泥，他铸造的盾坚如磐石。
-但是早有听闻要获得这优质的装备并非没有代价，过去不少人觊觎这精良的武器，却被铁匠的重重考验拒之门外，失望而归。
+但是早有听闻要获得这优质的装备**并非没有代价**，过去不少人觊觎这精良的武器，却被铁匠的重重考验拒之门外，失望而归。
 你不禁怀疑，你真的能通过铁匠的考验吗？
 
-走进武器店，老铁匠擦拭着柜台，两枚盾牌在烛光下泛着寒光
-
-你知道是时候拔出你的代码剑了，该如何比较这两个盾牌哪个更好呢？
-
-> **TIPS**：盾牌的防御力**越高越好**，我们应该如何选出防御力**高**的那个盾牌呢？尝试使用if语句去比较吧，这是铁匠老板为你设置的第一道考验，点击“**接受试炼**”，用你的代码剑写出你的答案吧！`),
+走进武器店，映入眼帘的是两个特制展示架：
+左侧是带凹槽的**木制架**，右侧是带卡扣的**金属架**。一枚青铜盾卡在金属架上，白银盾却歪斜地陷在木架里。
+“这情况持续三天了。”老铁匠无奈地说，“学徒搬运时**弄混了位置**。现在青铜盾卡在金属架取不出，白银盾在木架上会滑动，根本没法正常出售。”`),
     ],
   },
   {
-    type: 'practice',
+    type: 'challenge',
+    chapter: '盾牌的考验',
     background: 'weaponShop',
     contents: [
-      createTitle(`🗡️武器店的试炼 Ⅰ`),
-      createText(`你正在武器店内挑选合适的盾牌，请选出最好的那一个盾牌，这对你未来的冒险十分重要。
+      createTitle(`🛡️盾牌的考验`),
+      createText(`青铜盾和白银盾的位置**放反了**，老铁匠和学徒都取不下来。
 
-**青铜盾**与**白银盾**有不同的防御值，你需要挑选**更好**的一把。
-我们可以分别将两个盾的防御值设为 a 与 b。
-首先输入 a 与 b，然后比较 a 与 b 的大小得出结果吧。`),
-      createTips('两个整数，中间用数字隔开，如“1 2”', '青铜盾 或 白银盾 （若左边数字大则输出“青铜盾”，反之输出“白银盾”）', [
-        { input: '10 20', output: '白银盾' },
-        { input: '20 10', output: '青铜盾' },
-      ]),
-      createButtons([
-        { text: `返回上一步`, size: 'large', type: 'info', targetIndex: -1, relative: true },
-        { text: `继续旅途`, size: 'large', type: 'primary', targetIndex: 1, relative: true, requireSolved: true },
-      ]),
+你思索着，或许自己有力气**帮助**老铁匠把盾牌换回正确的位置？
+
+但是，盾牌很重，你**一次只能拿动一个**盾牌。要怎么操作呢？
+
+（拖动右侧的盾牌进行操作吧~）`),
     ],
-    judge: [
-      { stdin: '10 20', expect: '白银盾' },
-      { stdin: '2.5 1.5', expect: '青铜盾' },
-    ],
-    randomJudge: () => {
-      const a = Math.random() * 10;
-      const b = Math.random() * 10;
-      return [{ stdin: `${a} ${b}`, expect: a > b ? '青铜盾' : '白银盾' }];
-    },
-    defaultCode: `#include <stdio.h>
-
-int main(){
-    float a, b;
-    char* ans;
-
-    // 输入
-    scanf("%f %f", &a, &b);
-
-    // 在这里编写您的代码吧！
-    
-
-    // 输出
-    printf("%s", ans);
-    return 0;
-}`,
-    defaultLine: 11,
+    component: ShieldSwap,
   },
   {
     type: 'story',
+    chapter: '盾牌的考验',
+    background: 'weaponShop',
+    character: 'shopkeeper1',
+    contents: [
+      createTitle(`🛡️盾牌的考验`),
+      createText(`太好了！聪明的你想到了先把其中一个盾**暂放在地板上**，之后就有足够的空间进行交换了。
+
+老铁匠点头称赞：“我就知道你能做到！这把**白银盾**是你的了！”
+
+但是，光有盾牌、没有武器，似乎也很难打倒魔王。
+老铁匠似乎看出了你想说什么，拿出了一本泛黄的古籍…`),
+    ],
+  },
+  {
+    type: 'story',
+    chapter: '圣剑的考验',
     background: 'weaponShop',
     character: 'shopkeeper2',
     contents: [
-      createTitle(`🗡️武器店的试炼 Ⅱ`),
-      createText(`你抽出代码剑，在空中绘出几行代码，眨眼间两个盾牌漂浮在空中，犹如被放置在天平的两端。
-瞬间，**品质更好**的盾牌便飞入了你的手中，看来你的比较大小的代码确实生效了！
+      createTitle(`🗡️圣剑的考验`),
+      createText(`古籍上面密密麻麻画着**999把武器**的图像。当你翻开时，数字像蚂蚁般在羊皮纸上爬动，让你眼花缭乱。
 
-老铁匠眯起眼睛：“看来你懂得比较的智慧。但真正的考验在这里——”
-他推出一本泛黄的古籍，上面密密麻麻记录着**999把武器**的攻击数值。当你翻开时，数字像蚂蚁般在羊皮纸上爬动。
+“这些武器中，有一把，是传说中的‘**秩序之锋**’。传说中的勇者，正是用这把剑**击败了魔王**。”
 
-你知道这又是一道考验，而且比上一道考验难上不少。
+你随意翻动着这本古籍，无意间就翻到了传说中的“秩序之锋”，这把剑看着如此逼真，你不禁用手触动，竟然摸到了金属冰凉的触感。
+老铁匠解释道：“这不只是一本目录，还是一个魔法收纳册，称为‘**千刃轴卷**’。你所看到的剑都真真切切地存放在轴卷内部。只不过，次元符文在最后一页，也就是说，你**只能拿出最后一页的剑**。”
 
-`),
+你翻到最后一页，发现页面上方确实有一个异样的符文。只不过，下方的图案上只有一把生锈的水果刀…难道你要拿着它去打魔王吗？
+
+“不用担心，这本‘千刃轴卷’还有一个特性。只需要**抖动书页**，就可以**交换**这一页上的两把剑。”
+
+看来，你需要通过这种方式，把“秩序之锋”挪到最后一页。
+你知道这又是一道考验，而且比上一道考验难上不少。`),
     ],
   },
   {
     type: 'story',
+    chapter: '圣剑的考验',
     background: 'weaponShop',
     contents: [
-      createTitle(`🗡️武器店的试炼 Ⅱ`),
-      createText(`你思考一番，将老板的要求总结为这么几点：
-**（1）只能交换相邻的元素**
-**（2）要把最大的元素放到最后一位**
+      createTitle(`🗡️圣剑的考验`),
+      createText(`总结一下，“千刃轴卷”的特性是：
+1. 只能**交换相邻**两把剑；
+2. 只能**取出最后**一把剑。
 
-那么该如何做到呢？
+那么，该如何取出传说中的“秩序之锋”呢？
 
-让我们探讨一下解决办法！
+我们先考虑一下更简单的情况。
+假设我们现在有 8 把剑，攻击力各不相同。
 
-在右边的柱状图中，我们展示的是如下数组，并且提供了每一步的说明！
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+（在这里，你一眼就可以看到攻击力最高的那一把。但是，在 999 把剑里面，很难做到“一眼看出”。）
+
+让我们看看，怎么用类似的方式，把攻击力最高的剑移动到最后吧！
+
+| 剑序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 | :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 7 | 4 | 1 | 4 | 5 | 9 | 2 | 8 |
-
-理解之后，试着前往下一页尝试编写代码吧！
+| 攻击力 | 7 | 4 | 1 | 4 | 5 | 9 | 2 | 8 |
 `),
     ],
     columnChart: {
@@ -151,86 +131,8 @@ int main(){
     },
   },
   {
-    type: 'practice',
-    background: 'weaponShop',
-    contents: [
-      createTitle(`🗡️武器店的试炼 Ⅱ`),
-      createText(`我们再回顾一下老铁匠的要求：
-
-要求**只通过一次遍历**，仅能**交换相邻**的元素，实现将**最大的元素**移到数组的最后一位。
-
-首先，我们看看如何实现交换相邻元素。
-
-我们希望“**越大的值越往后**”，可以在比较的时候让最大的值往后走，即：
-有 a 与 b，比较 a 与 b。**若 a > b**，**则交换** a 与 b 的位置，**否则保持不变**。
-这样，更大的数就会被交换到靠后的位置。
-
-如果我们重复这个行为，对数组中的数，从前到后都如此比较、交换一遍，最大的数是不是就在最后了呢？
-
-也就是说，我们的代码应该是这样的：
-\`\`\`C
-for(从左到右遍历每一个数){ //注意数组边界是[0,n-1]哦
-    if(左边的数比右边大){
-        交换;
-    }
-}
-
-\`\`\`
-
-我们举一个例子：
-
-> 对于数组 { 7, 4, 1, 4, 5, 9, 2, 8 }：
-> 我们从前到后，每两个数进行比较：
-> 第一步：比较 7 与 4，7 > 4，交换位置：{ **4**, **7**, 1, 4, 5, 9, 2, 8 }
-> 第二步：比较 7 与 1，7 > 1，交换位置：{ 4, **1**, **7**, 4, 5, 9, 2, 8 }
-> 以此类推，对数组中的数两两比较、交换，直到最后。
-> 最后得到的数组是：{ 4, 1, 4, 5, 7, 2, 8, **9** }。
-> 这时候我们发现，最大的元素 9 已经在最后一位了，成功达成目标！
-`),
-      createTips('第一行为一个整数 n，第二行为 n 个数，中间由空格隔开，如：\n3\n1 2 3', '仅一行，有 n 个数，中间由空格隔开，如：1 2 3', [
-        { input: '8\n7 4 1 4 5 9 2 8', output: '4 1 4 5 7 2 8 9' },
-      ]),
-      createButtons([
-        { text: `返回上一步`, size: 'large', type: 'info', targetIndex: -1, relative: true },
-        { text: `继续旅途`, size: 'large', type: 'primary', targetIndex: 1, relative: true, requireSolved: true },
-      ]),
-    ],
-    judge: [{ stdin: '8\n7 4 1 4 5 9 2 8', expect: '4 1 4 5 7 2 8 9' }],
-    randomJudge: () => {
-      const len = Math.floor(Math.random() * 5) + 6;
-      const arr = Array.from({ length: len }, () => Math.ceil(Math.random() * 100));
-      const sorted = [...arr];
-
-      for (let i = 0; i < sorted.length - 1; i++) {
-        if (sorted[i] > sorted[i + 1]) [sorted[i], sorted[i + 1]] = [sorted[i + 1], sorted[i]];
-      }
-
-      return [{ stdin: `${len}\n${arr.join(' ')}`, expect: sorted.join(' ') }];
-    },
-    defaultCode: `#include <stdio.h>
-
-int main(){
-    // 输入数据
-    int n;
-    scanf("%d", &n);
-    int a[n];
-    for(int i = 0; i < n; i++){
-      scanf("%d", &a[i]);
-    }
-
-    // 在这里编写您的代码吧！
-
-
-    // 输出数组
-    for(int i = 0; i < n; i++){
-      printf("%d ", a[i]);
-    }
-    return 0;
-}`,
-    defaultLine: 13,
-  },
-  {
     type: 'story',
+    chapter: '直面魔王',
     background: 'castle',
     character: {
       name: 'shopkeeper3',
@@ -239,72 +141,76 @@ int main(){
       },
     },
     contents: [
-      createTitle(`🗡️启程`),
-      createText(`“原来如此！”你轻触剑纹，柜中暗格应声而开。老铁匠抚掌大笑：“你找到了遍历的奥义！这把传说中攻击力999的圣剑，属于懂得**记录极值**之人。”
+      createTitle(`🏰启程`),
+      createText(`经过一番操作后，你成功将“秩序之锋”交换到了最后一页。
+轻触轴卷上圣剑的图案，你不紧“握”住了剑柄。顷刻间，圣剑变大变高，出现在你手中。
+
+你轻轻抚摸着这把圣剑。圣剑拥有着某种神秘的纹路，看上去**象征着秩序**。老铁匠抚掌大笑：“这把‘秩序之锋’，只属于传说中的勇士。我果然没有看错你。”
 
 历经重重考验，你终于获得了属于你的武器与盾牌，是时候向**更远大的目标**前行了！
-你看着远处天空弥漫的乌云，魔王城堡的塔尖直冲云端，道道雷电劈下，预示着危险的到来，你知道，不能再拖了。
+你看着远处天空弥漫的乌云，魔王城堡的塔尖直冲云端，道道雷电劈下，预示着更大的危险的到来，你知道，不能再拖了。
 
-你骑上骏马，即刻启程！
+你骑上骏马，即刻**启程**！
 `),
     ],
   },
   {
     type: 'story',
+    chapter: '直面魔王',
     background: 'monster',
     contents: [
-      createTitle(`🗡️直面魔王`),
-      createText(`漆黑的城堡中，你奋力战斗，终于走到魔王的门前，你的心情忐忑不安。
+      createTitle(`🏰直面魔王`),
+      createText(`漆黑的城堡中，你奋力战斗，终于走到魔王的门前，心情忐忑。
 
-魔王缓缓走出，他的身上萦绕着闪亮的黑曜石护盾。
-你斩出了伤害为 { 59, 103, 1238, 874, 124 } 的一套剑技。
-前三次斩击**成功击中**了护盾，护盾开始出现裂纹。但到第四剑时，剑却被黑曜石护盾**远远弹开**，护盾也瞬间恢复如初。
+魔王缓缓走出，他的身上萦绕着闪亮的**黑曜石护盾**。
+你没有犹豫，顷刻间，你斩出了伤害为 **{ 59, 874, 1238, 124, 103 }** 的一套剑技。
+前三次斩击**成功击中**了护盾，护盾开始出现**裂纹**。但到第四剑时，剑却被黑曜石护盾**远远弹开**，护盾也瞬间**恢复如初**。
 
-你心中一惊，魔王的护盾似乎有着**不可思议的力量**，你必须想办法打破它。
+你心中一惊，魔王的护盾似乎有着**混沌的力量**，你必须想办法打破它。
 你急速后撤翻过石柱，思考着破局的思路。
 
-魔王哈哈大笑：“我的护盾坚不可摧，你可拥有如此强大的力量？我构筑的算法术式完美无缺！”
+魔王哈哈大笑：“我的护盾坚不可摧，你可拥有如此强大的力量？”
 
-你似乎想到什么：攻击的威力或许需要是**不断递增**的，否则就会被护盾弹开，前功尽弃。
+你似乎想到什么：混沌的力量，唯有**秩序**才能击破。每次攻击的威力必须**高于前一次**，否则就会被护盾弹开，前功尽弃。
 你决定试一试。现在，你必须准备好递增的剑技，该如何将乱序的排列变成有序的呢？`),
     ],
   },
   {
     type: 'story',
+    chapter: '直面魔王',
     background: 'monsterDim',
     contents: [
-      createTitle(`🗡️直面魔王`),
-      createText(`让我们短暂的从激烈的战斗中抽身，好好想想该如何**让数组变得有序**吧！
+      createTitle(`🏰直面魔王`),
+      createText(`要让我们的攻击数值从无序**变为有序**，还真是一个难题。
 
-还记得在武器店中**寻找最好的剑**的经历吗？（不记得了也没有关系，我们稍后会提醒你！）
+不过，还记得在武器店中**拿到圣剑**的经历吗？
+当时，我们掌握了一种能够**将最大的数移动到最后**的方法。这个方法现在已经成为了你的“**技能**”，只需要**触发技能**，就能够实现这个效果，不需要考虑具体的步骤。
 
-现在我们只要知道，我们已经掌握了一种能够**将最大的数移动到数组最后**的方法，我们暂时不用管这个是怎么移动过去的，将它理解成一个“黑盒”即可。
+能不能使用这个技能，实现**有序化**呢？
 
-接下来，我们只需要不断将**最大的数**移动到数组的最后一位，并移出排序范围，直到排序范围只剩下最后一个元素为止。
+在我们第一次使用技能时，攻击力**最高**的攻击就被我们**排到最后**了。
+只是，这好像还不够，因为**前面其他攻击**仍然是无序的。
 
-那么，这样的操作要**循环多少次**呢？
+等等…那如果我们对“**前面其他攻击**”触发技能，会发生什么事情呢？
+这样一来，攻击力**第二高**的攻击就被放在了“前面其他攻击”的最后。
+而他的后面，是“攻击力**最高**”的攻击。
+换句话说，“攻击力**前两高**”的攻击已经**变得有序**了，只有更前面的攻击才是无序的。
 
-我们可以将数组的长度 n 作为循环的条件，**每次循环都将排序范围缩小一位**。也就是说，我们需要循环 **n - 1** 次。
-我们可以用一个简单的 for 循环来实现这个过程：
-
-\`\`\`c
-for(i = 0; i < n - 1; i++) {
-    把范围内最大的放到最后;
-    把已经有序的数移出排序范围;
-}
-\`\`\`
-`),
+如果我们**不断触发**技能，每次触发技能后都**缩短下次技能的范围**，会发生什么呢？`),
     ],
   },
   {
     type: 'story',
+    chapter: '直面魔王',
     background: 'monsterDim',
     contents: [
-      createTitle(`🗡️直面魔王`),
-      createText(`我们还是像之前那样，使用一个简单的数组作为示范吧：
-| 序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+      createTitle(`🏰直面魔王`),
+      createText(`像之前一样，我们考虑一个简化的版本：
+| 攻击序号 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
 | :-----: | :------: | :-----: | :-----: | :-----: | :------: | :-----: | :-----: | :-----: |
-| 内容 | 7 | 4 | 1 | 4 | 5 | 9 | 2 | 8 |`),
+| 攻击力 | 7 | 4 | 1 | 4 | 5 | 9 | 2 | 8 |
+
+【技能】将技能范围内最大的数放到范围最后`),
     ],
     columnChart: {
       store: useFinalBossChartStore,
@@ -313,54 +219,299 @@ for(i = 0; i < n - 1; i++) {
     },
   },
   {
-    type: 'practice',
+    type: 'story',
+    chapter: '直面魔王',
+    background: 'finish',
+    contents: [
+      createTitle(`🎉终结魔王！`),
+      createText(`你挥舞着“秩序之锋”，剑光闪烁，剑势如虹，直逼魔王的护盾。
+
+魔王的护盾在**秩序加持**的攻击前，如同纸糊一般，瞬间被击碎。
+魔王发出一声不甘的怒吼，化作一阵黑雾消散在空中。
+
+城堡的阴霾逐渐散去，阳光洒满大地，村民们的欢呼声从远处传来。你做到了！`),
+      createCongratulation(),
+    ],
+  },
+  {
+    type: 'story',
+    chapter: '旅途回顾',
+    background: 'parchment',
+    character: {
+      name: 'task',
+      style: {
+        width: '25vw',
+      },
+    },
+    contents: [
+      createTitle('🔎旅途回顾'),
+      createText(`回到村庄，老村长拄着杖走来，
+
+“孩子，你施展的并非魔法，而是古老的「**冒泡排序**」算法——
+它像**气泡上浮**，让最大值一步步升至末尾；
+又似**筛去砂砾**，每轮缩减排序的疆域；
+**循环往复**，直至所有元素各归其位。”
+
+这正应证了传说中所说的：
+> “比较 → 交换 → 循环，直至有序。”
+
+是的，这就是算法中的**冒泡排序**。正如他的名字那样，数字像气泡般，根据自身大小上浮；重复“冒泡”，就可以简单地将数据排列整齐。
+
+冒泡排序是一种经典的排序算法，使用最**朴素的逻辑**（比较、交换），驯服无序。`),
+    ],
+  },
+  {
+    type: 'story',
+    chapter: '旅途回顾',
+    background: 'parchment',
+    contents: [
+      createTitle(`📜修复符文`),
+      createText(`老村长交给你一个纹章，上面浮现出奇怪的符号——它们像某种**古老的语言**，记录着你刚刚施展的**算法**。
+回到图书馆，村长交给你一卷破译后的纹章铭文。
+
+\`if\`、\`for\`… 这些不是魔法咒语，而是组成「冒泡排序」需要用到的**代码逻辑**！
+但是，这些逻辑**散乱在各处**，无法发挥应有的作用。
+
+让我们一起**修复**这些符文，将村庄中被魔王的咒语扰乱的秩序，重新排列整齐吧！`),
+    ],
+  },
+  {
+    type: 'story',
+    chapter: '任务Ⅰ 交换',
+    background: 'weaponShop',
+    contents: [
+      createTitle(`📜任务Ⅰ 交换`),
+      createText(`还记得我们在武器店中**交换盾牌**的经历吗？
+盾牌架一次**只能安放一个**盾牌，同时我们一次**只能拿取一个**盾牌。
+在这种情况下，我们把一个盾牌先暂时存放在地板上，就能够完成交换。
+
+这和我们 C 语言中的**变量**是类似的。
+变量中，一次只能储存一个数值；同样，我们一条语句也只能够给一个变量赋值。
+
+因此，我们可以用**临时变量**来存储一个数值，然后再进行交换。
+
+点击右侧的运行按钮，看看运行过程吧。`),
+    ],
+    component: CodeRunner,
+    componentProps: {
+      code: `#include <stdio.h>
+
+int main() {
+    int a = 1, b = 2, t;
+    t = a; // 利用临时变量储存一个值
+    a = b; // 解放了一个变量，用它存另一个变量值
+    b = t; // 把临时变量暂存的值存入正确位置
+    printf("%d %d", a, b); // 输出：2 1
+    return 0;
+}`,
+      defaultLine: 1,
+    },
+    componentStyle: {
+      backgroundColor: '#ffffff',
+      border: 'solid 10px #672917',
+      borderRadius: '5px',
+      height: '80vh',
+      marginRight: '48px',
+    },
+  },
+  {
+    type: 'challenge',
+    chapter: '任务Ⅰ 交换',
+    background: 'weaponShop',
+    contents: [
+      createTitle(`📜任务Ⅰ 交换`),
+      createText(`现在，亲自试试交换变量值吧！`),
+      createTips('两个整数，中间用数字隔开，如“1 2”', '交换顺序后输出，如“2 1”', [{ input: '10 20', output: '20 10' }]),
+    ],
+    codeJudge: {
+      judge: [{ stdin: '10 20', expect: '20 10' }],
+      randomJudge: () => {
+        const a = Math.ceil(Math.random() * 100);
+        const b = Math.ceil(Math.random() * 100);
+        return [{ stdin: `${a} ${b}`, expect: `${b} ${a}` }];
+      },
+      defaultCode: `#include <stdio.h>
+
+int main(){
+    int a, b;
+
+    // 输入
+    scanf("%d %d", &a, &b);
+
+    // 在这里编写您的代码吧！
+    
+
+    // 输出
+    printf("%d %d", a, b);
+    return 0;
+}`,
+      defaultLine: 10,
+    },
+  },
+  {
+    type: 'story',
+    chapter: '任务Ⅱ 冒泡',
+    background: 'weaponShop',
+    contents: [
+      createTitle(`📜任务Ⅱ 冒泡`),
+      createText(`再来回忆一下我们在武器店中**取得圣剑**的经历：
+
+“千刃轴卷”记载的武器中，只能**取出最后**一把，但可以**交换相邻**的两把武器。
+
+首先，我们看看如何实现交换相邻元素。
+我们希望“**越大的值越往后**”，可以在比较的时候让最大的值往后走，即：
+有 a 与 b，比较 a 与 b。**若 a > b**，**则交换** a 与 b 的位置，**否则保持不变**。
+这样，更大的数就会被交换到靠后的位置。
+
+如果我们重复这个行为，对数组中的数，从前到后都如此比较、交换一遍，最大的数是不是就在最后了呢？
+
+对照右边的执行过程，尝试理解这一过程吧～`),
+    ],
+    component: CodeDemonstrator,
+    componentProps: {
+      columnChart: {
+        store: useWeaponStoreChartStore,
+        content: weaponStoreContent,
+        theme: 'warm',
+      },
+      code: `int arr[8] = { 7, 4, 1, 4, 5, 9, 2, 8 }, t;
+
+for(int i = 0; i < 7; i++) {
+    if(arr[i] > arr[i + 1]) {
+        t = arr[i]; arr[i] = arr[i + 1]; arr[i + 1] = t;
+    }
+}`,
+      codeLine: (step: number) => {
+        return ((step + (step > 9 ? 0 : 1)) % 2) + 4;
+      },
+    },
+  },
+  {
+    type: 'challenge',
+    chapter: '任务Ⅱ 冒泡',
+    background: 'weaponShop',
+    contents: [
+      createTitle(`📜任务Ⅱ 冒泡`),
+      createText(`为了实现**把最大的元素放在最后**，我们的代码逻辑是这样的：
+\`\`\`C
+for(从左到右遍历数组) {
+    if(左边的数比右边大) {
+        交换;
+    }
+}
+\`\`\`
+
+现在，自己尝试实现一下这段代码吧！
+> **TIPS**：遍历时需要**两两比较**，需要特别注意数组的边界情况，不要发生数组越界。`),
+      createTips('第一行为一个整数 n，第二行为 n 个数，中间由空格隔开，如：\n3\n1 2 3', '仅一行，有 n 个数，中间由空格隔开，如：1 2 3', [
+        { input: '8\n7 4 1 4 5 9 2 8', output: '4 1 4 5 7 2 8 9' },
+      ]),
+    ],
+    codeJudge: {
+      judge: [{ stdin: '8\n7 4 1 4 5 9 2 8', expect: '4 1 4 5 7 2 8 9' }],
+      randomJudge: () => {
+        const len = Math.floor(Math.random() * 5) + 6;
+        const arr = Array.from({ length: len }, () => Math.ceil(Math.random() * 100));
+        const sorted = [...arr];
+
+        for (let i = 0; i < sorted.length - 1; i++) {
+          if (sorted[i] > sorted[i + 1]) [sorted[i], sorted[i + 1]] = [sorted[i + 1], sorted[i]];
+        }
+
+        return [{ stdin: `${len}\n${arr.join(' ')}`, expect: sorted.join(' ') }];
+      },
+      defaultCode: `#include <stdio.h>
+
+int main(){
+    // 输入数据
+    int n;
+    scanf("%d", &n);
+    int a[n];
+    for(int i = 0; i < n; i++) {
+      scanf("%d", &a[i]);
+    }
+
+    // 在这里编写您的代码吧！
+    
+
+    // 输出数组
+    for(int i = 0; i < n; i++) {
+      printf("%d ", a[i]);
+    }
+    return 0;
+}`,
+      defaultLine: 13,
+    },
+  },
+  {
+    type: 'story',
+    chapter: '任务Ⅲ 排序',
     background: 'monsterDim',
     contents: [
-      createTitle(`🗡️击败魔王！`),
-      createText(`明确一下我们的目标：**将一个无序的数组排成一个升序（由小到大）的数组。**
+      createTitle(`📜任务Ⅲ 排序`),
+      createText(`恭喜你，你已经掌握了我们的“**技能**”：将最大的数放在最后。
 
-回忆一下我们前面学到的内容，我们开始尝试实现本课程的最终目标：**冒泡排序**吧！
+现在，明确一下我们的最终目标：**将一个无序的数组排成升序。**
 
-明确一下我们要实现的步骤和难点：
-1. 第一步，利用刚刚挑选武器的经验，将数组中**最大的元素**放到最后。
-2. 注意到：此时数组最后一位已经在正确的位置了，**不需要**再将它纳入排序。
-  因此，从这步开始，我们可以将**排序范围**缩小到：
-  从“**数组开头**”到“**数组倒数第二个元素**”。
-3. 在我们约定的排序范围内，再次进行第一步。
-  此时，在我们的**排序范围**内的“最大元素”，实际上是整个数组第二大的元素。
-  我们将它放到**排序范围**的最后一位，也就是整个数组的倒数第二个位置。
-  这样，数组中第二大元素，包括之前的最大元素，都在正确的位置了。
-  继续缩小排序范围：从“**数组开头**”到“**数组倒数第三个元素**”。
-4. **重复上述步骤**，直到我们的排序范围收缩到只有一个数，至此数组已经有序。
+再次回忆一下打倒魔王时，我们的思路。
+我们可以将数组看成一个**排序范围**，在这个范围内，我们要做的就是：
+1. **找到**这个范围内的最大值；
+2. 将这个最大值**放到范围的最后**；
+3. 将这个最大值**移出排序范围**。
+4. **重复**上述步骤，直到排序范围只剩下一个数。
 
-我们给出上一道考验（即第一步）的参考方法，希望能帮助你更好的思考：
+那么，这样的操作要**循环多少次**呢？
 
-\`\`\` C
-for(int i = 0; i < n - 1; i++) {
-    if(a[i] > a[i+1]) {
-        // 交换 a[i] 与 a[i+1]
-        int temp = a[i];
-        a[i] = a[i+1];
-        a[i+1] = temp;
-    }
+我们可以将数组的长度 n 作为循环的条件，**每次**循环都将排序范围**缩小一位**，直到排序范围只剩一位。也就是说，我们需要循环 **n - 1** 次。
+我们可以用一个简单的 for 循环来实现这个过程。
+
+对照右边的执行过程，尝试理解这一过程吧～`),
+    ],
+    component: CodeDemonstrator,
+    componentProps: {
+      columnChart: {
+        store: useFinalBossChartStore,
+        content: finalBossContent,
+        theme: 'dark',
+      },
+      code: `int arr[8] = { 7, 4, 1, 4, 5, 9, 2, 8 };
+
+// 循环条件中 i-- 即缩减排序范围
+for(int i = 7; i >= 1; i--) {
+    // 排序范围 arr[0]~arr[i]
+    将范围内最大的数放到最后;
+}`,
+      codeLine: (step: number) => (step % 2 ? 6 : 4),
+    },
+  },
+  {
+    type: 'challenge',
+    chapter: '任务Ⅲ 排序',
+    background: 'monsterDim',
+    contents: [
+      createTitle(`📜任务Ⅲ 排序`),
+      createText(`现在，亲自试试实现**完整的**冒泡排序过程吧！
+
+\`\`\`C
+// 循环条件中 i-- 即缩减排序范围
+for(int i = 7; i >= 1; i--) {
+    // 排序范围 arr[0]~arr[i]
+    将范围内最大的数放到最后;
 }
 \`\`\``),
       createTips('第一行为一个整数n，第二行为n个数，中间由空格隔开，如：\n3\n3 2 1', '仅一行，有n个数，中间由空格隔开，如：1 2 3', [
         { input: '8\n7 4 1 4 5 9 2 8', output: '1 2 4 4 5 7 8 9' },
       ]),
-      createButtons([
-        { text: `返回上一步`, size: 'large', type: 'info', targetIndex: -1, relative: true },
-        { text: `继续旅途`, size: 'large', type: 'primary', targetIndex: 1, relative: true, requireSolved: true },
-      ]),
     ],
-    judge: [{ stdin: '8\n7 4 1 4 5 9 2 8', expect: '1 2 4 4 5 7 8 9' }],
-    randomJudge: () => {
-      const len = Math.floor(Math.random() * 5) + 6;
-      const arr = Array.from({ length: len }, () => Math.ceil(Math.random() * 100));
-      const sorted = [...arr].sort((x, y) => x - y);
-      return [{ stdin: `${len}\n${arr.join(' ')}`, expect: sorted.join(' ') }];
-    },
-    defaultCode: `#include <stdio.h>
+    codeJudge: {
+      judge: [{ stdin: '8\n7 4 1 4 5 9 2 8', expect: '1 2 4 4 5 7 8 9' }],
+      randomJudge: () => {
+        const len = Math.floor(Math.random() * 5) + 6;
+        const arr = Array.from({ length: len }, () => Math.ceil(Math.random() * 100));
+        const sorted = [...arr].sort((x, y) => x - y);
+        return [{ stdin: `${len}\n${arr.join(' ')}`, expect: sorted.join(' ') }];
+      },
+      defaultCode: `#include <stdio.h>
 
 int main(){
     // 输入
@@ -380,29 +531,31 @@ int main(){
     }
     return 0;
 }`,
-    defaultLine: 13,
+      defaultLine: 13,
+    },
   },
   {
     type: 'story',
-    background: 'finish',
+    chapter: '结局',
+    background: 'parchment',
     contents: [
-      createTitle(`🎉终结魔王！`),
-      createText(`你挥舞着代码剑，剑光闪烁，剑势如虹，直逼魔王的护盾。
+      createTitle('🎖️真正的勇者'),
+      createText(`你已用秩序之光**驱散混沌**，成为真正的**算法勇者**！
+剑锋上的符文仍在闪烁，那是算法大陆永恒的馈赠——
+每一次「比较」都是智慧的碰撞，每一轮「冒泡」皆是秩序的觉醒。
 
-魔王的护盾在你面前如同纸糊的一般，瞬间被击碎。
-魔王发出一声不甘的怒吼，化作一阵黑雾消散在空中。你终于**成功了**！
-城堡的阴霾逐渐散去，阳光洒满大地，村民们的欢呼声从远处传来。
+此刻的你，已能：
+▸ 用三个木桶在酒馆表演「数值调酒术」，让围观矮人目瞪口呆
+▸ 命令暴躁的火焰史莱姆按身高排队领晚餐
+▸ 把魔王掉落的混乱龙鳞瞬间叠成扑克牌顺子
 
-然而，当你收起代码剑，准备离开时，地面突然震动，城堡深处传来低沉的回响。
-你发现一扇隐藏的石门缓缓打开，里面传来微弱的光芒，似乎在召唤着你。
+但城堡外仍有迷雾笼罩：
+当万剑齐鸣时，如何**更快**唤醒秩序？
+当元素躁动时，是否存在**更优雅**的驯服之道？
+答案就藏在「千刃轴卷」下一页的晨光中…
 
-你走近石门，发现墙壁上刻着古老的文字：“冒泡排序只是旅程的起点，真正的挑战才刚刚开始。更高效的算法之力，等待着被掌握。”
-
-你握紧代码剑，心中充满期待。你知道，前方还有更多未知的领域等待你去探索。
-排序的世界远不止冒泡，还有快速、归并、堆积……每一种算法都蕴藏着独特的智慧。
-
-带着新的目标，你迈出了坚定的步伐。冒险还未结束，真正的征程才刚刚开始！`),
-      createCongratulation(),
+收剑入鞘吧，年轻的排序大师——
+这柄「**冒泡之锋**」，终将成为你算法征途的起点。`),
     ],
   },
 ];
