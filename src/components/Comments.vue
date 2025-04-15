@@ -56,7 +56,7 @@ const comments = ref<Comment[]>([]);
 const commentText = ref<string>('');
 const sending = ref<boolean>(false);
 
-const { courseName, pageIndex, currentPage } = storeToRefs(useCourseStore());
+const { courseName, pageIndex } = storeToRefs(useCourseStore());
 const commentLocation = computed<string | null>(() =>
   courseName.value !== null && pageIndex.value !== null ? `${courseName.value}@Page${pageIndex.value}` : null
 );

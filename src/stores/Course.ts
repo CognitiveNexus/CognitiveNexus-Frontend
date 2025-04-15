@@ -3,20 +3,26 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import courses from '@/courses/index';
 import { useProgressStore } from '@/stores/Progress';
+import type { Course, CoursePage } from '@/types/CourseTypes';
 
 export const useCourseStore = defineStore('Course', () => {
   const route = useRoute();
-  const pageIndex = computed(() => Math.max(0, parseInt(route.params.pageIndex as string) - 1));
+  const pageIndex = computed<number | null>(() => {
+    const index = parseInt(route.params.pageIndex as string);
+    return isNaN(index) ? null : Math.max(0, index - 1);
+  });
 
-  const courseName = computed(() => route.params.courseName as string);
-  const currentCourse = computed(() => courses[courseName.value]);
-  const currentPage = computed(() => currentCourse.value.pages[pageIndex.value]);
+  const courseName = computed<string | null>(() => (route.params.courseName as string | undefined) ?? null);
+  const currentCourse = computed<Course | null>(() => (courseName.value ? courses[courseName.value] : null));
+  const currentPage = computed<CoursePage | null>(() => (currentCourse.value && pageIndex.value !== null ? currentCourse.value.pages[pageIndex.value] : null));
 
   const progressStore = useProgressStore();
   const { progress } = storeToRefs(progressStore);
 
-  const currentProgress = computed(() => progress.value[courseName.value] ?? 0);
-  const pageFinished = computed(() => currentProgress.value - 1 >= pageIndex.value);
+  const currentProgress = computed<number | null>(() => (courseName.value ? progress.value[courseName.value] ?? 0 : null));
+  const pageFinished = computed<boolean | null>(() =>
+    currentProgress.value !== null && pageIndex.value !== null ? currentProgress.value - 1 >= pageIndex.value : null
+  );
 
   return { courseName, pageIndex, currentCourse, currentPage, currentProgress, pageFinished };
 });

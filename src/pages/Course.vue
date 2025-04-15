@@ -6,22 +6,22 @@
       :key="image ?? 'blank'"
       :style="{
         backgroundImage: `url(${image})`,
-        opacity: backgroundImages[pageIndex] === image ? 1 : 0,
-        zIndex: backgroundImages[pageIndex] === image ? -1 : -2,
+        opacity: backgroundImages[pageIndex!] === image ? 1 : 0,
+        zIndex: backgroundImages[pageIndex!] === image ? -1 : -2,
       }"></div>
-    <template v-if="currentPage.type === 'story'">
+    <template v-if="currentPage!.type === 'story'">
       <div class="story-content-container">
-        <PaginationControl :current="pageIndex" :total="currentCourse.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
-          <CourseContent class="story-content" :contents="currentPage.contents" @goto="gotoPage" />
+        <PaginationControl :current="pageIndex" :total="currentCourse!.pages.length" class="pagination" @prev="gotoPage(-1, true)" @next="gotoPage(1, true)">
+          <CourseContent class="story-content" :contents="currentPage!.contents" @goto="gotoPage" />
         </PaginationControl>
       </div>
       <div
         class="story-character"
-        v-if="characterImages[pageIndex]"
-        :style="typeof currentPage.character === 'string' || !currentPage.character?.style ? {} : currentPage.character.style">
+        v-if="characterImages[pageIndex!]"
+        :style="typeof currentPage!.character === 'string' || !currentPage!.character?.style ? {} : currentPage!.character.style">
         <BlurEntrance>
           <InfiniteMoving>
-            <img :src="characterImages[pageIndex]!" />
+            <img :src="characterImages[pageIndex!]!" />
           </InfiniteMoving>
         </BlurEntrance>
       </div>
@@ -34,14 +34,14 @@
     </template>
     <div v-else class="course-practice">
       <div class="practice-content-container">
-        <CourseContent class="practice-content" :contents="currentPage.contents" :solved="pageFinished" @goto="gotoPage" />
+        <CourseContent class="practice-content" :contents="currentPage!.contents" :solved="pageFinished" @goto="gotoPage" />
       </div>
       <div class="practice-judger-container">
         <CodeJudger
-          :tests="currentPage.judge"
-          :generateTests="currentPage.randomJudge"
-          :defaultCode="currentPage.defaultCode"
-          :defaultLine="currentPage.defaultLine"
+          :tests="currentPage!.judge"
+          :generateTests="currentPage!.randomJudge"
+          :defaultCode="currentPage!.defaultCode"
+          :defaultLine="currentPage!.defaultLine"
           @accomplished="updateProgress()" />
       </div>
     </div>
@@ -49,13 +49,12 @@
 </template>
 
 <script setup lang="ts" name="Course">
-import { computed, ref, watchEffect } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, watchEffect } from 'vue';
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { ElNotification } from 'element-plus';
 
 import ColumnChart from '@/components/visualize/ColumnChart.vue';
-import courses from '@/courses/index';
 import { useCourseStore } from '@/stores/Course';
 import { useProgressStore } from '@/stores/Progress';
 import type { ImageConfig } from '@/types/CourseTypes';
@@ -71,15 +70,15 @@ const characterImages = ref<(string | null)[]>([]);
 const progressStore = useProgressStore();
 const { setProgress } = progressStore;
 const updateProgress = (page?: number) => {
-  if (!page) page = pageIndex.value;
-  if (page + 1 >= currentProgress.value) {
-    setProgress(courseName.value, page + 1);
+  if (!page) page = pageIndex.value!;
+  if (page + 1 >= currentProgress!.value!) {
+    setProgress(courseName.value!, page + 1);
   }
 };
 
 const gotoPage = (page: number, relative?: boolean) => {
-  if (relative) page += pageIndex.value;
-  if (currentCourse.value.pages[page].type === 'story') {
+  if (relative) page += pageIndex.value!;
+  if (currentCourse.value!.pages[page].type === 'story') {
     updateProgress(page);
   }
 
