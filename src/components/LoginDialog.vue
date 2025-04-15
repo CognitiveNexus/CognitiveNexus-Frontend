@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :model-value="showLoginDialog" :show-close="false" width="24em" header-class="no-bottom-padding">
+  <el-dialog v-model="showLoginDialog" :show-close="false" width="24em" header-class="no-bottom-padding">
     <template #header>
       <el-form-item>
         <el-segmented v-model="selectedTab" :options="tabs" size="large" style="width: 100%" />
