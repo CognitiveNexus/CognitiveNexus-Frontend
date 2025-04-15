@@ -67,7 +67,7 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '盾牌的考验',
     background: 'weaponShop',
-    character: 'shopkeeper1',
+    character: 'shopkeeper2',
     contents: [
       createTitle(`🛡️盾牌的考验`),
       createText(`太好了！聪明的你想到了先把其中一个盾**暂放在地板上**，之后就有足够的空间进行交换了。
@@ -82,7 +82,7 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '圣剑的考验',
     background: 'weaponShop',
-    character: 'shopkeeper2',
+    character: 'shopkeeper3',
     contents: [
       createTitle(`🗡️圣剑的考验`),
       createText(`古籍上面密密麻麻画着**999把武器**的图像。当你翻开时，数字像蚂蚁般在羊皮纸上爬动，让你眼花缭乱。
@@ -135,7 +135,7 @@ const pages: CoursePage[] = [
     chapter: '直面魔王',
     background: 'castle',
     character: {
-      name: 'shopkeeper3',
+      name: 'shopkeeper0',
       style: {
         width: '300px',
       },
@@ -556,6 +556,7 @@ int main(){
 
 收剑入鞘吧，年轻的排序大师——
 这柄「**冒泡之锋**」，终将成为你算法征途的起点。`),
+      createCongratulation(),
     ],
   },
 ];
