@@ -1,31 +1,55 @@
 <template>
   <div class="shield-swap-container">
-    <div ref="bronzeShield" class="shield bronze-shield">青铜盾</div>
-    <div ref="silverShield" class="shield silver-shield">白银盾</div>
+    <Confetti ref="confettiRef" class="absolute left-0 top-0 z-0 size-full no-pointer-events" style="pointer-events: none" manualstart />
+    <img ref="bronzeShield" :src="shieldBronzeImg" class="shield" />
+    <img ref="silverShield" :src="shieldSilverImg" class="shield" />
     <div class="shield-swap-destination">
-      <div ref="rack1" class="destination rack">盾牌架1</div>
-      <div ref="rack2" class="destination rack">盾牌架2</div>
-      <div ref="floor" class="destination floor">地板</div>
+      <div class="rack-container">
+        <img ref="bronzeRack" :src="rackBronzeImg" class="destination rack" />
+        <img ref="silverRack" :src="rackSilverImg" class="destination rack" />
+      </div>
+      <img ref="floor" :src="floorImg" class="destination floor" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import interact from 'interactjs';
+import shieldBronzeImg from '@/assets/img/shieldBronze.png';
+import shieldSilverImg from '@/assets/img/shieldSilver.png';
+import rackBronzeImg from '@/assets/img/rackBronze.png';
+import rackSilverImg from '@/assets/img/rackSilver.png';
+import floorImg from '@/assets/img/floor.png';
 
 const emit = defineEmits(['accomplished']);
+const confettiRef = ref();
 
 const bronzeShield = ref<HTMLElement>();
 const silverShield = ref<HTMLElement>();
-const rack1 = ref<HTMLElement>();
-const rack2 = ref<HTMLElement>();
+const silverRack = ref<HTMLElement>();
+const bronzeRack = ref<HTMLElement>();
 const floor = ref<HTMLElement>();
 
-const bronzeInitialPosition = { x: 0, y: 0 };
-const silverInitialPosition = { x: 0, y: 0 };
-const bronzePosition = ref({ ...bronzeInitialPosition });
-const silverPosition = ref({ ...silverInitialPosition });
+const bronzePosition = ref({ x: 0, y: 0 });
+const silverPosition = ref({ x: 0, y: 0 });
+
+const bronzeCurrentZone = ref<'silverRack' | 'bronzeRack' | 'floor'>('silverRack');
+const silverCurrentZone = ref<'silverRack' | 'bronzeRack' | 'floor'>('bronzeRack');
+
+watchEffect(() => {
+  if (bronzeCurrentZone.value === 'bronzeRack' && silverCurrentZone.value === 'silverRack') {
+    confettiRef.value?.fire({ zIndex: 50 });
+    emit('accomplished');
+  }
+});
+
+function getZoneType(zoneElement: HTMLElement): 'silverRack' | 'bronzeRack' | 'floor' {
+  if (zoneElement === silverRack.value) return 'silverRack';
+  if (zoneElement === bronzeRack.value) return 'bronzeRack';
+  if (zoneElement === floor.value) return 'floor';
+  throw new Error('Invalid zone element');
+}
 
 function isValidDropZone(event: any, dropZones: HTMLElement[]) {
   const { x: clientX, y: clientY } = event.client;
@@ -46,7 +70,13 @@ function alignToZone(shield: HTMLElement, zone: HTMLElement) {
   return { x: offsetX, y: offsetY };
 }
 
-function setupDraggable(shield: HTMLElement, position: typeof bronzePosition, initialPosition: { x: number; y: number }, dropZones: HTMLElement[]) {
+function setupDraggable(
+  shield: HTMLElement,
+  position: typeof bronzePosition,
+  dropZones: HTMLElement[],
+  currentZone: typeof bronzeCurrentZone,
+  otherCurrentZone: typeof silverCurrentZone
+) {
   interact(shield).draggable({
     inertia: false,
     modifiers: [
@@ -56,8 +86,10 @@ function setupDraggable(shield: HTMLElement, position: typeof bronzePosition, in
       }),
     ],
     listeners: {
-      start() {
+      start(event) {
         shield.style.zIndex = '10';
+        event.target.dataset.startX = String(position.value.x);
+        event.target.dataset.startY = String(position.value.y);
       },
       move(event) {
         position.value.x += event.dx;
@@ -67,13 +99,25 @@ function setupDraggable(shield: HTMLElement, position: typeof bronzePosition, in
       end(event) {
         shield.style.zIndex = '5';
         const validZone = isValidDropZone(event, dropZones);
+        const startX = parseFloat(event.target.dataset.startX || '0');
+        const startY = parseFloat(event.target.dataset.startY || '0');
+
         if (validZone) {
+          const targetZoneType = getZoneType(validZone);
+
+          if (otherCurrentZone.value === targetZoneType) {
+            position.value = { x: startX, y: startY };
+            event.target.style.transform = `translate(${startX}px, ${startY}px)`;
+            return;
+          }
+
           const newPos = alignToZone(event.target, validZone);
           position.value = newPos;
           event.target.style.transform = `translate(${newPos.x}px, ${newPos.y}px)`;
+          currentZone.value = targetZoneType;
         } else {
-          position.value = { ...initialPosition };
-          event.target.style.transform = `translate(${initialPosition.x}px, ${initialPosition.y}px)`;
+          position.value = { x: startX, y: startY };
+          event.target.style.transform = `translate(${startX}px, ${startY}px)`;
         }
       },
     },
@@ -81,17 +125,27 @@ function setupDraggable(shield: HTMLElement, position: typeof bronzePosition, in
 }
 
 onMounted(() => {
-  if (bronzeShield.value && silverShield.value && rack1.value && rack2.value && floor.value) {
-    const dropZones = [rack1.value, rack2.value, floor.value];
+  Promise.all([
+    new Promise((resolve) => silverRack.value?.addEventListener('load', resolve)),
+    new Promise((resolve) => bronzeRack.value?.addEventListener('load', resolve)),
+    new Promise((resolve) => bronzeShield.value?.addEventListener('load', resolve)),
+    new Promise((resolve) => silverShield.value?.addEventListener('load', resolve)),
+  ]).then(() => {
+    if (bronzeShield.value && silverShield.value && silverRack.value && bronzeRack.value && floor.value) {
+      const dropZones = [silverRack.value, bronzeRack.value, floor.value];
 
-    bronzeInitialPosition.x = 0;
-    bronzeInitialPosition.y = 0;
-    silverInitialPosition.x = 0;
-    silverInitialPosition.y = 0;
+      const bronzeInitialPos = alignToZone(bronzeShield.value, silverRack.value);
+      bronzePosition.value = bronzeInitialPos;
+      bronzeShield.value.style.transform = `translate(${bronzeInitialPos.x}px, ${bronzeInitialPos.y}px)`;
 
-    setupDraggable(bronzeShield.value, bronzePosition, bronzeInitialPosition, dropZones);
-    setupDraggable(silverShield.value, silverPosition, silverInitialPosition, dropZones);
-  }
+      const silverInitialPos = alignToZone(silverShield.value, bronzeRack.value);
+      silverPosition.value = silverInitialPos;
+      silverShield.value.style.transform = `translate(${silverInitialPos.x}px, ${silverInitialPos.y}px)`;
+
+      setupDraggable(bronzeShield.value, bronzePosition, dropZones, bronzeCurrentZone, silverCurrentZone);
+      setupDraggable(silverShield.value, silverPosition, dropZones, silverCurrentZone, bronzeCurrentZone);
+    }
+  });
 });
 </script>
 
@@ -99,12 +153,11 @@ onMounted(() => {
 .shield-swap-container {
   position: relative;
   height: 90vh;
-  border: 1px solid #ccc;
+  z-index: 1;
 }
 
 .shield {
-  width: 60px;
-  height: 50px;
+  height: 280px;
   position: absolute;
   display: flex;
   align-items: center;
@@ -115,24 +168,18 @@ onMounted(() => {
   cursor: move;
 }
 
-.bronze-shield {
-  background-color: #88ff88;
-  top: 20px;
-  left: 20px;
-}
-
-.silver-shield {
-  background-color: #cccccc;
-  top: 20px;
-  left: 100px;
-}
-
 .shield-swap-destination {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
   bottom: 20px;
   left: 20px;
+}
+
+.rack-container {
+  display: flex;
+  gap: 10px;
 }
 
 .destination {
@@ -140,9 +187,7 @@ onMounted(() => {
 }
 
 .rack {
-  background-color: #880000;
-  width: 100px;
-  height: 100px;
+  height: 240px;
   color: white;
   display: flex;
   align-items: center;
@@ -150,9 +195,7 @@ onMounted(() => {
 }
 
 .floor {
-  background-color: #880000;
-  width: 100px;
-  height: 50px;
+  margin-top: 50px;
   color: white;
   display: flex;
   align-items: center;
