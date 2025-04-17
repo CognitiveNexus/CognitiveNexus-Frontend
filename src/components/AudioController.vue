@@ -3,18 +3,20 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
+import { watchEffect } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Headset } from '@element-plus/icons-vue';
 import { useAudioStore } from '@/stores/Audio';
 import { useCourseStore } from '@/stores/Course';
 
 const { audioEnabled, nowPlaying } = storeToRefs(useAudioStore());
-const { currentPage } = storeToRefs(useCourseStore());
+const { courseName, currentPage } = storeToRefs(useCourseStore());
 
-watch(currentPage, (newPage) => {
-  if (newPage) {
-    nowPlaying.value = newPage.audio ?? null;
+watchEffect(() => {
+  if (currentPage.value && currentPage.value.audio) {
+    nowPlaying.value = `${courseName.value}/${currentPage.value.audio}`;
+  } else {
+    nowPlaying.value = null;
   }
 });
 </script>

@@ -26,7 +26,7 @@
     <LoginDialog />
     <AskAI v-model="aiDrawer" />
     <Comments v-model="forumDrawer" />
-    <AudioController v-if="courseName" />
+    <AudioController v-show="courseName" />
   </el-config-provider>
 </template>
 
