@@ -20,7 +20,7 @@ import { useAudioStore } from '@/stores/Audio';
 import { useCourseStore } from '@/stores/Course';
 
 const { audioEnabled: narrationEnabled, nowPlaying: narrationPlaying } = storeToRefs(useAudioStore('narration'));
-const { audioEnabled: bgmEnabled, nowPlaying: bgmPlaying } = storeToRefs(useAudioStore('bgm', 0.2, true));
+const { audioEnabled: bgmEnabled, nowPlaying: bgmPlaying } = storeToRefs(useAudioStore('bgm', 0.1, true));
 const { courseName, currentPage } = storeToRefs(useCourseStore());
 
 watchEffect(() => {
