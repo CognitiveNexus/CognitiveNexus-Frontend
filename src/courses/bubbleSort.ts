@@ -14,7 +14,8 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '序章',
     background: 'parchment',
-    audio: 'page01',
+    narration: 'page01',
+    bgm: 'bgm',
     contents: [
       createTitle(`🔮序章：混沌降临`),
       createText(`在古老的算法大陆上，流传着一卷褪色的羊皮手札：
@@ -34,7 +35,8 @@ const pages: CoursePage[] = [
     chapter: '盾牌的考验',
     background: 'weaponShop',
     character: 'shopkeeper1',
-    audio: 'page02',
+    narration: 'page02',
+    bgm: 'bgm',
     contents: [
       createTitle(`🛡️盾牌的考验`),
       createText(`为了做好讨伐魔王的准备，你决定前往武器店**买一点趁手的装备**防身。
@@ -53,7 +55,8 @@ const pages: CoursePage[] = [
     type: 'challenge',
     chapter: '盾牌的考验',
     background: 'weaponShop',
-    audio: 'page03',
+    narration: 'page03',
+    bgm: 'bgm',
     contents: [
       createTitle(`🛡️盾牌的考验`),
       createText(`青铜盾和白银盾的位置**放反了**，老铁匠和学徒都取不下来。
@@ -71,7 +74,8 @@ const pages: CoursePage[] = [
     chapter: '盾牌的考验',
     background: 'weaponShop',
     character: 'shopkeeper2',
-    audio: 'page04',
+    narration: 'page04',
+    bgm: 'bgm',
     contents: [
       createTitle(`🛡️盾牌的考验`),
       createText(`太好了！聪明的你想到了先把其中一个盾**暂放在地板上**，之后就有足够的空间进行交换了。
@@ -87,7 +91,8 @@ const pages: CoursePage[] = [
     chapter: '圣剑的考验',
     background: 'weaponShop',
     character: 'shopkeeper3',
-    audio: 'page05',
+    narration: 'page05',
+    bgm: 'bgm',
     contents: [
       createTitle(`🗡️圣剑的考验`),
       createText(`古籍上面密密麻麻画着**999把武器**的图像。当你翻开时，数字像蚂蚁般在羊皮纸上爬动，让你眼花缭乱。
@@ -109,7 +114,8 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '圣剑的考验',
     background: 'weaponShop',
-    audio: 'page06',
+    narration: 'page06',
+    bgm: 'bgm',
     contents: [
       createTitle(`🗡️圣剑的考验`),
       createText(`总结一下，“千刃轴卷”的特性是：
@@ -146,7 +152,8 @@ const pages: CoursePage[] = [
         width: '300px',
       },
     },
-    audio: 'page07',
+    narration: 'page07',
+    bgm: 'bgm',
     contents: [
       createTitle(`🏰启程`),
       createText(`经过一番操作后，你成功将“秩序之锋”交换到了最后一页。
@@ -165,7 +172,8 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '直面魔王',
     background: 'monster',
-    audio: 'page08',
+    narration: 'page08',
+    bgm: 'bgm',
     contents: [
       createTitle(`🏰直面魔王`),
       createText(`漆黑的城堡中，你奋力战斗，终于走到魔王的门前，心情忐忑。
@@ -187,7 +195,8 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '直面魔王',
     background: 'monster',
-    audio: 'page09',
+    narration: 'page09',
+    bgm: 'bgm',
     contents: [
       createTitle(`🏰直面魔王`),
       createText(`要让我们的攻击数值从无序**变为有序**，还真是一个难题。
@@ -212,7 +221,8 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '直面魔王',
     background: 'monsterDim',
-    audio: 'page10',
+    narration: 'page10',
+    bgm: 'bgm',
     contents: [
       createTitle(`🏰直面魔王`),
       createText(`像之前一样，我们考虑一个简化的版本：
@@ -232,7 +242,8 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '直面魔王',
     background: 'finish',
-    audio: 'page11',
+    narration: 'page11',
+    bgm: 'bgm',
     contents: [
       createTitle(`🎉终结魔王！`),
       createText(`你挥舞着“秩序之锋”，剑光闪烁，剑势如虹，直逼魔王的护盾。
@@ -254,7 +265,8 @@ const pages: CoursePage[] = [
         width: '25vw',
       },
     },
-    audio: 'page12',
+    narration: 'page12',
+    bgm: 'bgm',
     contents: [
       createTitle('🔎旅途回顾'),
       createText(`回到村庄，老村长拄着杖走来，
@@ -276,7 +288,8 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '旅途回顾',
     background: 'parchment',
-    audio: 'page13',
+    narration: 'page13',
+    bgm: 'bgm',
     contents: [
       createTitle(`📜修复符文`),
       createText(`老村长交给你一个纹章，上面浮现出奇怪的符号——它们像某种**古老的语言**，记录着你刚刚施展的**算法**。
@@ -292,7 +305,8 @@ const pages: CoursePage[] = [
     type: 'story',
     chapter: '任务Ⅰ 交换',
     background: 'parchment',
-    audio: 'page14',
+    narration: 'page14',
+    bgm: 'bgm',
     contents: [
       createTitle(`📜任务Ⅰ 交换`),
       createText(`还记得我们在武器店中**交换盾牌**的经历吗？
@@ -332,7 +346,8 @@ int main() {
     type: 'challenge',
     chapter: '任务Ⅰ 交换',
     background: 'parchment',
-    audio: 'page15',
+    narration: 'page15',
+    bgm: 'bgm',
     contents: [
       createTitle(`📜任务Ⅰ 交换`),
       createText(`现在，亲自试试交换变量值吧！`),
@@ -367,7 +382,8 @@ int main(){
     type: 'story',
     chapter: '任务Ⅱ 冒泡',
     background: 'parchment',
-    audio: 'page16',
+    narration: 'page16',
+    bgm: 'bgm',
     contents: [
       createTitle(`📜任务Ⅱ 冒泡`),
       createText(`再来回忆一下我们在武器店中**取得圣剑**的经历：
@@ -406,7 +422,8 @@ for(int i = 0; i < 7; i++) {
     type: 'challenge',
     chapter: '任务Ⅱ 冒泡',
     background: 'parchment',
-    audio: 'page17',
+    narration: 'page17',
+    bgm: 'bgm',
     contents: [
       createTitle(`📜任务Ⅱ 冒泡`),
       createText(`为了实现**把最大的元素放在最后**，我们的代码逻辑是这样的：
@@ -464,7 +481,8 @@ int main(){
     type: 'story',
     chapter: '任务Ⅲ 排序',
     background: 'parchment',
-    audio: 'page18',
+    narration: 'page18',
+    bgm: 'bgm',
     contents: [
       createTitle(`📜任务Ⅲ 排序`),
       createText(`恭喜你，你已经掌握了我们的“**技能**”：将最大的数放在最后。
@@ -506,7 +524,8 @@ for(int i = 7; i >= 1; i--) {
     type: 'challenge',
     chapter: '任务Ⅲ 排序',
     background: 'parchment',
-    audio: 'page19',
+    narration: 'page19',
+    bgm: 'bgm',
     contents: [
       createTitle(`📜任务Ⅲ 排序`),
       createText(`现在，亲自试试实现**完整的**冒泡排序过程吧！
@@ -557,7 +576,8 @@ int main(){
     type: 'story',
     chapter: '结局',
     background: 'finish',
-    audio: 'page20',
+    narration: 'page20',
+    bgm: 'bgm',
     contents: [
       createTitle('🎖️真正的勇者'),
       createText(`你已用秩序之光**驱散混沌**，成为真正的**算法勇者**！

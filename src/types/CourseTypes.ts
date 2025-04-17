@@ -19,7 +19,8 @@ export type CoursePage = {
   chapter: string;
   background?: string;
   character?: string | ImageConfig;
-  audio?: string;
+  narration?: string;
+  bgm?: string;
   contents: StoryContent[];
   columnChart?: {
     store: ChartStore;
