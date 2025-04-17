@@ -11,8 +11,8 @@ export const useProgressStore = defineStore('Progress', {
   actions: {
     async setProgress(courseName: string, progress: number) {
       const { isAuthenticated } = storeToRefs(useAuthStore());
-      if (!isAuthenticated.value) return;
       this.progress[courseName] = progress;
+      if (!isAuthenticated.value) return;
       try {
         const response = await sendRequest(true, `/api/progress/${courseName}`, {
           method: 'POST',
