@@ -31,3 +31,6 @@ coverage
 *.tsbuildinfo
 
 components.d.ts
+
+public/*
+!public/favicon.ico
