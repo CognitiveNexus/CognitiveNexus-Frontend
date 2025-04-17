@@ -194,6 +194,7 @@ watchEffect(async () => {
 }
 .course-custom-component {
   flex: 1;
+  min-width: 30%;
 }
 .pagination {
   flex: 1;
